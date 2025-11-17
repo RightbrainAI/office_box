@@ -89,7 +89,8 @@ def get_rb_token(client_id, client_secret, token_url):
 
 def fetch_task_definition(rb_token, api_url, org_id, project_id, task_id):
     """Fetches a specific task definition by its ID."""
-    fetch_url = f"{api_url}/org/{org_id}/project/{project_id}/task/{task_id}" #
+    # API URL should already include /api/v1
+    fetch_url = f"{api_url.rstrip('/')}/org/{org_id}/project/{project_id}/task/{task_id}"
     headers = {"Authorization": f"Bearer {rb_token}"}
     
     print(f"📡 Fetching task definition for ID: {task_id}...")
@@ -122,7 +123,7 @@ def main():
     # --- Configuration ---
     required_vars = [
         "RB_ORG_ID", "RB_PROJECT_ID", "RB_CLIENT_ID",
-        "RB_CLIENT_SECRET", "RB_API_URL", "RB_OAUTH2_URL", "RB_OAUTH2_TOKEN_PATH"
+        "RB_CLIENT_SECRET", "RB_API_URL", "RB_OAUTH2_URL"
     ]
     config = {}
     for var in required_vars:
@@ -130,8 +131,9 @@ def main():
         if not value:
             sys.exit(f"❌ Error: Environment variable '{var}' is not set. Please add it to your .env file in the project root.")
         config[var] = value
-
-    config["rb_token_url"] = f"{config['RB_OAUTH2_URL']}{config['RB_OAUTH2_TOKEN_PATH']}" #
+    
+    # Use the OAuth2 URL directly (should be the full endpoint URL)
+    config["rb_token_url"] = config["RB_OAUTH2_URL"]
     
     # --- Script Logic ---
     task_id = input("➡️ Please enter the Rightbrain Task ID to fetch: ")

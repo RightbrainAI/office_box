@@ -50,7 +50,6 @@ jobs:
           RB_CLIENT_SECRET: ${{ secrets.RB_CLIENT_SECRET }}
           RB_API_URL: ${{ secrets.RB_API_URL }}
           RB_OAUTH2_URL: ${{ secrets.RB_OAUTH2_URL }}
-          RB_OAUTH2_TOKEN_PATH: ${{ secrets.RB_OAUTH2_TOKEN_PATH }}
 
       - name: 6. Update Labels on Success
         run: |

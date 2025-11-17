@@ -12,9 +12,12 @@ def get_rb_token() -> str:
     """
     client_id = os.environ.get("RB_CLIENT_ID")
     client_secret = os.environ.get("RB_CLIENT_SECRET")
-    token_url_base = os.environ.get("RB_OAUTH2_URL", "https://oauth.rightbrain.ai")
-    token_path = os.environ.get("RB_OAUTH2_TOKEN_PATH", "/oauth/token")
-    token_url = f"{token_url_base.rstrip('/')}{token_path}"
+    token_url_base = os.environ.get("RB_OAUTH2_URL")
+    if not token_url_base:
+        print("❌ Error: Missing RB_OAUTH2_URL environment variable.", file=sys.stderr)
+        sys.exit(1)
+    # Use the OAuth2 URL directly (should be the full endpoint URL)
+    token_url = token_url_base
 
     if not all([client_id, client_secret]):
         print("❌ Error: Missing RB_CLIENT_ID or RB_CLIENT_SECRET.", file=sys.stderr)
@@ -42,7 +45,11 @@ def _get_api_headers(rb_token: str) -> Dict[str, str]:
 
 def _get_base_url() -> str:
     """Internal helper to get the base API URL."""
-    return os.environ.get("RB_API_URL", "https://app.rightbrain.ai").rstrip('/')
+    api_url = os.environ.get("RB_API_URL")
+    if not api_url:
+        print("❌ Error: Missing RB_API_URL environment variable.", file=sys.stderr)
+        sys.exit(1)
+    return api_url.rstrip('/')
 
 def _get_project_path() -> str:
     """Internal helper to get the common org/project API path."""
@@ -51,7 +58,8 @@ def _get_project_path() -> str:
     if not all([org_id, project_id]):
         print("❌ Error: Missing RB_ORG_ID or RB_PROJECT_ID.", file=sys.stderr)
         sys.exit(1)
-    return f"/api/v1/org/{org_id}/project/{project_id}"
+    # API URL should already include /api/v1, so just use the path
+    return f"/org/{org_id}/project/{project_id}"
 
 def get_task(rb_token: str, task_id: str) -> Dict[str, Any]:
     """Fetches the full task object, including all revisions."""
@@ -115,7 +123,7 @@ def run_rb_task(
     """
     org_id = os.environ.get("RB_ORG_ID")
     project_id = os.environ.get("RB_PROJECT_ID")
-    api_url_base = os.environ.get("RB_API_URL", "https://app.rightbrain.ai")
+    # RB_API_URL is already validated by _get_base_url() which is called via run_url construction
     
     if not all([org_id, project_id, task_id]):
         print(f"❌ Error: Missing RB_ORG_ID, RB_PROJECT_ID, or task_id for {task_name}.", file=sys.stderr)

@@ -8,6 +8,11 @@ from dotenv import load_dotenv
 from typing import Dict, List, Set, Any
 from urllib.parse import unquote
 
+# --- Refactored Imports ---
+from utils.github_api import post_github_comment
+from utils.rightbrain_api import get_rb_token, run_rb_task
+# --- End Refactored Imports ---
+
 # --- Constants ---
 SOURCE_DIR = Path("_vendor_analysis_source")
 CONFIG_DIR = Path("config")
@@ -25,66 +30,18 @@ def load_task_manifest() -> Dict[str, str]:
     except json.JSONDecodeError:
         sys.exit(f"❌ Error: Could not parse '{TASK_MANIFEST_PATH}'.")
 
-def post_github_comment(gh_token: str, repo: str, issue_number: str, body: str):
-    """Posts a new comment to the GitHub issue."""
-    url = f"https://api.github.com/repos/{repo}/issues/{issue_number}/comments"
-    headers = {"Authorization": f"Bearer {gh_token}", "Accept": "application/vnd.github.v3+json"}
-    payload = {"body": body}
-    
-    try:
-        response = requests.post(url, headers=headers, json=payload)
-        response.raise_for_status()
-        print(f"✅ Successfully posted results to issue #{issue_number}.")
-    except requests.exceptions.RequestException as e:
-        print(f"❌ Failed to post comment to GitHub issue: {e}")
-        if e.response is not None:
-            print(f"Response Status: {e.response.status_code}")
-            print(f"Response Body: {e.response.text}")
-        # We don't sys.exit, as the analysis *ran*, but we need to log failure.
-        print("--- ANALYSIS RESULTS (stdout) ---")
-        print(body)
-        print("--- END ANALYSIS RESULTS ---")
+# 
+# <<< FUNCTION REMOVED AND MOVED TO utils/github_api.py >>>
+#
+# def post_github_comment(...): ...
+# 
 
-
-# --- Helper: Rightbrain API ---
-
-def get_rb_token(client_id: str, client_secret: str, token_url: str) -> str:
-    """Authenticates with the Rightbrain API."""
-    try:
-        response = requests.post(token_url, auth=(client_id, client_secret), data={"grant_type": "client_credentials"})
-        response.raise_for_status()
-        return response.json().get("access_token")
-    except requests.exceptions.RequestException as e:
-        sys.exit(f"❌ Error getting Rightbrain token: {e}")
-
-def run_rb_task(rb_token: str, api_url: str, org_id: str, project_id: str, 
-                task_id: str, task_input_payload: Dict[str, Any], task_name: str) -> Dict[str, Any]:
-    """Runs a Rightbrain task with a dynamic input payload."""
-    if not task_id:
-        sys.exit(f"❌ Error: Missing task ID for {task_name}.")
-        
-    run_url = f"{api_url.rstrip('/')}/org/{org_id}/project/{project_id}/task/{task_id}/run"
-    headers = {"Authorization": f"Bearer {rb_token}"}
-    
-    # Use the generic payload structure
-    payload = {"task_input": task_input_payload}
-    
-    print(f"🚀 Running {task_name}...")
-    try:
-        response = requests.post(run_url, headers=headers, json=payload, timeout=600)
-        response.raise_for_status()
-        print(f"✅ {task_name} complete.")
-        # Return only the 'response' field which contains the structured JSON
-        return response.json().get("response", {})
-    except requests.exceptions.RequestException as e:
-        print(f"❌ {task_name} API call failed: {e}")
-        if e.response is not None:
-            print(f"Response Status: {e.response.status_code}")
-            try:
-                print(f"Response Body: {e.response.json()}")
-            except json.JSONDecodeError:
-                print(f"Response Body (non-JSON): {e.response.text}")
-        return {"error": f"{task_name} failed", "details": str(e)}
+# 
+# <<< FUNCTIONS REMOVED AND MOVED TO utils/rightbrain_api.py >>>
+#
+# def get_rb_token(...): ...
+# def run_rb_task(...): ...
+# 
 
 # --- Core Logic: Text Compilation & Context ---
 
@@ -292,7 +249,13 @@ def main():
     rb_client_id = os.environ.get("RB_CLIENT_ID")
     rb_client_secret = os.environ.get("RB_CLIENT_SECRET")
     rb_api_url = os.environ.get("RB_API_URL")
-    rb_token_url = f"{os.environ.get('RB_OAUTH2_URL', '')}{os.environ.get('RB_OAUTH2_TOKEN_PATH', '')}"
+    rb_oauth2_url = os.environ.get("RB_OAUTH2_URL")
+    
+    if not rb_api_url or not rb_oauth2_url:
+        sys.exit("❌ Error: Missing RB_API_URL or RB_OAUTH2_URL environment variable.")
+    
+    # Use the OAuth2 URL directly (should be the full endpoint URL)
+    rb_token_url = rb_oauth2_url
 
     if not all([gh_token, issue_body, issue_number, repo_name, rb_org_id, rb_project_id, 
                 rb_client_id, rb_client_secret, rb_api_url, rb_token_url]):
@@ -333,7 +296,8 @@ def main():
 
     # --- 5. Run Analysis Tasks (Refactored for Stage 2) ---
     print("\n--- STAGE 5: Running Analysis Tasks ---")
-    rb_token = get_rb_token(rb_client_id, rb_client_secret, rb_token_url)
+    # Refactored to use new util function
+    rb_token = get_rb_token()
     legal_analysis_json = {"status": "skipped", "reason": "No approved legal documents found."}
     security_analysis_json = {"status": "skipped", "reason": "No approved security documents found."}
 
@@ -343,10 +307,13 @@ def main():
             "vendor_usage_details": vendor_usage_details,
             "consolidated_text": legal_docs_text
         }
-        legal_analysis_json = run_rb_task(
-            rb_token, rb_api_url, rb_org_id, rb_project_id,
-            legal_task_id, legal_input, "Sub-Processor Terms Analyzer"
+        # Refactored to use new util function
+        legal_analysis_run = run_rb_task(
+            rb_token, legal_task_id, legal_input, "Sub-Processor Terms Analyzer"
         )
+        legal_analysis_json = legal_analysis_run.get("response", {})
+        if not legal_analysis_json or legal_analysis_run.get("is_error"):
+             legal_analysis_json = {"error": "Task failed", "details": legal_analysis_run.get("response", "No response")}
     else:
         print("ℹ️ No approved legal documents found. Skipping legal analysis.")
 
@@ -356,10 +323,13 @@ def main():
             "vendor_usage_details": vendor_usage_details,
             "consolidated_text": security_docs_text
         }
-        security_analysis_json = run_rb_task(
-            rb_token, rb_api_url, rb_org_id, rb_project_id,
-            security_task_id, security_input, "Security Posture Analyzer"
+        # Refactored to use new util function
+        security_analysis_run = run_rb_task(
+            rb_token, security_task_id, security_input, "Security Posture Analyzer"
         )
+        security_analysis_json = security_analysis_run.get("response", {})
+        if not security_analysis_json or security_analysis_run.get("is_error"):
+            security_analysis_json = {"error": "Task failed", "details": security_analysis_run.get("response", "No response")}
     else:
         print("ℹ️ No approved security documents found. Skipping security analysis.")
 
@@ -377,14 +347,15 @@ def main():
         "legal_json_string": legal_json_string
     }
 
-    report_json = run_rb_task(
-        rb_token, rb_api_url, rb_org_id, rb_project_id,
-        reporter_task_id, reporter_input, "Vendor Risk Reporter"
+    # Refactored to use new util function
+    report_run = run_rb_task(
+        rb_token, reporter_task_id, reporter_input, "Vendor Risk Reporter"
     )
+    report_json = report_run.get("response", {})
 
     # --- 7. Format and Post Results ---
     print("\n--- STAGE 7: Formatting and Posting Results ---")
-    if not report_json or "error" in report_json:
+    if not report_json or report_run.get("is_error"):
         print("❌ Synthesis task failed. Posting raw JSON as fallback.")
         # Fallback to old behavior
         final_comment_body = (
@@ -401,7 +372,12 @@ def main():
             report_json, security_analysis_json, legal_analysis_json
         )
     
-    post_github_comment(gh_token, repo_name, issue_number, final_comment_body)
+    # Refactored to use new util function
+    try:
+        post_github_comment(gh_token, repo_name, issue_number, final_comment_body)
+    except Exception as e:
+        print(f"❌ CRITICAL: Failed to post final comment to GitHub: {e}", file=sys.stderr)
+        
     print("✅ Analysis and reporting complete.")
 
 if __name__ == "__main__":

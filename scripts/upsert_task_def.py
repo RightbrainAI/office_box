@@ -81,8 +81,14 @@ def main():
     rb_project_id = os.environ["RB_PROJECT_ID"]
     rb_client_id = os.environ["RB_CLIENT_ID"]
     rb_client_secret = os.environ["RB_CLIENT_SECRET"] 
-    rb_api_url = os.environ["RB_API_URL"] # This should already include /api/v1
-    rb_token_url = f"{os.environ['RB_OAUTH2_URL']}{os.environ['RB_OAUTH2_TOKEN_PATH']}"
+    rb_api_url = os.environ.get("RB_API_URL") # This should already include /api/v1
+    rb_oauth2_url = os.environ.get("RB_OAUTH2_URL")
+    
+    if not rb_api_url or not rb_oauth2_url:
+        sys.exit("❌ Error: Missing RB_API_URL or RB_OAUTH2_URL environment variable.")
+    
+    # Use the OAuth2 URL directly (should be the full endpoint URL)
+    rb_token_url = rb_oauth2_url
 
     # --- 2. Load Task Def and Manifest ---
     manifest_path = get_manifest_path()
@@ -110,7 +116,8 @@ def main():
             
             # --- STEP 1: Create the new revision ---
             # Per API docs, Update Task uses a POST request
-            url = f"{rb_api_url}/org/{rb_org_id}/project/{rb_project_id}/task/{existing_task_id}"
+            # API URL should already include /api/v1
+            url = f"{rb_api_url.rstrip('/')}/org/{rb_org_id}/project/{rb_project_id}/task/{existing_task_id}"
             response = requests.post(url, headers=headers, json=task_payload, timeout=30)
             response.raise_for_status()
             response_data = response.json()
@@ -142,7 +149,8 @@ def main():
             # --- CREATE (POST) ---
             print(f"No existing ID found for '{task_filename}'. Attempting to CREATE task...")
             # Per API docs, Create Task uses a POST request
-            url = f"{rb_api_url}/org/{rb_org_id}/project/{rb_project_id}/task"
+            # API URL should already include /api/v1
+            url = f"{rb_api_url.rstrip('/')}/org/{rb_org_id}/project/{rb_project_id}/task"
             response = requests.post(url, headers=headers, json=task_payload, timeout=30)
             response.raise_for_status()
             response_data = response.json()

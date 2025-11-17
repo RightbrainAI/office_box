@@ -44,7 +44,6 @@ jobs:
           RB_CLIENT_SECRET: ${{ secrets.RB_CLIENT_SECRET }}
           RB_API_URL: ${{ secrets.RB_API_URL }}
           RB_OAUTH2_URL: ${{ secrets.RB_OAUTH2_URL }}
-          RB_OAUTH2_TOKEN_PATH: ${{ secrets.RB_OAUTH2_TOKEN_PATH }}
           # GitHub context
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO_NAME: ${{ github.repository }}

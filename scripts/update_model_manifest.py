@@ -31,7 +31,8 @@ def get_available_models(token, api_url, org_id, project_id):
     [cite_start][cite: 609, 610]
     """
     # [cite_start]Endpoint definition from API docs [cite: 609]
-    models_url = f"{api_url}/org/{org_id}/project/{project_id}/model"
+    # API URL should already include /api/v1
+    models_url = f"{api_url.rstrip('/')}/org/{org_id}/project/{project_id}/model"
     # [cite_start]Auth header requirement from API docs [cite: 616]
     headers = {"Authorization": f"Bearer {token}"}
     
@@ -109,11 +110,15 @@ def main():
     rb_client_secret = os.environ.get("RB_CLIENT_SECRET")
     rb_org_id = os.environ.get("RB_ORG_ID")
     rb_project_id = os.environ.get("RB_PROJECT_ID")
-    rb_api_url = os.environ.get("RB_API_URL", "https://app.rightbrain.ai")
-    rb_oauth_url = os.environ.get("RB_OAUTH2_URL", "https://oauth.rightbrain.ai")
-    rb_token_path = os.environ.get("RB_OAUTH2_TOKEN_PATH", "/oauth2/token")
+    rb_api_url = os.environ.get("RB_API_URL")
+    rb_oauth_url = os.environ.get("RB_OAUTH2_URL")
     
-    rb_token_url = f"{rb_oauth_url.rstrip('/')}/{rb_token_path.lstrip('/')}"
+    if not rb_api_url or not rb_oauth_url:
+        print("❌ Error: Missing RB_API_URL or RB_OAUTH2_URL environment variable.")
+        sys.exit(1)
+    
+    # Use the OAuth2 URL directly (should be the full endpoint URL)
+    rb_token_url = rb_oauth_url
 
     # Check for required env vars
     required_vars = [rb_client_id, rb_client_secret, rb_org_id, rb_project_id]

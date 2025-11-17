@@ -26,7 +26,8 @@ def get_rb_token(client_id, client_secret, token_url):
 
 def get_or_create_task_id(rb_token, api_url, org_id, project_id, task_name, task_definition_path):
     """Finds a task by name. If it doesn't exist, it creates it."""
-    list_tasks_url = f"{api_url}/org/{org_id}/project/{project_id}/task"
+    # API URL should already include /api/v1
+    list_tasks_url = f"{api_url.rstrip('/')}/org/{org_id}/project/{project_id}/task"
     headers = {"Authorization": f"Bearer {rb_token}"}
     params = {"name": task_name}
     try:
@@ -41,7 +42,8 @@ def get_or_create_task_id(rb_token, api_url, org_id, project_id, task_name, task
             print(f"Task '{task_name}' not found. Creating it...")
             with open(task_definition_path, 'r') as f:
                 task_definition = json.load(f)
-            create_task_url = f"{api_url}/org/{org_id}/project/{project_id}/task"
+            # API URL should already include /api/v1
+            create_task_url = f"{api_url.rstrip('/')}/org/{org_id}/project/{project_id}/task"
             create_response = requests.post(create_task_url, headers=headers, json=task_definition)
             create_response.raise_for_status()
             new_task_id = create_response.json()['id']
@@ -52,7 +54,8 @@ def get_or_create_task_id(rb_token, api_url, org_id, project_id, task_name, task
 
 def run_rb_task(rb_token, api_url, org_id, project_id, task_id, vendor_url):
     """Runs the specified Rightbrain task with the vendor URL."""
-    run_url = f"{api_url}/org/{org_id}/project/{project_id}/task/{task_id}/run"
+    # API URL should already include /api/v1
+    run_url = f"{api_url.rstrip('/')}/org/{org_id}/project/{project_id}/task/{task_id}/run"
     headers = {"Authorization": f"Bearer {rb_token}"}
     payload = {"task_input": {"document_url": vendor_url}}
     print(f"Running task with URL: {vendor_url}")
@@ -193,7 +196,13 @@ def main():
     rb_client_id = os.getenv("RB_CLIENT_ID")
     rb_client_secret = os.getenv("RB_CLIENT_SECRET")
     rb_api_url = os.getenv("RB_API_URL")
-    rb_token_url = f"{os.getenv('RB_OAUTH2_URL')}{os.getenv('RB_OAUTH2_TOKEN_PATH')}"
+    rb_oauth2_url = os.getenv("RB_OAUTH2_URL")
+    
+    if not rb_api_url or not rb_oauth2_url:
+        sys.exit("❌ Error: Missing RB_API_URL or RB_OAUTH2_URL environment variable.")
+    
+    # Use the OAuth2 URL directly (should be the full endpoint URL)
+    rb_token_url = rb_oauth2_url
 
     print(f"--- Processing: {vendor_file_path.name} ---")
     with open(vendor_file_path, 'r') as f: content = f.read()

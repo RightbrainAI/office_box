@@ -36,9 +36,8 @@ jobs:
           RB_PROJECT_ID: ${{ secrets.RB_PROJECT_ID }}
           RB_CLIENT_ID: ${{ secrets.RB_CLIENT_ID }}
           RB_CLIENT_SECRET: ${{ secrets.RB_CLIENT_SECRET }}
-          # The script has defaults for these, but you could override them here
-          # RB_OAUTH2_URL: ${{ secrets.RB_OAUTH2_URL }}
-          # RB_API_URL: ${{ secrets.RB_API_URL }}
+          RB_OAUTH2_URL: ${{ secrets.RB_OAUTH2_URL }}
+          RB_API_URL: ${{ secrets.RB_API_URL }}
 
       - name: "Create Pull Request for new manifest"
         uses: peter-evans/create-pull-request@v6

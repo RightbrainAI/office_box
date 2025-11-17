@@ -60,6 +60,10 @@ In your new repository, go to Settings > Secrets and variables > Actions and cre
 
 `RB_CLIENT_SECRET`: Your Rightbrain OAuth Client Secret.
 
+`RB_OAUTH2_URL`: The full OAuth2 authentication endpoint URL (e.g., `https://oauth.rightbrain.ai/oauth2/auth`).
+
+`RB_API_URL`: The full API base URL including the version path (e.g., `https://app.rightbrain.ai/api/v1`).
+
 `GITHUB_TOKEN`: A GitHub Personal Access Token (classic) with repo and workflow scopes. This is needed for the setup script to create the Task Manifest.
 
 **Step 4:** Run the Setup Script

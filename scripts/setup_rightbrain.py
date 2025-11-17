@@ -15,7 +15,8 @@ TASK_MANIFEST_PATH = Path("tasks/task_manifest.json")
 
 def get_rb_token(client_id: str, client_secret: str, token_url_base: str) -> str:
     """Authenticates with the Rightbrain API."""
-    token_url = f"{token_url_base.rstrip('/')}/oauth/token"
+    # Use the OAuth2 URL directly (should be the full endpoint URL)
+    token_url = token_url_base
     print(f"Authenticating with {token_url}...")
     try:
         response = requests.post(
@@ -41,7 +42,8 @@ def get_rb_token(client_id: str, client_secret: str, token_url_base: str) -> str
 def create_rb_task(rb_token: str, api_url_base: str, org_id: str, project_id: str, task_body: Dict[str, Any]) -> str:
     """Creates a single Rightbrain task and returns its new ID."""
     task_name = task_body.get("name", "Unnamed Task")
-    create_url = f"{api_url_base.rstrip('/')}/api/v1/org/{org_id}/project/{project_id}/task"
+    # Use the API URL directly (should already include /api/v1)
+    create_url = f"{api_url_base.rstrip('/')}/org/{org_id}/project/{project_id}/task"
     headers = {"Authorization": f"Bearer {rb_token}", "Content-Type": "application/json"}
     
     print(f"  Attempting to create task: '{task_name}'...")
@@ -80,13 +82,13 @@ def main():
     rb_client_id = os.environ.get("RB_CLIENT_ID")
     rb_client_secret = os.environ.get("RB_CLIENT_SECRET")
     
-    # Assume standard Rightbrain URLs if not provided
-    rb_oauth2_url = os.environ.get("RB_OAUTH2_URL", "https://oauth.rightbrain.ai")
-    rb_api_url = os.environ.get("RB_API_URL", "https://app.rightbrain.ai")
+    # Get Rightbrain URLs from environment (required)
+    rb_oauth2_url = os.environ.get("RB_OAUTH2_URL")
+    rb_api_url = os.environ.get("RB_API_URL")
 
-    if not all([rb_org_id, rb_project_id, rb_client_id, rb_client_secret]):
+    if not all([rb_org_id, rb_project_id, rb_client_id, rb_client_secret, rb_oauth2_url, rb_api_url]):
         print("❌ Error: Missing one or more required environment variables.", file=sys.stderr)
-        print("  Requires: RB_ORG_ID, RB_PROJECT_ID, RB_CLIENT_ID, RB_CLIENT_SECRET", file=sys.stderr)
+        print("  Requires: RB_ORG_ID, RB_PROJECT_ID, RB_CLIENT_ID, RB_CLIENT_SECRET, RB_OAUTH2_URL, RB_API_URL", file=sys.stderr)
         sys.exit(1)
         
     print(f"  Org ID: {rb_org_id}")
