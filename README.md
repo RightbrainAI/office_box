@@ -78,7 +78,7 @@ Click "Run workflow" from the main branch.
 
 This script ('scripts/setup_rightbrain.py') will connect to the Rightbrain API, read all the files from the `/task_templates` directory, and create the five necessary AI tasks in your project. It will then generate a `tasks/task_manifest.json` file and commit it to your repository. This file maps the task names to the unique Task IDs in your project, allowing the other scripts to find and run them.
 
-##Step 5: Final Configuration
+**Step 5:** Final Configuration
 
 **Issue Templates:** This repository includes GitHub Issue Templates. When you create a new issue, select the "Vendor Onboarding Request" template.
 
@@ -86,7 +86,7 @@ This script ('scripts/setup_rightbrain.py') will connect to the Rightbrain API, 
 
 You are now ready to use the tool!
 
-##🔧 Code Structure & Refactoring Plan
+## 🔧 Code Structure & Refactoring Plan
 
 This project has been refactored for clarity and maintainability for its open-source release.
 
@@ -118,6 +118,6 @@ This project has been refactored for clarity and maintainability for its open-so
 
 * `_vendor_analysis_source/`: (Temporary) This directory is used to store fetched document text during an active review. It is automatically cleaned up by commit_approved_vendor.py.
 
-License
+## License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
