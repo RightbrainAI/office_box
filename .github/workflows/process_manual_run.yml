@@ -1,0 +1,55 @@
+name: Process Manual Rightbrain Run
+
+on:
+    workflow_dispatch:
+      inputs:
+        task_id: # --- ADD THIS ---
+          description: 'The Task ID from the Rightbrain UI'
+          required: true
+          type: string
+        task_run_id:
+          description: 'The Task Run ID from the Rightbrain UI'
+          required: true
+          type: string
+        issue_number:
+          description: 'The GitHub Issue number to update'
+          required: true
+          type: string
+  
+jobs:
+  process_results:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write # Required to read/write issue details
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install requests python-dotenv
+
+      - name: Run Processing Script
+        env:
+          # Secrets for Rightbrain API
+          RB_ORG_ID: ${{ secrets.RB_ORG_ID }}
+          RB_PROJECT_ID: ${{ secrets.RB_PROJECT_ID }}
+          RB_CLIENT_ID: ${{ secrets.RB_CLIENT_ID }}
+          RB_CLIENT_SECRET: ${{ secrets.RB_CLIENT_SECRET }}
+          RB_API_URL: ${{ secrets.RB_API_URL }}
+          RB_OAUTH2_URL: ${{ secrets.RB_OAUTH2_URL }}
+          RB_OAUTH2_TOKEN_PATH: ${{ secrets.RB_OAUTH2_TOKEN_PATH }}
+          # GitHub context
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_NAME: ${{ github.repository }}
+          # Inputs from the user
+          RB_TASK_ID: ${{ github.event.inputs.task_id }}
+          RB_TASK_RUN_ID: ${{ github.event.inputs.task_run_id }}
+          ISSUE_NUMBER: ${{ github.event.inputs.issue_number }}
+        run: python -m scripts.process_manual_run

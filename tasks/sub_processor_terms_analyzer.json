@@ -1,0 +1,146 @@
+{
+  "name": "Sub-Processor Terms Analyzer",
+  "description": "Analyzes legal documents for sub-processors, focusing on data protection, liability, and GDPR/UK-specific risks.",
+  "enabled": true,
+  "system_prompt": "You are an expert legal analyst, acting as a risk-focused advisor for our company. Your task is to analyze the provided legal documents through the specific lens of our company's context and intended usage.\n\nCRITICAL INSTRUCTIONS:\n1.  **Prioritize Risk, Not Just Extraction:** Do not just find and quote clauses. Your `summary` and `comment` for each field must *prioritize the specific risk* to our company, given our stated data types and usage (e.g., 'This is high-risk because...').\n2.  **Be Context-Aware:** If the usage context says 'we will process health data,' your analysis of `limitation_of_liability` and `data_processing_addendum` MUST reflect this high-risk scenario.\n3.  **UK/GDPR Focus:** Your analysis must be grounded in our company's profile as a UK-based B2B SaaS company under GDPR.\n4.  **Be Concise:** Summaries and comments must be direct and actionable, not just descriptive.\n5.  **Source Tracking:** You MUST correctly extract the `source_url` (which is the file path) from the `--- DOCUMENT SEPARATOR ---` headers for every finding. If a clause is not found, leave the fields empty.",
+  "user_prompt": "**A. OUR COMPANY PROFILE (The 'Lens'):**\n{company_profile}\n\n**B. VENDOR & USAGE CONTEXT (The 'Subject'):**\n{vendor_usage_details}\n\n**C. LEGAL DOCUMENTS TO ANALYZE (The 'Source'):**\n{consolidated_text}\n\n**YOUR TASK:**\nGiven **Our Company Profile (A)** and our specific **Vendor & Usage Context (B)**, meticulously analyze the **Legal Documents (C)** and populate the entire JSON schema.\n\n* Your analysis for *every field* must be relevant to the high-risk nature of the **Usage Context (B)**.\n* For example, if we are processing PII/Health Data, your `summary` and `comment` for 'Limitation of Liability' MUST check for data breach carve-outs.\n* You MUST correctly extract the `source_url` from the `--- DOCUMENT SEPARATOR ---` headers for every finding.",
+  "llm_model_id": "0197823d-47a5-6fce-95e5-c9c9dce9c285",
+  "output_format": {
+    "data_processing_addendum": {
+      "type": "object",
+      "nested_structure": {
+        "quote": "str",
+        "summary": "str",
+        "is_dpa_referenced": "bool",
+        "data_transfer_mechanisms": "str",
+        "source_url": "str"
+      }
+    },
+    "confidentiality": {
+      "type": "object",
+      "nested_structure": {
+        "quote": "str",
+        "summary": "str",
+        "survival_period": "str",
+        "source_url": "str"
+      }
+    },
+    "data_usage_for_training": {
+      "type": "object",
+      "nested_structure": {
+        "quote": "str",
+        "answer": "bool",
+        "comment": "str",
+        "summary": "str",
+        "source_url": "str"
+      }
+    },
+    "data_deletion": {
+      "type": "object",
+      "nested_structure": {
+        "quote": "str",
+        "comment": "str",
+        "timeline_days": "number",
+        "summary": "str",
+        "source_url": "str"
+      }
+    },
+    "indemnification": {
+      "type": "object",
+      "nested_structure": {
+        "quote": "str",
+        "summary": "str",
+        "covers_customer": "bool",
+        "covers_data_breach": "bool",
+        "covers_ip_infringement": "bool",
+        "comment": "str",
+        "source_url": "str"
+      }
+    },
+    "limitation_of_liability": {
+      "type": "object",
+      "nested_structure": {
+        "quote": "str",
+        "summary": "str",
+        "cap_amount": "str",
+        "carve_outs": "str",
+        "data_breach_liability_cap": "str",
+        "comment": "str",
+        "source_url": "str"
+      }
+    },
+    "governing_law": {
+      "type": "object",
+      "nested_structure": {
+        "quote": "str",
+        "answer": "str",
+        "comment": "str",
+        "summary": "str",
+        "source_url": "str"
+      }
+    },
+    "termination_rights": {
+      "type": "object",
+      "nested_structure": {
+        "quote": "str",
+        "summary": "str",
+        "for_cause_conditions": "str",
+        "for_convenience_timeline": "str",
+        "source_url": "str"
+      }
+    },
+    "service_levels": {
+      "type": "object",
+      "nested_structure": {
+        "quote": "str",
+        "summary": "str",
+        "uptime_commitment": "str",
+        "remedy_credits": "str",
+        "source_url": "str"
+      }
+    },
+    "data_residency_and_transfers": {
+      "type": "object",
+      "nested_structure": {
+        "quote": "str",
+        "summary": "str",
+        "storage_and_processing_locations": "str",
+        "transfer_mechanisms_uk_eu": "str",
+        "source_url": "str"
+      }
+    },
+    "subprocessor_flow_down": {
+      "type": "object",
+      "nested_structure": {
+        "quote": "str",
+        "summary": "str",
+        "right_to_use_subprocessors": "bool",
+        "notification_for_new_subprocessors": "str",
+        "objection_rights": "bool",
+        "subprocessor_list_url": "str",
+        "source_url": "str"
+      }
+    },
+    "breach_notification": {
+      "type": "object",
+      "nested_structure": {
+        "quote": "str",
+        "summary": "str",
+        "notification_timeline": "str",
+        "notification_procedure": "str",
+        "source_url": "str"
+      }
+    },
+    "audit_rights": {
+      "type": "object",
+      "nested_structure": {
+        "quote": "str",
+        "summary": "str",
+        "has_audit_rights": "bool",
+        "audit_procedure": "str",
+        "conditions_and_limitations": "str",
+        "source_url": "str"
+      }
+    }
+  }
+}

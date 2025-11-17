@@ -1,0 +1,61 @@
+name: 1. Vendor Document Discovery
+
+on:
+  issues:
+    types: [opened, edited]
+
+jobs:
+  discover-documents:
+    runs-on: ubuntu-latest
+    if: contains(github.event.issue.labels.*.name, 'vendor-onboarding')
+
+    permissions:
+      issues: write 
+      contents: write
+
+    steps:
+      - name: 1. Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 2. Debug - Print Issue Body
+        run: |
+          echo "Received Issue Body:"
+          echo "${{ github.event.issue.body }}"
+
+      - name: 3. Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 4. Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 5. Run Discovery Script
+        run: python scripts/discover_documents.py
+        env:
+          # GitHub context variables
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          REPO_NAME: ${{ github.repository }}
+
+          # Rightbrain API secrets
+          RB_ORG_ID: ${{ secrets.RB_ORG_ID }}
+          RB_PROJECT_ID: ${{ secrets.RB_PROJECT_ID }}
+          RB_CLIENT_ID: ${{ secrets.RB_CLIENT_ID }}
+          RB_CLIENT_SECRET: ${{ secrets.RB_CLIENT_SECRET }}
+          RB_API_URL: ${{ secrets.RB_API_URL }}
+          RB_OAUTH2_URL: ${{ secrets.RB_OAUTH2_URL }}
+          RB_OAUTH2_TOKEN_PATH: ${{ secrets.RB_OAUTH2_TOKEN_PATH }}
+
+      - name: 6. Update Labels on Success
+        run: |
+          gh issue edit ${{ github.event.issue.number }} \
+            --remove-label "vendor-onboarding" \
+            --add-label "human-review"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

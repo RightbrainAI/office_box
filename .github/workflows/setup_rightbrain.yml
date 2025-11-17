@@ -1,0 +1,56 @@
+name: "Setup Rightbrain Tasks"
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Set permissions for creating a pull request
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  create-task-manifest:
+    name: "Run Setup Script & Create Manifest"
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "Set up Python 3.10"
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: "Install Python dependencies"
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+          
+      - name: "Run Rightbrain setup script"
+        run: python scripts/setup_rightbrain.py
+        env:
+          # Pass in the secrets as environment variables for the script
+          RB_ORG_ID: ${{ secrets.RB_ORG_ID }}
+          RB_PROJECT_ID: ${{ secrets.RB_PROJECT_ID }}
+          RB_CLIENT_ID: ${{ secrets.RB_CLIENT_ID }}
+          RB_CLIENT_SECRET: ${{ secrets.RB_CLIENT_SECRET }}
+          # The script has defaults for these, but you could override them here
+          # RB_OAUTH2_URL: ${{ secrets.RB_OAUTH2_URL }}
+          # RB_API_URL: ${{ secrets.RB_API_URL }}
+
+      - name: "Create Pull Request for new manifest"
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "feat: Add generated task_manifest.json"
+          title: "Setup: Add Rightbrain Task Manifest"
+          body: |
+            This PR adds the auto-generated `tasks/task_manifest.json` file.
+            
+            It was created by the "Setup Rightbrain Tasks" workflow and maps the local `task_templates/*.json` filenames to the new Task IDs created in the Rightbrain project.
+          branch: "feat/add-task-manifest"
+          base: ${{ github.ref_name }} # Creates the PR against the branch you ran it from
+          add-paths: |
+            tasks/task_manifest.json

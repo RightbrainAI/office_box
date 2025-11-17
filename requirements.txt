@@ -1,0 +1,5 @@
+# requirements.txt
+requests
+python-dotenv
+beautifulsoup4
+trafilatura

@@ -1,0 +1,55 @@
+name: Save Closed Issue to Markdown
+
+on:
+  issues:
+    types: [closed]
+
+permissions:
+  contents: write
+  issues: read
+
+jobs:
+  save-to-markdown:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Save Closed Issue to Markdown
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          issue_number="${{ github.event.issue.number }}"
+          issue_body="${{ github.event.issue.body }}"
+          
+          # Extract supplier_name from the issue body using Awk
+          supplier_name=$(awk '/Supplier Name/ { getline; getline supplier_name; gsub(/\r/, "", supplier_name); print supplier_name; exit }' <<< "$issue_body")
+          data_processor=$(awk '/Data Processor/ { getline; getline data_processor; print data_processor; exit }' <<< "$issue_body")
+
+          # Print the extracted values for debugging
+          echo "Supplier Name: $supplier_name"
+          echo "Data Processor: $data_processor"
+          
+          # Determine the directory based on Data Processor value
+          if [ "$data_processor" = "Yes" ]; then
+            directory="eng/$supplier_name"
+          else
+            directory="ops/$supplier_name"
+          fi
+          
+          # Create the directory if it doesn't exist
+          mkdir -p "$directory"
+          
+          # Create a markdown file with the issue content
+          echo "# $supplier_name" > "$directory/$supplier_name.md"
+          echo "$issue_body" >> "$directory/$supplier_name.md"
+          
+          # Add closed date to the markdown file
+          echo -e "\n\n## Closed Date\n${{ github.event.issue.closed_at }}" >> "$directory/$supplier_name.md"
+          
+          # Commit and push the new file
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add "$directory/$supplier_name.md"
+          git commit -m "Save closed issue #$issue_number to markdown"
+          git push
+
+

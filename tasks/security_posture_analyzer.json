@@ -1,0 +1,301 @@
+{
+  "name": "Vendor Security Posture Analyzer",
+  "description": "Analyzes documents to extract a comprehensive set of security postures and controls.",
+  "enabled": true,
+  "system_prompt": "You are an expert cybersecurity and compliance auditor. Your role is to conduct a detailed evaluation of a vendor's security posture through the specific lens of our company's context and intended usage.\n\nCRITICAL INSTRUCTIONS:\n1.  **Prioritize Risk, Not Just Extraction:** Do not just find and quote controls. Your `summary` for each field must *prioritize the specific risk or assurance* to our company, given our stated data types and usage (e.g., 'This control is sufficient for our PII-only use case,' or 'This is a gap, as we require AES-256 for health data').\n2.  **Be Context-Aware:** If the usage context says 'we will process PII and require HIPAA compliance,' your analysis of `data_encryption_at_rest` and other controls MUST reflect this high-risk scenario.\n3.  **Be Factual:** You must be precise and extract only what is explicitly stated. If a control is not mentioned, you MUST set its 'answer' to `false` and leave the `summary` and `quote` fields empty.\n4.  **Source Tracking:** You MUST correctly extract the `source_url` (which is the file path) from the `--- DOCUMENT SEPARATOR ---` headers for every finding. If a finding is not found, leave all fields empty/null.",
+  "user_prompt": "**A. OUR COMPANY PROFILE (The 'Lens'):**\n{company_profile}\n\n**B. VENDOR & USAGE CONTEXT (The 'Subject'):**\n{vendor_usage_details}\n\n**C. SECURITY DOCUMENTS TO ANALYZE (The 'Source'):**\n{consolidated_text}\n\n**YOUR TASK:**\nGiven **Our Company Profile (A)** and our specific **Vendor & Usage Context (B)**, perform a comprehensive analysis of the **Security Documents (C)**.\n\n* Populate the *entire* JSON schema with specific findings for every control listed.\n* Your `summary` for each control must be an *assessment* based on the context, not just a description.\n* If a control is not mentioned, set its 'answer' to false and leave summary/quote empty.\n* You MUST correctly extract the `source_url` from the `--- DOCUMENT SEPARATOR ---` headers for all findings.",
+  "llm_model_id": "0197823d-47a5-6fce-95e5-c9c9dce9c285",
+  "output_format": {
+    "certifications": {
+      "type": "list",
+      "nested_structure": {
+        "certification_name": "str",
+        "quote": "str",
+        "source_url": "str"
+      }
+    },
+    "governance_risk_and_compliance": {
+      "type": "object",
+      "nested_structure": {
+        "information_security_program": {
+          "type": "object",
+          "nested_structure": {
+            "answer": "bool",
+            "summary": "str",
+            "quote": "str",
+            "source_url": "str"
+          }
+        },
+        "risk_management_process": {
+          "type": "object",
+          "nested_structure": {
+            "answer": "bool",
+            "summary": "str",
+            "quote": "str",
+            "source_url": "str"
+          }
+        },
+        "third_party_vendor_management": {
+          "type": "object",
+          "nested_structure": {
+            "answer": "bool",
+            "summary": "str",
+            "quote": "str",
+            "source_url": "str"
+          }
+        }
+      }
+    },
+    "application_and_software_security": {
+      "type": "object",
+      "nested_structure": {
+        "secure_sdlc_policy": {
+          "type": "object",
+          "nested_structure": {
+            "answer": "bool",
+            "summary": "str",
+            "quote": "str",
+            "source_url": "str"
+          }
+        },
+        "static_dynamic_code_analysis": {
+          "type": "object",
+          "nested_structure": {
+            "answer": "bool",
+            "summary": "str",
+            "quote": "str",
+            "source_url": "str"
+          }
+        },
+        "security_code_reviews": {
+          "type": "object",
+          "nested_structure": {
+            "answer": "bool",
+            "summary": "str",
+            "quote": "str",
+            "source_url": "str"
+          }
+        },
+        "open_source_vulnerability_management": {
+          "type": "object",
+          "nested_structure": {
+            "answer": "bool",
+            "summary": "str",
+            "quote": "str",
+            "source_url": "str"
+          }
+        }
+      }
+    },
+    "threat_and_vulnerability_management": {
+      "type": "object",
+      "nested_structure": {
+        "vulnerability_scanning": {
+          "type": "object",
+          "nested_structure": {
+            "answer": "bool",
+            "summary": "str",
+            "quote": "str",
+            "source_url": "str"
+          }
+        },
+        "third_party_penetration_testing": {
+          "type": "object",
+          "nested_structure": {
+            "answer": "bool",
+            "summary": "str",
+            "quote": "str",
+            "source_url": "str"
+          }
+        },
+        "bug_bounty_program": {
+          "type": "object",
+          "nested_structure": {
+            "answer": "bool",
+            "summary": "str",
+            "quote": "str",
+            "source_url": "str"
+          }
+        },
+        "patch_management_policy": {
+          "type": "object",
+          "nested_structure": {
+            "answer": "bool",
+            "summary": "str",
+            "quote": "str",
+            "source_url": "str"
+          }
+        }
+      }
+    },
+    "identity_and_access_management": {
+      "type": "object",
+      "nested_structure": {
+        "least_privilege_access_control": {
+          "type": "object",
+          "nested_structure": {
+            "answer": "bool",
+            "summary": "str",
+            "quote": "str",
+            "source_url": "str"
+          }
+        },
+        "mfa_for_production_access": {
+          "type": "object",
+          "nested_structure": {
+            "answer": "bool",
+            "summary": "str",
+            "quote": "str",
+            "source_url": "str"
+          }
+        },
+        "periodic_access_reviews": {
+          "type": "object",
+          "nested_structure": {
+            "answer": "bool",
+            "summary": "str",
+            "quote": "str",
+            "source_url": "str"
+          }
+        },
+        "password_policy": {
+          "type": "object",
+          "nested_structure": {
+            "answer": "bool",
+            "summary": "str",
+            "quote": "str",
+            "source_url": "str"
+          }
+        }
+      }
+    },
+    "data_security_and_privacy": {
+      "type": "object",
+      "nested_structure": {
+        "data_encryption_in_transit": {
+          "type": "object",
+          "nested_structure": {
+            "answer": "bool",
+            "summary": "str",
+            "quote": "str",
+            "source_url": "str"
+          }
+        },
+        "data_encryption_at_rest": {
+          "type": "object",
+          "nested_structure": {
+            "answer": "bool",
+            "summary": "str",
+            "quote": "str",
+            "source_url": "str"
+          }
+        },
+        "data_classification_policy": {
+          "type": "object",
+          "nested_structure": {
+            "answer": "bool",
+            "summary": "str",
+            "quote": "str",
+            "source_url": "str"
+          }
+        },
+        "data_loss_prevention": {
+          "type": "object",
+          "nested_structure": {
+            "answer": "bool",
+            "summary": "str",
+            "quote": "str",
+            "source_url": "str"
+          }
+        },
+        "customer_data_access_policy": {
+          "type": "object",
+          "nested_structure": {
+            "answer": "bool",
+            "summary": "str",
+            "quote": "str",
+            "source_url": "str"
+          }
+        }
+      }
+    },
+    "incident_response": {
+      "type": "object",
+      "nested_structure": {
+        "customer_notification_timeline": {
+          "type": "object",
+          "nested_structure": {
+            "answer": "str",
+            "summary": "str",
+            "quote": "str",
+            "source_url": "str"
+          }
+        }
+      }
+    },
+    "business_continuity_and_disaster_recovery": {
+      "type": "object",
+      "nested_structure": {
+        "bcdr_plan_exists": {
+          "type": "object",
+          "nested_structure": {
+            "answer": "bool",
+            "summary": "str",
+            "quote": "str",
+            "source_url": "str"
+          }
+        },
+        "data_backup_policy": {
+          "type": "object",
+          "nested_structure": {
+            "answer": "bool",
+            "summary": "str",
+            "quote": "str",
+            "source_url": "str"
+          }
+        },
+        "recovery_plan_testing": {
+          "type": "object",
+          "nested_structure": {
+            "answer": "bool",
+            "summary": "str",
+            "quote": "str",
+            "source_url": "str"
+          }
+        }
+      }
+    },
+    "personnel_and_physical_security": {
+      "type": "object",
+      "nested_structure": {
+        "security_awareness_training": {
+          "type": "object",
+          "nested_structure": {
+            "answer": "bool",
+            "summary": "str",
+            "quote": "str",
+            "source_url": "str"
+          }
+        },
+        "employee_background_checks": {
+          "type": "object",
+          "nested_structure": {
+            "answer": "bool",
+            "summary": "str",
+            "quote": "str",
+            "source_url": "str"
+          }
+        },
+        "physical_data_center_security": {
+          "type": "object",
+          "nested_structure": {
+            "answer": "bool",
+            "summary": "str",
+            "quote": "str",
+            "source_url": "str"
+          }
+        }
+      }
+    }
+  }
+}

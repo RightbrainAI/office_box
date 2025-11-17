@@ -1,0 +1,59 @@
+name: Supplier off-board
+description: Off-board a supplier
+title: "[Supplier]: "
+labels: ["supplier_off_board", "triage"]
+projects: []
+assignees:
+  - tisats
+  - gracebell23
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to offboard a supplier. For any technical queries on this form, or process, contact @tisats
+  - type: input
+    id: supplier_name
+    attributes:
+      label: Supplier Name
+      description: Name of the supplier
+      placeholder: ex. Rightbrain.ai
+    validations:
+      required: true
+  - type: input
+    id: termination_date
+    attributes:
+      label: Termination date
+      description: When did we terminate the supplier contract?
+      placeholder: ex. http://www.rightbrain.ai
+    validations:
+      required: true
+  - type: dropdown
+    id: customer_data
+    attributes:
+      label: Data Processor
+      description: Does this supplier touch customer data?
+      options:
+        - "Yes"
+        - "No"
+        - Not sure
+  - type: dropdown
+    id: data_deletion
+    attributes:
+      label: Data Deletion
+      description: Has any data been deleted?
+      options:
+          - Yes, data deleted automatically
+          - Yes, supplier told to delete data
+          - No, supplier needs to keep data for their own purposes
+          - No, I will get on that
+          - Not applicable, supplier does not store Rightbrain data
+    validations:
+      required: true
+  - type: input
+    id: reviewer
+    attributes:
+      label: Reviewer
+      description: Who should review this
+      placeholder: tisats
+    validations:
+      required: true

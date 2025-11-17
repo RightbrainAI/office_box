@@ -1,0 +1,73 @@
+name: Update Vendor Review
+
+on:
+  workflow_dispatch:
+    inputs:
+      vendor_file:
+        description: 'Path to the vendor .md file to re-analyze (e.g., eng/anthropic.md)'
+        required: true
+        type: string
+
+jobs:
+  update_vendor_analysis:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write # Required to create a pull request
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install requests python-dotenv
+
+      - name: Run Re-Analysis Script
+        env:
+          # Pass secrets to the script
+          RB_ORG_ID: ${{ secrets.RB_ORG_ID }}
+          RB_PROJECT_ID: ${{ secrets.RB_PROJECT_ID }}
+          RB_CLIENT_ID: ${{ secrets.RB_CLIENT_ID }}
+          RB_CLIENT_SECRET: ${{ secrets.RB_CLIENT_SECRET }}
+          RB_API_URL: ${{ secrets.RB_API_URL }}
+          RB_OAUTH2_URL: ${{ secrets.RB_OAUTH2_URL }}
+          RB_OAUTH2_TOKEN_PATH: ${{ secrets.RB_OAUTH2_TOKEN_PATH }}
+          # Pass the manual input to the script
+          VENDOR_FILE_PATH: ${{ github.event.inputs.vendor_file }}
+        run: python scripts/update_existing_vendor.py
+
+      - name: Create Pull Request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VENDOR_FILE: ${{ github.event.inputs.vendor_file }}
+        run: |
+          # Only proceed if there are actual changes
+          if ! git diff --quiet; then
+            echo "Changes detected. Creating a Pull Request."
+            
+            # Configure git
+            git config --global user.name 'github-actions[bot]'
+            git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+            
+            # Create a new branch with a unique name
+            BRANCH_NAME="bot/update-$(basename $VENDOR_FILE)-$(date +%s)"
+            git checkout -b $BRANCH_NAME
+            
+            # Add and commit both files
+            git add "$VENDOR_FILE" "eng/data-processors.json"
+            git commit -m "feat(vendor): Update analysis for $(basename $VENDOR_FILE)"
+            git push origin $BRANCH_NAME
+            
+            # Create the Pull Request, assigning you as the reviewer
+            gh pr create \
+              --title "Automated Vendor Review Update for $(basename $VENDOR_FILE)" \
+              --body "This PR contains the automated analysis of the vendor terms. Please review the changes to both the Markdown and JSON files before merging." \
+              --reviewer tisats
+          else
+            echo "No changes detected. Nothing to commit."
+          fi

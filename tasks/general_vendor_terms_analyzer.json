@@ -1,0 +1,22 @@
+{
+    "name": "General Vendor Terms Analyser",
+    "description": "Provides key risk, legal and finance details about vendors.",
+    "enabled": true,
+    "system_prompt": "You are a commercial lawyer specialising in vendor risk management, working for a private English company. Your task is to carefully analyse the provided text from a legal document and populate a JSON object with specific information. Adhere strictly to the rules provided in the user prompt.",
+    "user_prompt": "Goal\nExtract key legal, risk, and financial information from a {document_url} into a structured format and assess document readiness for final review.\nContext\nThis task involves analyzing legal document text to identify critical commercial and contractual elements.\nCritical Rules\n1. Be precise and answer based ONLY on the provided text.\n2. If information for 'payment_terms' or 'contract_term' is not found, set 'ready_for_final_review' to false. Otherwise, set it to true.",
+    "llm_model_id": "01965cd0-ff4a-0c89-f82f-3c56b68b48ee",
+    "llm_config": { "temperature": 1 },
+    "input_processors": [{ "param_name": "document_url", "input_processor": "url_fetcher", "config": { "extract_text": true }}],
+    "output_format": {
+      "ready_for_final_review": { "type": "boolean" },
+      "contract_term": { "type": "object", "nested_structure": { "initial_term": "str", "auto_renews": "bool", "end_date": "str", "quote": "str", "comment": "str" }},
+      "payment_terms": { "type": "object", "nested_structure": { "answer": "str", "quote": "str", "comment": "str" }},
+      "pricing_terms": { "type": "object", "nested_structure": { "price_change_clause_present": "bool", "quote": "str", "comment": "str" }},
+      "termination_notice": { "type": "object", "nested_structure": { "timeline_days": "number", "quote": "str", "comment": "str" }},
+      "governing_law": { "type": "object", "nested_structure": { "answer": "str", "quote": "str", "comment": "str" }},
+      "limitation_of_liability": { "type": "object", "nested_structure": { "cap_type": "str", "cap_amount": "str", "quote": "str", "comment": "str" }},
+      "confidentiality": { "type": "object", "nested_structure": { "clause_present": "bool", "duration": "str", "quote": "str", "comment": "str" }},
+      "insurance_requirements": { "type": "object", "nested_structure": { "details": "str", "quote": "str", "comment": "str" }},
+      "incorporated_documents": { "type": "list", "nested_structure": { "document_name": "str" }}
+    }
+  }

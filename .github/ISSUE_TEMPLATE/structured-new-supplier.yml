@@ -1,0 +1,104 @@
+name: New Supplier
+description: Request addition of a new supplier
+title: "[New Supplier]: "
+labels: ["vendor-onboarding", "triage"]
+projects: []
+assignees:
+  - tisats
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to register a new supplier. For any technical queries on this form, or process, contact @tisats
+  - type: input
+    id: supplier_name
+    attributes:
+      label: Supplier Name
+      description: Name of the supplier
+      placeholder: ex. Rightbrain.ai
+    validations:
+      required: true
+  - type: dropdown
+    id: customer_data
+    attributes:
+      label: Data Processor
+      description: Does this supplier touch customer data?
+      options:
+        - "Yes"
+        - "No"
+        - Not sure
+    validations:
+      required: true
+  - type: input
+    id: term_length
+    attributes:
+      label: Minimum Term Length
+      description: The minimum time after which we could cancel the contract
+      placeholder: "12 months"
+    validations:
+      required: true
+  - type: input
+    id: supplier_site
+    attributes:
+      label: Supplier Site
+      description: Website of the supplier
+      placeholder: "http://www.rightbrain.ai"
+    validations:
+      required: true
+  - type: input
+    id: supplier_rightbrain_contact
+    attributes:
+      label: Rightbrain contact
+      description: Who at Rightbrain owns the relationship
+      placeholder: "Pete Tiarks (tisats)"
+    validations:
+      required: true
+  - type: input
+    id: supplier_t_and_c
+    attributes:
+      label: T&Cs
+      description: Link to terms and conditions
+      placeholder: "https://vendor.com/customer-terms"
+    validations:
+      required: true
+  - type: input
+    id: security_docs_url
+    attributes:
+      label: Security Documents URL
+      description: A link to the vendor's security portal, trust center, or specific security whitepaper.
+      placeholder: "https://vendor.com/security"
+    validations:
+      required: false
+  - type: textarea
+    id: proposed_usage
+    attributes:
+      label: Vendor/Service Usage Context
+      description: What specific business problem will this vendor solve for us?
+      placeholder: "To process customer support tickets via their API and provide automated responses."
+    validations:
+      required: true
+  - type: textarea
+    id: data_types
+    attributes:
+      label: Data Types Involved
+      description: "Be specific about the types of data that will be processed. IMPORTANT: Do not include actual personal data here."
+      placeholder: "Business contact information (names, emails) and user-generated text from support queries. No special category data."
+    validations:
+      required: false
+  - type: dropdown
+    id: payment
+    attributes:
+      label: How will the supplier be paid?
+      options:
+        - Company credit card
+        - Invoice
+    validations:
+      required: true
+  - type: input
+    id: reviewer
+    attributes:
+      label: Reviewer
+      description: Who should review this
+      placeholder: tisats
+    validations:
+      required: true

@@ -1,0 +1,32 @@
+{
+    "name": "Document Classifier Task",
+    "description": "Analyzes a single document's text to determine all its relevant categories (legal, security, or none).",
+    "enabled": true,
+    "system_prompt": "You are a paralegal assistant. Your job is to classify a legal document based on its content by assigning it one or more categories.\n\n- 'legal': Use for T&Cs, Privacy Policies, DPAs, SLAs, or any page discussing liability, data handling, or governing law.\n- 'security': Use for pages *specifically* discussing technical controls, audits, certifications (SOC2, ISO), encryption, or vulnerability management. A DPA or Security Addendum is often *both* 'legal' and 'security'.\n- 'none': Use for all other pages (Careers, Blog, 'About Us').\n\nReturn a list of all categories that apply.",
+    "user_prompt": "The content of the webpage at {document_url} has been provided. Please analyze its text and return a JSON list of all its relevant categories.",
+    "llm_model_id": "01983319-9077-a83b-97b6-2c413c182ccb",
+    "llm_config": {
+      "temperature": 0.0
+    },
+    "input_processors": [
+      {
+        "param_name": "document_url",
+        "input_processor": "url_fetcher",
+        "config": {
+          "extract_text": true
+        }
+      }
+    ],
+    "output_format": {
+      "relevance_categories": {
+        "type": "list",
+        "description": "A list of all relevant categories for this document.",
+        "nested_structure": {
+          "category": {
+            "type": "str",
+            "options": ["legal", "security", "none"]
+          }
+        }
+      }
+    }
+}
