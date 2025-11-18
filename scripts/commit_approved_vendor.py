@@ -6,32 +6,36 @@ import requests
 from pathlib import Path
 from dotenv import load_dotenv
 from urllib.parse import unquote
-from datetime import datetime
+from datetime import datetime, timedelta
 
-# --- Constants ---
-PROCESSOR_DIR = Path("eng")
-GENERAL_DIR = Path("general_vendors")
+# --- Refactored Imports ---
+# Make sure utils is importable (e.g., by adding to PYTHONPATH or running from root)
+sys.path.append(str(Path(__file__).parent.parent))
+try:
+    from utils.github_api import fetch_issue_comments
+except ImportError:
+    print("❌ Error: Could not import 'utils.github_api'. Make sure script is run from project root or PYTHONPATH is set.", file=sys.stderr)
+    sys.exit(1)
+# --- End Refactored Imports ---
+
+
+# --- Constants (Phase 0 Refactor) ---
+SUPPLIERS_ROOT = Path("suppliers")
+PROCESSOR_DIR = SUPPLIERS_ROOT / "subprocessors"
+GENERAL_DIR = SUPPLIERS_ROOT / "general_vendors"
 SOURCE_DIR = Path("_vendor_analysis_source")
+# --- End Constants Refactor ---
 
 
-def fetch_comments_and_approved_json(token, repo_name, issue_number):
+def fetch_comments_and_approved_json(repo_name, issue_number):
     """
     Fetches all comments on an issue.
     Returns a tuple:
     1. The *last* "Reviewer-Approved Data" JSON block found.
     2. The full list of all comments for archival.
     """
-    print(f"Fetching comments for issue {repo_name}#{issue_number}...")
-    url = f"https://api.github.com/repos/{repo_name}/issues/{issue_number}/comments"
-    headers = {"Authorization": f"Bearer {token}", "Accept": "application/vnd.github.v3+json"}
-    
-    try:
-        response = requests.get(url, headers=headers)
-        response.raise_for_status()
-        all_comments = response.json() # This is our list for archival
-    except requests.exceptions.RequestException as e:
-        print(f"::error::Failed to fetch comments: {e}")
-        sys.exit(1)
+    # Refactored to use new util function
+    all_comments = fetch_issue_comments(repo_name, issue_number)
 
     json_pattern = re.compile(
         r"## 📝 Reviewer-Approved Data.*?```json\s*(\{.*?\})\s*```", 
@@ -92,6 +96,7 @@ def update_central_json(summary_data, vendor_type):
         print("::warning::Skipping JSON update because processor name is missing or N/A.")
         return
 
+    # --- Phase 1.1 Update: Add Review Dates ---
     try:
         closed_at_str = os.getenv("ISSUE_CLOSED_AT")
         if not closed_at_str:
@@ -120,6 +125,8 @@ def update_central_json(summary_data, vendor_type):
         # Assign placeholder dates so the schema remains consistent
         summary_data["last_review_date"] = "N/A"
         summary_data["next_review_date"] = "N/A"
+    # --- End Phase 1.1 Update ---
+
 
     if vendor_type == "processor":
         json_path = PROCESSOR_DIR / "data-processors.json"
@@ -315,8 +322,9 @@ def main():
     # 2. Parse common data
     vendor_type = get_vendor_type(issue_body)
     
+    # Refactored to use new util function (which is inside this function now)
     summary_data, all_comments = fetch_comments_and_approved_json(
-        github_token, repo_name, issue_number
+        repo_name, issue_number
     )
     
     vendor_name = get_sanitized_vendor_name(summary_data)
