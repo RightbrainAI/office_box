@@ -5,60 +5,13 @@ import requests
 from pathlib import Path
 from typing import Dict, Any
 
+# Add parent directory to path to import shared utilities
+sys.path.append(str(Path(__file__).parent.parent))
+from utils.rightbrain_api import get_rb_token
+
 # --- Configuration ---
 TASK_TEMPLATE_DIR = Path("task_templates")
 TASK_MANIFEST_PATH = Path("tasks/task_manifest.json")
-
-# --- Rightbrain API Client ---
-
-def get_rb_token(client_id: str, client_secret: str, token_url_base: str) -> str:
-    """Authenticates with the Rightbrain API."""
-    
-    # Allow overriding the token path via environment variable, default to /oauth/token if not set
-    token_path = os.environ.get("RB_OAUTH2_TOKEN_PATH", "/oauth/token")
-    
-    # Construct URL carefully handling slashes
-    token_url = f"{token_url_base.rstrip('/')}/{token_path.lstrip('/')}"
-    
-    print(f"Authenticating with {token_url}...")
-    
-    try:
-        # Support both Basic Auth (header) and Client Credentials (body)
-        # The docs suggest body params for client_credentials flow
-        response = requests.post(
-            token_url,
-            data={
-                "grant_type": "client_credentials",
-                "client_id": client_id,
-                "client_secret": client_secret,
-                "scope": "offline_access" # Added scope based on common RB docs
-            }
-        )
-        
-        # Debugging: If not JSON, print raw response
-        try:
-            data = response.json()
-        except json.JSONDecodeError:
-            print(f"❌ Error: Response from {token_url} was not valid JSON.", file=sys.stderr)
-            print(f"Status Code: {response.status_code}", file=sys.stderr)
-            print(f"Raw Response: {response.text[:500]}...", file=sys.stderr) # Print first 500 chars
-            sys.exit(1)
-
-        if not response.ok:
-             print(f"❌ Authentication failed with status {response.status_code}.", file=sys.stderr)
-             print(f"Response: {json.dumps(data, indent=2)}", file=sys.stderr)
-             sys.exit(1)
-
-        token = data.get("access_token")
-        if not token:
-            raise ValueError(f"No access_token in response: {data}")
-            
-        print("✅ Authentication successful.")
-        return token
-
-    except requests.exceptions.RequestException as e:
-        print(f"❌ Connection error getting Rightbrain token: {e}", file=sys.stderr)
-        sys.exit(1)
 
 def create_rb_task(rb_token: str, api_url_base: str, org_id: str, project_id: str, task_body: Dict[str, Any]) -> str:
     """Creates a single Rightbrain task and returns its new ID."""
@@ -126,7 +79,7 @@ def main():
     print(f"  API Base URL: {rb_api_url}")
 
     # 2. Authenticate with Rightbrain
-    rb_token = get_rb_token(rb_client_id, rb_client_secret, rb_oauth2_url)
+    rb_token = get_rb_token()
     
     # 3. Find and load all task templates
     print(f"Looking for task templates in '{TASK_TEMPLATE_DIR}'...")

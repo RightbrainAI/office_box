@@ -7,6 +7,10 @@ from dotenv import load_dotenv
 from typing import Dict, Any
 from datetime import datetime, timezone
 
+# Add parent directory to path to import shared utilities
+sys.path.append(str(Path(__file__).parent.parent))
+from utils.rightbrain_api import get_rb_token
+
 # --- Manifest Helper Functions ---
 
 def get_manifest_path() -> Path:
@@ -44,17 +48,6 @@ def update_task_manifest(manifest_path: Path, manifest_data: Dict, task_filename
         print(f"✅ Successfully updated manifest: '{task_filename}' -> '{task_id}'")
     except IOError as e:
         print(f"❌ Error writing to manifest file {manifest_path}: {e}")
-
-# --- Rightbrain API Helper ---
-
-def get_rb_token(client_id: str, client_secret: str, token_url: str) -> str:
-    """Authenticates with the Rightbrain API."""
-    try:
-        response = requests.post(token_url, auth=(client_id, client_secret), data={"grant_type": "client_credentials"})
-        response.raise_for_status()
-        return response.json().get("access_token")
-    except requests.exceptions.RequestException as e:
-        sys.exit(f"❌ Error getting Rightbrain token: {e}")
 
 # --- Main Upsert Logic ---
 
@@ -104,7 +97,7 @@ def main():
     existing_task_id = manifest_data.get(task_filename)
     
     # --- 3. Get Auth Token ---
-    rb_token = get_rb_token(rb_client_id, rb_client_secret, rb_token_url)
+    rb_token = get_rb_token()
     headers = {"Authorization": f"Bearer {rb_token}", "Content-Type": "application/json"}
 
     response_data = {}
