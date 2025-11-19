@@ -188,4 +188,21 @@ def run_rb_task(
     # Redact sensitive data for logging
     logged_input = task_input_payload.copy()
     if 'document_text' in logged_input:
-        logged_input['document_text'] = f"<Redacted text (
+        logged_input['document_text'] = f"<Redacted text (length: {len(str(logged_input.get('document_text', '')))})>"
+    
+    print(f"🚀 Running {task_name} with input: {json.dumps(logged_input)}")
+    
+    try:
+        response = requests.post(run_url, headers=headers, json=payload, timeout=600)
+        response.raise_for_status()
+        print(f"✅ {task_name} complete.")
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"❌ {task_name} API call failed: {e}", file=sys.stderr)
+        if e.response is not None:
+            print(f"Response Status: {e.response.status_code}", file=sys.stderr)
+            try:
+                print(f"Response Body: {e.response.json()}", file=sys.stderr)
+            except json.JSONDecodeError:
+                print(f"Response Body (non-JSON): {e.response.text}", file=sys.stderr)
+        return {"error": f"{task_name} failed", "details": str(e), "is_error": True}
