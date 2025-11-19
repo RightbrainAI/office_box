@@ -6,6 +6,10 @@ import requests
 from pathlib import Path
 from dotenv import load_dotenv
 
+# Add parent directory to path to import shared utilities
+sys.path.append(str(Path(__file__).parent.parent))
+from utils.rightbrain_api import get_rb_token
+
 # --- Helper Functions ---
 
 def sanitize_filename(name: str) -> str:
@@ -73,20 +77,6 @@ def format_task_for_creation(full_task_def: dict) -> dict:
 
 # --- Rightbrain API Helper Functions ---
 
-def get_rb_token(client_id, client_secret, token_url):
-    """Authenticates with the Rightbrain API to get an access token."""
-    try:
-        response = requests.post(
-            token_url,
-            auth=(client_id, client_secret),
-            data={"grant_type": "client_credentials"}
-        )
-        response.raise_for_status()
-        print("✅ Successfully authenticated with Rightbrain.")
-        return response.json().get("access_token")
-    except requests.exceptions.RequestException as e:
-        sys.exit(f"❌ Error getting Rightbrain token: {e}")
-
 def fetch_task_definition(rb_token, api_url, org_id, project_id, task_id):
     """Fetches a specific task definition by its ID."""
     # API URL should already include /api/v1
@@ -140,11 +130,7 @@ def main():
     if not task_id:
         sys.exit("❌ No Task ID provided. Exiting.")
 
-    rb_token = get_rb_token(
-        config["RB_CLIENT_ID"],
-        config["RB_CLIENT_SECRET"],
-        config["rb_token_url"]
-    )
+    rb_token = get_rb_token()
 
     full_task_definition = fetch_task_definition(
         rb_token,

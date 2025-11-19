@@ -6,6 +6,10 @@ import requests
 from pathlib import Path
 from dotenv import load_dotenv
 
+# Add parent directory to path to import shared utilities
+sys.path.append(str(Path(__file__).parent.parent))
+from utils.rightbrain_api import get_rb_token
+
 def get_vendor_type_from_path(file_path_str):
     """Determines vendor type based on the file path."""
     if "general_vendors/" in file_path_str:
@@ -14,15 +18,6 @@ def get_vendor_type_from_path(file_path_str):
     else:
         print("Vendor Type: Data Processor (inferred from path)")
         return "processor"
-
-def get_rb_token(client_id, client_secret, token_url):
-    """Authenticates with the Rightbrain API to get an access token."""
-    try:
-        response = requests.post(token_url, auth=(client_id, client_secret), data={"grant_type": "client_credentials"})
-        response.raise_for_status()
-        return response.json().get("access_token")
-    except requests.exceptions.RequestException as e:
-        sys.exit(f"Error getting Rightbrain token: {e}")
 
 def get_or_create_task_id(rb_token, api_url, org_id, project_id, task_name, task_definition_path):
     """Finds a task by name. If it doesn't exist, it creates it."""
@@ -211,7 +206,7 @@ def main():
     if not vendor_url:
         sys.exit(f"Skipping: No T&Cs URL found in {vendor_file_path.name}")
         
-    rb_token = get_rb_token(rb_client_id, rb_client_secret, rb_token_url)
+    rb_token = get_rb_token()
     rb_task_id = get_or_create_task_id(rb_token, rb_api_url, rb_org_id, rb_project_id, task_name, task_def_path)
     rb_results = run_rb_task(rb_token, rb_api_url, rb_org_id, rb_project_id, rb_task_id, vendor_url)
 

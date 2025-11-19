@@ -5,39 +5,13 @@ import requests
 from pathlib import Path
 from typing import Dict, Any
 
+# Add parent directory to path to import shared utilities
+sys.path.append(str(Path(__file__).parent.parent))
+from utils.rightbrain_api import get_rb_token
+
 # --- Configuration ---
 TASK_TEMPLATE_DIR = Path("task_templates")
 TASK_MANIFEST_PATH = Path("tasks/task_manifest.json")
-
-# --- Rightbrain API Client ---
-# Note: This is a simplified, standalone version for the setup script.
-# The main scripts will use the utils.rightbrain_api module.
-
-def get_rb_token(client_id: str, client_secret: str, token_url_base: str) -> str:
-    """Authenticates with the Rightbrain API."""
-    # Use the OAuth2 URL directly (should be the full endpoint URL)
-    token_url = token_url_base
-    print(f"Authenticating with {token_url}...")
-    try:
-        response = requests.post(
-            token_url,
-            auth=(client_id, client_secret),
-            data={"grant_type": "client_credentials"}
-        )
-        response.raise_for_status()
-        token = response.json().get("access_token")
-        if not token:
-            raise ValueError("No access_token in response.")
-        print("✅ Authentication successful.")
-        return token
-    except requests.exceptions.RequestException as e:
-        print(f"❌ Error getting Rightbrain token: {e}", file=sys.stderr)
-        if e.response is not None:
-            print(f"Response Body: {e.response.text}", file=sys.stderr)
-        sys.exit(1)
-    except ValueError as e:
-        print(f"❌ Authentication failed: {e}", file=sys.stderr)
-        sys.exit(1)
 
 def create_rb_task(rb_token: str, api_url_base: str, org_id: str, project_id: str, task_body: Dict[str, Any]) -> str:
     """Creates a single Rightbrain task and returns its new ID."""
@@ -95,7 +69,7 @@ def main():
     print(f"  Project ID: {rb_project_id}")
 
     # 2. Authenticate with Rightbrain
-    rb_token = get_rb_token(rb_client_id, rb_client_secret, rb_oauth2_url)
+    rb_token = get_rb_token()
     
     # 3. Find and load all task templates
     print(f"Looking for task templates in '{TASK_TEMPLATE_DIR}'...")

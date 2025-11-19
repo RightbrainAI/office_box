@@ -5,25 +5,9 @@ import requests
 from pathlib import Path
 from dotenv import load_dotenv
 
-def get_rb_token(client_id, client_secret, token_url):
-    """
-    Authenticates with the Rightbrain API using Client Credentials.
-    [cite_start][cite: 17, 55, 66]
-    """
-    print(f"Authenticating with {token_url}...")
-    try:
-        response = requests.post(
-            token_url,
-            auth=(client_id, client_secret),
-            data={"grant_type": "client_credentials"}
-        )
-        response.raise_for_status()
-        print("✅ Authentication successful.")
-        return response.json().get("access_token")
-    except requests.exceptions.RequestException as e:
-        print(f"❌ Error getting Rightbrain token: {e}")
-        print(f"Response Text: {e.response.text if e.response else 'N/A'}")
-        sys.exit(1)
+# Add parent directory to path to import shared utilities
+sys.path.append(str(Path(__file__).parent.parent))
+from utils.rightbrain_api import get_rb_token
 
 def get_available_models(token, api_url, org_id, project_id):
     """
