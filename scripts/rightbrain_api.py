@@ -63,27 +63,49 @@ def get_rb_token() -> str:
     client_id = os.environ.get("RB_CLIENT_ID")
     client_secret = os.environ.get("RB_CLIENT_SECRET")
     token_url_base = os.environ.get("RB_OAUTH2_URL")
+    
+    # Default to /oauth2/token if not provided, as that is the standard for Rightbrain
+    token_path = os.environ.get("RB_OAUTH2_TOKEN_PATH", "/oauth2/token")
+
     if not token_url_base:
         log("error", "Missing RB_OAUTH2_URL environment variable.")
         sys.exit(1)
-    # Use the OAuth2 URL directly (should be the full endpoint URL)
-    token_url = token_url_base
+
+    # Construct the full URL
+    token_url = f"{token_url_base.rstrip('/')}/{token_path.lstrip('/')}"
 
     if not all([client_id, client_secret]):
         log("error", "Missing RB_CLIENT_ID or RB_CLIENT_SECRET.")
         sys.exit(1)
 
+    print(f"🔐 Requesting token from: {token_url}")
+
     try:
+        # Documentation says to use Client Credentials flow
         response = requests.post(
             token_url,
             auth=(client_id, client_secret),
-            data={"grant_type": "client_credentials"}
+            data={"grant_type": "client_credentials", "scope": "offline_access"}
         )
-        response.raise_for_status()
-        response_data = response.json()
+        
+        # Debugging: Check for common non-JSON responses (like 404 HTML pages)
+        if not response.ok:
+            print(f"❌ HTTP Error {response.status_code}", file=sys.stderr)
+            print(f"Response: {response.text}", file=sys.stderr)
+            sys.exit(1)
+
+        try:
+            response_data = response.json()
+        except json.JSONDecodeError:
+            print(f"❌ JSON Decode Error. Server returned:", file=sys.stderr)
+            print(response.text, file=sys.stderr)
+            sys.exit(1)
+
         token = response_data.get("access_token")
         if not token:
-            raise ValueError("No access_token in response.")
+            print(f"❌ Error: Response did not contain 'access_token'. Raw data:", file=sys.stderr)
+            print(json.dumps(response_data, indent=2), file=sys.stderr)
+            sys.exit(1)
         
         # Cache the token with expiry (default to 3600 seconds if not provided)
         expires_in = response_data.get("expires_in", 3600)
@@ -167,19 +189,9 @@ def run_rb_task(
 ) -> Dict[str, Any]:
     """
     Runs a specific Rightbrain task with the given payload.
-    
-    Args:
-        rb_token: The authenticated bearer token.
-        task_id: The unique ID of the task to run.
-        task_input_payload: A dictionary of inputs for the task.
-        task_name: A human-readable name for logging.
-
-    Returns:
-        The full task run object as a dictionary, or an error dict.
     """
     org_id = os.environ.get("RB_ORG_ID")
     project_id = os.environ.get("RB_PROJECT_ID")
-    # RB_API_URL is already validated by _get_base_url() which is called via run_url construction
     
     if not all([org_id, project_id, task_id]):
         log("error", f"Missing RB_ORG_ID, RB_PROJECT_ID, or task_id for {task_name}.")
