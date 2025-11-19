@@ -3,6 +3,11 @@ import sys
 import json
 import requests
 from typing import Dict, Optional, List
+from pathlib import Path
+
+# Add parent directory to path to allow importing utils
+sys.path.append(str(Path(__file__).parent.parent))
+from utils.rightbrain_api import log
 
 # This module centralizes all GitHub API interactions.
 
@@ -10,7 +15,7 @@ def get_github_headers() -> Dict[str, str]:
     """Helper to get standard GitHub API headers."""
     gh_token = os.environ.get("GITHUB_TOKEN")
     if not gh_token:
-        print("❌ Error: GITHUB_TOKEN environment variable not set.", file=sys.stderr)
+        log("error", "GITHUB_TOKEN environment variable not set.")
         sys.exit(1)
         
     return {
@@ -44,11 +49,11 @@ def update_issue_body(repo: str, issue_number: str, original_body: str, new_cont
 
     if marker_pos != -1:
         marker_to_use = FAILURE_MARKER if is_failure else CHECKLIST_MARKER
-        print(f"ℹ️ Found existing marker. Replacing content with {marker_to_use} content.")
+        log("info", f"Found existing marker. Replacing content with {marker_to_use} content.")
         updated_body = body_content[:marker_pos] + new_content
     else:
         marker_to_use = FAILURE_MARKER if is_failure else CHECKLIST_MARKER
-        print(f"ℹ️ No marker found. Appending {marker_to_use} content.")
+        log("info", f"No marker found. Appending {marker_to_use} content.")
         separator = "\n\n---\n\n" if body_content.strip() else ""
         updated_body = body_content.strip() + separator + new_content
 
@@ -56,16 +61,16 @@ def update_issue_body(repo: str, issue_number: str, original_body: str, new_cont
     payload_size = len(payload['body'])
     
     if payload_size > 65000:
-         print(f"⚠️ WARNING: Payload size ({payload_size}) is close to GitHub API limit (65,535)!")
+         log("warning", f"Payload size ({payload_size}) is close to GitHub API limit (65,535)!",
+             details="Truncated body to 65,000 characters.")
          # Truncate if we are over
          payload['body'] = payload['body'][:65000]
-         print("  Truncated body to 65,000 characters.")
 
 
     try:
         response = requests.patch(url, headers=headers, json=payload)
         response.raise_for_status()
-        print(f"✅ Issue #{issue_number} body updated successfully.")
+        log("success", f"Issue #{issue_number} body updated successfully.")
     except requests.exceptions.RequestException as e:
         error_message = f"❌ Failed to update GitHub issue via PATCH to {url}: {e}"
         if e.response is not None:
@@ -87,18 +92,18 @@ def post_github_comment(repo: str, issue_number: str, body: str):
     try:
         response = requests.post(url, headers=headers, json=payload)
         response.raise_for_status()
-        print(f"✅ Successfully posted comment to issue #{issue_number}.")
+        log("success", f"Successfully posted comment to issue #{issue_number}.")
     except requests.exceptions.RequestException as e:
-        print(f"❌ Failed to post comment to GitHub issue: {e}", file=sys.stderr)
+        error_details = str(e)
         if e.response is not None:
-            print(f"Response Status: {e.response.status_code}", file=sys.stderr)
-            print(f"Response Body: {e.response.text}", file=sys.stderr)
+            error_details += f"\nResponse Status: {e.response.status_code}\nResponse Body: {e.response.text}"
+        log("error", "Failed to post comment to GitHub issue", details=error_details)
         # Raise an exception, but don't exit.
         raise RuntimeError(f"Failed to post GitHub comment: {e}")
 
 def fetch_issue_comments(repo: str, issue_number: str) -> List[Dict]:
     """Fetches all comments on a specific issue."""
-    print(f"Fetching comments for issue {repo}#{issue_number}...")
+    log("info", f"Fetching comments for issue {repo}#{issue_number}...")
     url = f"https://api.github.com/repos/{repo}/issues/{issue_number}/comments"
     headers = get_github_headers()
     
@@ -107,13 +112,13 @@ def fetch_issue_comments(repo: str, issue_number: str) -> List[Dict]:
         response.raise_for_status()
         return response.json()
     except requests.exceptions.RequestException as e:
-        print(f"::error::Failed to fetch comments: {e}")
+        log("error", "Failed to fetch comments", details=str(e))
         # This is a critical failure for the commit script.
         sys.exit(1)
 
 def post_failure_and_exit(repo: str, issue_number: str, original_body: str, failure_message: str):
     """Posts a failure message to the issue body and exits the script."""
-    print(f"❌ {failure_message}", file=sys.stderr) # Log to stderr
+    log("error", failure_message)
     
     FAILURE_MARKER = "<!--FAILURE_MARKER-->"
     error_body = (
@@ -132,6 +137,6 @@ def post_failure_and_exit(repo: str, issue_number: str, original_body: str, fail
         update_issue_body(repo, issue_number, original_body, error_body, is_failure=True)
     except Exception as e:
         # If we can't even post the comment, just log it.
-        print(f"❌ CRITICAL: Failed to post failure comment to GitHub: {e}", file=sys.stderr)
+        log("error", "CRITICAL: Failed to post failure comment to GitHub", details=str(e))
         
     sys.exit(1) # Exit with a non-zero status code

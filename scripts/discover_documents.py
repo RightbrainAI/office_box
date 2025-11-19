@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import List, Dict, Any
 from urllib.parse import quote as url_quote # Needed for creating safe URLs
 from utils.github_api import update_issue_body, post_failure_and_exit
-from utils.rightbrain_api import get_rb_token, run_rb_task
+from utils.rightbrain_api import get_rb_token, run_rb_task, log
 
 # --- Helper: Filename Sanitization ---
 
@@ -69,7 +69,7 @@ def save_and_commit_source_text(text: str, repo_name: str, issue_number: str, fi
 
     # Only write if text is not empty
     if not text or not text.strip():
-        print(f"ℹ️ Skipping save for '{filename}' due to empty content.")
+        log("info", f"Skipping save for '{filename}' due to empty content.")
         return
 
     try:
@@ -77,7 +77,7 @@ def save_and_commit_source_text(text: str, repo_name: str, issue_number: str, fi
             f.write(text)
         print(f"📝 Saved source text to '{file_path}'.")
     except IOError as e:
-        print(f"❌ Error writing file {file_path}: {e}")
+        log("error", f"Failed to write file {file_path}", details=str(e))
         # Continue script execution if one file fails? Or exit? Let's continue for now.
         return
 
@@ -103,10 +103,10 @@ def save_and_commit_source_text(text: str, repo_name: str, issue_number: str, fi
             if commit_result.returncode != 0:
                  # Handle potential commit failure (e.g., empty commit)
                  if "nothing to commit" in commit_result.stdout or "nothing added to commit" in commit_result.stderr:
-                     print(f"ℹ️ No changes detected for '{filename}' to commit.")
+                     log("info", f"No changes detected for '{filename}' to commit.")
                      return # Nothing more to do for this file
                  else:
-                    print(f"❌ Git commit failed for '{filename}': {commit_result.stderr}")
+                    log("error", f"Git commit failed for '{filename}'", details=commit_result.stderr)
                     # Decide if we should exit or continue trying other files
                     return # Continue for now
 
@@ -117,27 +117,24 @@ def save_and_commit_source_text(text: str, repo_name: str, issue_number: str, fi
 
             # Push the commit
             push_result = subprocess.run(["git", "push"], check=True, capture_output=True, text=True)
-            print(f"✅ Source text '{filename}' committed and pushed successfully.")
+            log("success", f"Source text '{filename}' committed and pushed successfully.")
             print(f"Git push output:\n{push_result.stdout}")
 
         else:
-            print(f"ℹ️ No changes detected for '{filename}'. Already up-to-date.")
+            log("info", f"No changes detected for '{filename}'. Already up-to-date.")
 
     except subprocess.CalledProcessError as e:
-        print(f"❌ Git operation failed for '{filename}': {e}")
-        print(f"Command: {' '.join(e.cmd)}")
-        # e.stderr and e.stdout are already strings because text=True was used
-        print(f"Stderr: {e.stderr if e.stderr else 'N/A'}")
-        print(f"Stdout: {e.stdout if e.stdout else 'N/A'}")
-        # Consider whether to exit or just warn
-        print("⚠️ Warning: Failed to commit or push. Manual check may be required.")
+        error_details = f"Command: {' '.join(e.cmd)}\nStderr: {e.stderr if e.stderr else 'N/A'}\nStdout: {e.stdout if e.stdout else 'N/A'}"
+        log("error", f"Git operation failed for '{filename}'", details=error_details)
+        log("warning", "Failed to commit or push. Manual check may be required.")
     except FileNotFoundError:
         # Handle case where git is not installed
-        sys.exit("❌ Git command not found. Please ensure Git is installed in your Actions runner.")
+        log("error", "Git command not found. Please ensure Git is installed in your Actions runner.")
+        sys.exit(1)
     except Exception as e:
         # Catch any other unexpected errors during git operations
-        print(f"❌ An unexpected error occurred during git operations for '{filename}': {e}")
-        print("⚠️ Warning: Failed to commit or push. Manual check may be required.")
+        log("error", f"Unexpected error during git operations for '{filename}'", details=str(e))
+        log("warning", "Failed to commit or push. Manual check may be required.")
 
 
 def extract_text_from_run_data(full_task_run: Dict[str, Any]) -> str:
@@ -150,10 +147,10 @@ def extract_text_from_run_data(full_task_run: Dict[str, Any]) -> str:
         # Based on document_classifier.json, the param_name is 'document_url'
         text = full_task_run.get("run_data", {}).get("submitted", {}).get("document_url", "")
         if not text:
-            print(f"⚠️ Warning: Could not find text in 'run_data.submitted.document_url' for task run {full_task_run.get('id', 'N/A')}.")
+            log("warning", f"Could not find text in 'run_data.submitted.document_url' for task run {full_task_run.get('id', 'N/A')}.")
         return text if text else "" # Ensure we return empty string, not None
     except Exception as e:
-        print(f"⚠️ Error extracting text from run_data: {e}")
+        log("warning", "Error extracting text from run_data", details=str(e))
         return ""
 
 # --- Helper: Checklist Formatting ---
@@ -300,12 +297,12 @@ def main():
     # REFACTORED: Get BOTH Usage and Data Context and combine them
     usage_context_text = parse_text_from_issue_form(issue_body, "Vendor/Service Usage Context")
     if not usage_context_text:
-        print("⚠️ Warning: Could not parse 'Vendor/Service Usage Context' from issue body. Using a generic value.")
+        log("warning", "Could not parse 'Vendor/Service Usage Context' from issue body. Using a generic value.")
         usage_context_text = "Usage context not provided."
 
     data_types_text = parse_text_from_issue_form(issue_body, "Data Types Involved")
     if not data_types_text:
-        print("⚠️ Warning: Could not parse 'Data Types Involved' from issue body. Using a generic value.")
+        log("warning", "Could not parse 'Data Types Involved' from issue body. Using a generic value.")
         data_types_text = "Data types not provided."
 
     # Combine both fields for the AI task
@@ -321,7 +318,7 @@ def main():
     # --- 3. Process Main Legal T&Cs ---
     legal_urls = parse_urls_from_issue_form(issue_body, "T&Cs")
     if not legal_urls:
-        print("ℹ️ No T&Cs URL found. Skipping legal document discovery.")
+        log("info", "No T&Cs URL found. Skipping legal document discovery.")
     else:
         main_terms_url = legal_urls[0]
 
@@ -379,13 +376,13 @@ def main():
                  save_and_commit_source_text(text, repo_name, issue_number, safe_filename)
         else:
              # Handle API failure for main T&Cs - perhaps skip saving?
-             print(f"⚠️ Classifier task failed for Main T&Cs ({main_terms_url}). Skipping text save.")
+             log("warning", f"Classifier task failed for Main T&Cs ({main_terms_url}). Skipping text save.")
 
 
     # --- 4. Process Main Security URL ---
     security_urls = parse_urls_from_issue_form(issue_body, "Security Documents URL")
     if not security_urls:
-        print("ℹ️ No main Security URL found. Skipping.")
+        log("info", "No main Security URL found. Skipping.")
     else:
         main_sec_url = security_urls[0]
         print(f"\nProcessing Main Security URL: {main_sec_url}...")
@@ -442,7 +439,7 @@ def main():
                 save_and_commit_source_text(text, repo_name, issue_number, safe_filename)
         else:
             # Handle API failure for main Security URL
-            print(f"⚠️ Classifier task failed for Main Security URL ({main_sec_url}). Skipping text save.")
+            log("warning", f"Classifier task failed for Main Security URL ({main_sec_url}). Skipping text save.")
 
 
     # --- 5. REFACTORED: De-duplicate and Fetch ALL Discovered Documents ---
@@ -464,12 +461,12 @@ def main():
     for item in all_discovered_documents:
         # Defensive coding: ensure item is a dict and has 'document'
         if not isinstance(item, dict) or "document" not in item:
-            print(f"⚠️ Skipping malformed discovery item: {item}")
+            log("warning", f"Skipping malformed discovery item: {item}")
             continue
             
         doc = item.get("document", {})
         if not isinstance(doc, dict):
-            print(f"⚠️ Skipping malformed document data: {doc}")
+            log("warning", f"Skipping malformed document data: {doc}")
             continue
 
         link_type = doc.get("link_type")
@@ -526,7 +523,7 @@ def main():
             # Get the categories from the response
             relevance_dicts = classifier_run.get("response", {}).get("relevance_categories", [{"category": "none"}])
         else:
-             print(f"⚠️ Classifier (fetcher) task failed for {doc_name} ({doc_url}). Skipping text save.")
+             log("warning", f"Classifier (fetcher) task failed for {doc_name} ({doc_url}). Skipping text save.")
              text = ""
              relevance_dicts = [{"category": "none"}] # Default on failure
 
@@ -575,7 +572,7 @@ def main():
         # post_failure_and_exit will try to update the issue *again* with a failure message.
         post_failure_and_exit(repo_name, issue_number, issue_body, f"Failed to post final checklist: {e}")
         
-    print("\n✅ Discovery and initial text fetch process complete.")
+    log("success", "Discovery and initial text fetch process complete.")
 
 if __name__ == "__main__":
     main()

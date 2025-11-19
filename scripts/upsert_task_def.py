@@ -7,6 +7,10 @@ from dotenv import load_dotenv
 from typing import Dict, Any
 from datetime import datetime, timezone
 
+# Add parent directory to path to import shared utilities
+sys.path.append(str(Path(__file__).parent.parent))
+from utils.rightbrain_api import log
+
 # --- Manifest Helper Functions ---
 
 def get_manifest_path() -> Path:
@@ -24,7 +28,7 @@ def get_manifest_path() -> Path:
 def load_task_manifest(manifest_path: Path) -> Dict[str, Any]:
     """Loads the task manifest file from its path."""
     if not manifest_path.exists():
-        print(f"ℹ️ No manifest file found at {manifest_path}. Will create one.")
+        log("info", f"No manifest file found at {manifest_path}. Will create one.")
         return {}
     
     with open(manifest_path, 'r') as f:
@@ -41,9 +45,9 @@ def update_task_manifest(manifest_path: Path, manifest_data: Dict, task_filename
     try:
         with open(manifest_path, 'w') as f:
             json.dump(manifest_data, f, indent=2)
-        print(f"✅ Successfully updated manifest: '{task_filename}' -> '{task_id}'")
+        log("success", f"Successfully updated manifest: '{task_filename}' -> '{task_id}'")
     except IOError as e:
-        print(f"❌ Error writing to manifest file {manifest_path}: {e}")
+        log("error", f"Failed to write to manifest file {manifest_path}", details=str(e))
 
 # --- Rightbrain API Helper ---
 
@@ -121,12 +125,12 @@ def main():
             response = requests.post(url, headers=headers, json=task_payload, timeout=30)
             response.raise_for_status()
             response_data = response.json()
-            print(f"✅ Step 1: Task '{task_filename}' updated successfully.")
+            log("success", f"Step 1: Task '{task_filename}' updated successfully.")
 
             # --- STEP 2: Find the new revision and set it as active ---
             revisions = response_data.get("revisions", [])
             if not revisions:
-                print("⚠️ Warning: Task was updated, but no revisions were found in the response.")
+                log("warning", "Task was updated, but no revisions were found in the response.")
             else:
                 # Sort revisions by 'created' timestamp to find the newest one
                 revisions.sort(key=lambda r: datetime.fromisoformat(r['created']), reverse=True)
@@ -143,7 +147,7 @@ def main():
                 response = requests.post(url, headers=headers, json=active_payload, timeout=30)
                 response.raise_for_status()
                 response_data = response.json() # Store the final response from this call
-                print("✅ Step 2: New revision set to active.")
+                log("success", "Step 2: New revision set to active.")
 
         else:
             # --- CREATE (POST) ---
@@ -154,10 +158,10 @@ def main():
             response = requests.post(url, headers=headers, json=task_payload, timeout=30)
             response.raise_for_status()
             response_data = response.json()
-            print(f"✅ Task '{task_filename}' created successfully (new tasks are active by default).")
+            log("success", f"Task '{task_filename}' created successfully (new tasks are active by default).")
 
     except requests.exceptions.RequestException as e:
-        print(f"❌ Rightbrain API call failed: {e}")
+        log("error", "Rightbrain API call failed", details=str(e))
         if e.response is not None:
             print(f"Response Body: {e.response.text}")
         sys.exit(1)
@@ -166,7 +170,7 @@ def main():
     new_task_id = response_data.get("id")
     
     if not new_task_id:
-        print(f"❌ Error: API response did not contain a task 'id'.\n{response_data}")
+        log("error", "API response did not contain a task 'id'", details=str(response_data))
         sys.exit(1)
         
     if new_task_id != existing_task_id:

@@ -10,7 +10,7 @@ from urllib.parse import unquote
 
 # --- Refactored Imports ---
 from utils.github_api import post_github_comment
-from utils.rightbrain_api import get_rb_token, run_rb_task
+from utils.rightbrain_api import get_rb_token, run_rb_task, log
 # --- End Refactored Imports ---
 
 # --- Constants ---
@@ -56,7 +56,7 @@ def parse_form_field(body: str, label: str) -> str:
 
 def extract_vendor_usage_details(issue_body: str) -> str:
     """Builds the vendor-specific {vendor_usage_details} context block (the 'Subject')."""
-    print("ℹ️ Parsing vendor usage details from issue body...")
+    log("info", "Parsing vendor usage details from issue body...")
     # Per Stage 2 spec, {vendor_usage_details} includes Usage Context, Data Types,
     # and Service Name/Description (for the reporter task).
     #
@@ -73,12 +73,12 @@ def extract_vendor_usage_details(issue_body: str) -> str:
 
 def parse_data_processor_field(issue_body: str) -> str:
     """Parses the 'Data Processor' field from the issue body."""
-    print("ℹ️ Parsing data processor status from issue body...")
+    log("info", "Parsing data processor status from issue body...")
     return parse_form_field(issue_body, 'Data Processor')
 
 def load_company_profile() -> str:
     """Loads the company profile and formats it as a string for the {company_profile} block (the 'Lens')."""
-    print("ℹ️ Loading company profile...")
+    log("info", "Loading company profile...")
     profile_path = CONFIG_DIR / "company_profile.json"
     if not profile_path.exists():
         sys.exit(f"❌ Error: Company profile not found at '{profile_path}'")
@@ -103,7 +103,7 @@ def parse_approved_documents(issue_body: str) -> Dict[str, Set[str]]:
     Parses the issue body's checklist to find all checked files
     and their categories.
     """
-    print("ℹ️ Parsing approved documents from issue checklist...")
+    log("info", "Parsing approved documents from issue checklist...")
     legal_files: Set[str] = set()
     security_files: Set[str] = set()
     
@@ -119,7 +119,7 @@ def parse_approved_documents(issue_body: str) -> Dict[str, Set[str]]:
     matches = pattern.findall(issue_body)
     
     if not matches:
-        print("⚠️ Warning: No checked documents found in the issue body. Analysis may be empty.")
+        log("warning", "No checked documents found in the issue body. Analysis may be empty.")
 
     for categories_str, file_path_raw in matches:
         # File path might be URL-encoded in the markdown link
@@ -148,7 +148,7 @@ def compile_text_from_files(file_list: Set[str]) -> str:
         file_path = Path(file_path_str)
         
         if not file_path.exists():
-            print(f"⚠️ Warning: Checked file not found: '{file_path}'. Skipping.")
+            log("warning", f"Checked file not found: '{file_path}'. Skipping.")
             continue
             
         try:
@@ -159,7 +159,7 @@ def compile_text_from_files(file_list: Set[str]) -> str:
             compiled_parts.append(separator + content)
             
         except Exception as e:
-            print(f"⚠️ Error reading file '{file_path}': {e}. Skipping.")
+            log("warning", f"Error reading file '{file_path}': {e}. Skipping.")
             
     return "".join(compiled_parts)
 
@@ -221,7 +221,7 @@ def format_report_as_markdown(report_data: Dict[str, Any],
         return "\n".join(comment_parts)
         
     except Exception as e:
-        print(f"❌ Error formatting report: {e}")
+        log("error", "Failed to format report", details=str(e))
         # Fallback to just dumping all the data
         return (
             "## 🤖 Vendor Analysis Results (Fallback)\n\n"
@@ -280,7 +280,7 @@ def main():
     # --- 3. Determine Vendor Type Signal (Refactored for Stage 2) ---
     data_processor_status = parse_data_processor_field(issue_body)
     vendor_type_signal = "Processor" if data_processor_status.lower() == 'yes' else "General Supplier"
-    print(f"ℹ️ Vendor type signal determined: {vendor_type_signal}")
+    log("info", f"Vendor type signal determined: {vendor_type_signal}")
 
     # --- 4. Parse Checklist and Compile Text ---
     approved_files = parse_approved_documents(issue_body)
@@ -289,7 +289,7 @@ def main():
     security_docs_text = compile_text_from_files(approved_files["security_files"])
 
     if not legal_docs_text and not security_docs_text:
-        print("❌ No text compiled from any approved documents. Aborting analysis.")
+        log("error", "No text compiled from any approved documents. Aborting analysis.")
         post_github_comment(gh_token, repo_name, issue_number, 
                             "**Analysis Failed:** No approved documents were found or read. Please check the files in `_vendor_analysis_source` and ensure the correct items are checked in the issue checklist.")
         sys.exit()
@@ -315,7 +315,7 @@ def main():
         if not legal_analysis_json or legal_analysis_run.get("is_error"):
              legal_analysis_json = {"error": "Task failed", "details": legal_analysis_run.get("response", "No response")}
     else:
-        print("ℹ️ No approved legal documents found. Skipping legal analysis.")
+        log("info", "No approved legal documents found. Skipping legal analysis.")
 
     if security_docs_text:
         security_input = {
@@ -331,7 +331,7 @@ def main():
         if not security_analysis_json or security_analysis_run.get("is_error"):
             security_analysis_json = {"error": "Task failed", "details": security_analysis_run.get("response", "No response")}
     else:
-        print("ℹ️ No approved security documents found. Skipping security analysis.")
+        log("info", "No approved security documents found. Skipping security analysis.")
 
     # --- 6. Run Synthesis Task (Refactored for Stage 2) ---
     print("\n--- STAGE 6: Synthesizing Reports ---")
@@ -356,7 +356,7 @@ def main():
     # --- 7. Format and Post Results ---
     print("\n--- STAGE 7: Formatting and Posting Results ---")
     if not report_json or report_run.get("is_error"):
-        print("❌ Synthesis task failed. Posting raw JSON as fallback.")
+        log("error", "Synthesis task failed. Posting raw JSON as fallback.")
         # Fallback to old behavior
         final_comment_body = (
             "## 🤖 Vendor Analysis Results (Synthesis Failed)\n\n"
@@ -367,7 +367,7 @@ def main():
             f"```json\n{json.dumps(legal_analysis_json, indent=2)}\n```"
         )
     else:
-        print("✅ Synthesis complete. Formatting report.")
+        log("success", "Synthesis complete. Formatting report.")
         final_comment_body = format_report_as_markdown(
             report_json, security_analysis_json, legal_analysis_json
         )
@@ -376,9 +376,9 @@ def main():
     try:
         post_github_comment(gh_token, repo_name, issue_number, final_comment_body)
     except Exception as e:
-        print(f"❌ CRITICAL: Failed to post final comment to GitHub: {e}", file=sys.stderr)
+        log("error", "CRITICAL: Failed to post final comment to GitHub", details=str(e))
         
-    print("✅ Analysis and reporting complete.")
+    log("success", "Analysis and reporting complete.")
 
 if __name__ == "__main__":
     main()

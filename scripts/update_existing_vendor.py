@@ -6,13 +6,17 @@ import requests
 from pathlib import Path
 from dotenv import load_dotenv
 
+# Add parent directory to path to import shared utilities
+sys.path.append(str(Path(__file__).parent.parent))
+from utils.rightbrain_api import log
+
 def get_vendor_type_from_path(file_path_str):
     """Determines vendor type based on the file path."""
     if "general_vendors/" in file_path_str:
-        print("Vendor Type: General Vendor (inferred from path)")
+        log("info", "Vendor Type: General Vendor (inferred from path)")
         return "general"
     else:
-        print("Vendor Type: Data Processor (inferred from path)")
+        log("info", "Vendor Type: Data Processor (inferred from path)")
         return "processor"
 
 def get_rb_token(client_id, client_secret, token_url):
@@ -47,7 +51,7 @@ def get_or_create_task_id(rb_token, api_url, org_id, project_id, task_name, task
             create_response = requests.post(create_task_url, headers=headers, json=task_definition)
             create_response.raise_for_status()
             new_task_id = create_response.json()['id']
-            print(f"Task created successfully with ID: {new_task_id}")
+            log("success", f"Task created successfully with ID: {new_task_id}")
             return new_task_id
     except requests.exceptions.RequestException as e:
         sys.exit(f"Error getting or creating task: {e.response.text}")
@@ -141,7 +145,7 @@ def update_local_markdown_file(file_path, original_content, new_report_content):
 
     with open(file_path, 'w') as f:
         f.write(updated_body)
-    print(f"Successfully updated file: {file_path}")
+    log("success", f"Successfully updated file: {file_path}")
 
 def update_central_json(summary_data, vendor_type):
     """Reads, updates, and writes to the correct central JSON file."""

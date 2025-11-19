@@ -5,6 +5,10 @@ import requests
 from pathlib import Path
 from typing import Dict, Any
 
+# Add parent directory to path to import shared utilities
+sys.path.append(str(Path(__file__).parent.parent))
+from utils.rightbrain_api import log
+
 # --- Configuration ---
 TASK_TEMPLATE_DIR = Path("task_templates")
 TASK_MANIFEST_PATH = Path("tasks/task_manifest.json")
@@ -28,15 +32,13 @@ def get_rb_token(client_id: str, client_secret: str, token_url_base: str) -> str
         token = response.json().get("access_token")
         if not token:
             raise ValueError("No access_token in response.")
-        print("✅ Authentication successful.")
+        log("success", "Authentication successful.")
         return token
     except requests.exceptions.RequestException as e:
-        print(f"❌ Error getting Rightbrain token: {e}", file=sys.stderr)
-        if e.response is not None:
-            print(f"Response Body: {e.response.text}", file=sys.stderr)
+        log("error", "Failed to get Rightbrain token", details=f"{e}\nResponse: {e.response.text if e.response else 'N/A'}")
         sys.exit(1)
     except ValueError as e:
-        print(f"❌ Authentication failed: {e}", file=sys.stderr)
+        log("error", "Authentication failed", details=str(e))
         sys.exit(1)
 
 def create_rb_task(rb_token: str, api_url_base: str, org_id: str, project_id: str, task_body: Dict[str, Any]) -> str:
@@ -54,20 +56,19 @@ def create_rb_task(rb_token: str, api_url_base: str, org_id: str, project_id: st
         task_id = response.json().get("id")
         if not task_id:
             raise ValueError(f"Task creation for '{task_name}' did not return an ID.")
-        print(f"  ✅ Successfully created task '{task_name}' with ID: {task_id}")
+        log("success", f"Successfully created task '{task_name}' with ID: {task_id}")
         return task_id
     except requests.exceptions.RequestException as e:
-        print(f"  ❌ Error creating Rightbrain task '{task_name}': {e}", file=sys.stderr)
+        error_details = f"Status: {e.response.status_code}" if e.response else str(e)
         if e.response is not None:
-            print(f"  Response Status: {e.response.status_code}", file=sys.stderr)
             try:
-                print(f"  Response Body: {e.response.json()}", file=sys.stderr)
+                error_details += f"\nResponse: {e.response.json()}"
             except json.JSONDecodeError:
-                print(f"  Response Body (non-JSON): {e.response.text}", file=sys.stderr)
-        print(f"  Skipping this task...")
+                error_details += f"\nResponse: {e.response.text}"
+        log("error", f"Failed to create Rightbrain task '{task_name}'", details=error_details)
         return None
     except ValueError as e:
-        print(f"  ❌ Error: {e}", file=sys.stderr)
+        log("error", str(e))
         return None
 
 # --- Main Setup Function ---
@@ -87,8 +88,8 @@ def main():
     rb_api_url = os.environ.get("RB_API_URL")
 
     if not all([rb_org_id, rb_project_id, rb_client_id, rb_client_secret, rb_oauth2_url, rb_api_url]):
-        print("❌ Error: Missing one or more required environment variables.", file=sys.stderr)
-        print("  Requires: RB_ORG_ID, RB_PROJECT_ID, RB_CLIENT_ID, RB_CLIENT_SECRET, RB_OAUTH2_URL, RB_API_URL", file=sys.stderr)
+        log("error", "Missing one or more required environment variables.", 
+            details="Requires: RB_ORG_ID, RB_PROJECT_ID, RB_CLIENT_ID, RB_CLIENT_SECRET, RB_OAUTH2_URL, RB_API_URL")
         sys.exit(1)
         
     print(f"  Org ID: {rb_org_id}")
@@ -100,12 +101,12 @@ def main():
     # 3. Find and load all task templates
     print(f"Looking for task templates in '{TASK_TEMPLATE_DIR}'...")
     if not TASK_TEMPLATE_DIR.is_dir():
-        print(f"❌ Error: Task template directory not found at '{TASK_TEMPLATE_DIR}'", file=sys.stderr)
+        log("error", f"Task template directory not found at '{TASK_TEMPLATE_DIR}'")
         sys.exit(1)
         
     task_files = list(TASK_TEMPLATE_DIR.glob("*.json"))
     if not task_files:
-        print(f"❌ Error: No .json task templates found in '{TASK_TEMPLATE_DIR}'", file=sys.stderr)
+        log("error", f"No .json task templates found in '{TASK_TEMPLATE_DIR}'")
         sys.exit(1)
         
     print(f"Found {len(task_files)} task templates.")
@@ -119,7 +120,7 @@ def main():
             with open(task_file_path, 'r') as f:
                 task_body = json.load(f)
         except json.JSONDecodeError:
-            print(f"  ⚠️ Warning: Could not parse '{task_file_path}'. Skipping.", file=sys.stderr)
+            log("warning", f"Could not parse '{task_file_path}'. Skipping.")
             continue
             
         task_id = create_rb_task(rb_token, rb_api_url, rb_org_id, rb_project_id, task_body)
@@ -130,7 +131,7 @@ def main():
             task_manifest[task_file_path.name] = task_id
 
     if not task_manifest:
-        print("❌ Error: No tasks were successfully created. Aborting.", file=sys.stderr)
+        log("error", "No tasks were successfully created. Aborting.")
         sys.exit(1)
 
     # 5. Write the task manifest file
@@ -139,9 +140,9 @@ def main():
         TASK_MANIFEST_PATH.parent.mkdir(parents=True, exist_ok=True)
         with open(TASK_MANIFEST_PATH, 'w') as f:
             json.dump(task_manifest, f, indent=2)
-        print("✅ Task manifest created successfully.")
+        log("success", "Task manifest created successfully.")
     except IOError as e:
-        print(f"❌ Error writing manifest file: {e}", file=sys.stderr)
+        log("error", "Failed to write manifest file", details=str(e))
         sys.exit(1)
 
     print("\n🎉 Rightbrain setup complete!")

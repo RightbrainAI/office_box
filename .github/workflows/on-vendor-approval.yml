@@ -4,6 +4,11 @@ on:
   issues:
     types: [closed]
 
+# Prevent multiple concurrent runs for the same issue
+concurrency:
+  group: finalize-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
 jobs:
   commit_vendor_data:
     # We combine both checks:

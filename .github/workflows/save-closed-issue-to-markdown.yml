@@ -10,6 +10,10 @@ permissions:
 
 jobs:
   save-to-markdown:
+    # Only run for issues that are NOT handled by the vendor-approval workflow
+    # This prevents duplicate workflow runs on the same issue close event
+    if: >
+      !contains(github.event.issue.labels.*.name, 'vendor-review')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

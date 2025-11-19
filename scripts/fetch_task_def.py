@@ -6,6 +6,10 @@ import requests
 from pathlib import Path
 from dotenv import load_dotenv
 
+# Add parent directory to path to import shared utilities
+sys.path.append(str(Path(__file__).parent.parent))
+from utils.rightbrain_api import log
+
 # --- Helper Functions ---
 
 def sanitize_filename(name: str) -> str:
@@ -30,7 +34,7 @@ def format_task_for_creation(full_task_def: dict) -> dict:
         
     # Assuming the first active revision is the one we want
     active_revision_id = active_revisions[0].get("task_revision_id")
-    print(f"✅ Found active revision ID: {active_revision_id}")
+    log("success", f"Found active revision ID: {active_revision_id}")
 
     # 2. Find the full revision object from the list of all revisions
     latest_active_revision = None
@@ -82,7 +86,7 @@ def get_rb_token(client_id, client_secret, token_url):
             data={"grant_type": "client_credentials"}
         )
         response.raise_for_status()
-        print("✅ Successfully authenticated with Rightbrain.")
+        log("success", "Successfully authenticated with Rightbrain.")
         return response.json().get("access_token")
     except requests.exceptions.RequestException as e:
         sys.exit(f"❌ Error getting Rightbrain token: {e}")
@@ -97,7 +101,7 @@ def fetch_task_definition(rb_token, api_url, org_id, project_id, task_id):
     try:
         response = requests.get(fetch_url, headers=headers)
         response.raise_for_status()
-        print("✅ Full task definition fetched successfully.")
+        log("success", "Full task definition fetched successfully.")
         return response.json()
     except requests.exceptions.RequestException as e:
         sys.exit(f"❌ Error fetching task definition: {e.response.text}")
@@ -113,7 +117,7 @@ def main():
         import requests
         from dotenv import load_dotenv
     except ImportError:
-        print("⚠️ Required packages not found.")
+        log("warning", "Required packages not found.")
         print("Please run: pip install requests python-dotenv")
         sys.exit(1)
 
@@ -170,7 +174,7 @@ def main():
         output_file_path.parent.mkdir(parents=True, exist_ok=True)
         with open(output_file_path, 'w') as f:
             json.dump(creation_ready_definition, f, indent=2)
-        print(f"\n🎉 Success! The file '{output_file_path}' has been updated with a creation-ready definition.")
+        log("success", f"The file '{output_file_path}' has been updated with a creation-ready definition.")
         print("You can now commit the changes to your repository.")
     except IOError as e:
         sys.exit(f"❌ Error writing to file '{output_file_path}': {e}")
