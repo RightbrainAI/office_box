@@ -16,32 +16,41 @@ TASK_MANIFEST_PATH = Path("tasks/task_manifest.json")
 def create_rb_task(rb_token: str, api_url_base: str, org_id: str, project_id: str, task_body: Dict[str, Any]) -> str:
     """Creates a single Rightbrain task and returns its new ID."""
     task_name = task_body.get("name", "Unnamed Task")
-    # Use the API URL directly (should already include /api/v1)
-    create_url = f"{api_url_base.rstrip('/')}/org/{org_id}/project/{project_id}/task"
-    headers = {"Authorization": f"Bearer {rb_token}", "Content-Type": "application/json"}
+    
+    # Intelligent URL construction: check if api_url_base already contains /api/v1
+    base = api_url_base.rstrip('/')
+    if base.endswith("/api/v1"):
+        create_url = f"{base}/org/{org_id}/project/{project_id}/task"
+    else:
+        create_url = f"{base}/api/v1/org/{org_id}/project/{project_id}/task"
+
+    headers = {
+        "Authorization": f"Bearer {rb_token}", 
+        "Content-Type": "application/json"
+    }
     
     print(f"  Attempting to create task: '{task_name}'...")
     
     try:
         response = requests.post(create_url, headers=headers, json=task_body)
-        response.raise_for_status()
+        
+        if not response.ok:
+            print(f"  ❌ Error creating task '{task_name}' (Status: {response.status_code})", file=sys.stderr)
+            try:
+                print(f"  Response: {response.json()}", file=sys.stderr)
+            except:
+                print(f"  Response: {response.text}", file=sys.stderr)
+            return None
+            
         task_id = response.json().get("id")
         if not task_id:
             raise ValueError(f"Task creation for '{task_name}' did not return an ID.")
+            
         print(f"  ✅ Successfully created task '{task_name}' with ID: {task_id}")
         return task_id
+
     except requests.exceptions.RequestException as e:
-        print(f"  ❌ Error creating Rightbrain task '{task_name}': {e}", file=sys.stderr)
-        if e.response is not None:
-            print(f"  Response Status: {e.response.status_code}", file=sys.stderr)
-            try:
-                print(f"  Response Body: {e.response.json()}", file=sys.stderr)
-            except json.JSONDecodeError:
-                print(f"  Response Body (non-JSON): {e.response.text}", file=sys.stderr)
-        print(f"  Skipping this task...")
-        return None
-    except ValueError as e:
-        print(f"  ❌ Error: {e}", file=sys.stderr)
+        print(f"  ❌ Connection error creating task '{task_name}': {e}", file=sys.stderr)
         return None
 
 # --- Main Setup Function ---
@@ -56,17 +65,18 @@ def main():
     rb_client_id = os.environ.get("RB_CLIENT_ID")
     rb_client_secret = os.environ.get("RB_CLIENT_SECRET")
     
-    # Get Rightbrain URLs from environment (required)
-    rb_oauth2_url = os.environ.get("RB_OAUTH2_URL")
-    rb_api_url = os.environ.get("RB_API_URL")
+    rb_oauth2_url = os.environ.get("RB_OAUTH2_URL", "https://oauth.rightbrain.ai")
+    rb_api_url = os.environ.get("RB_API_URL", "https://app.rightbrain.ai")
 
-    if not all([rb_org_id, rb_project_id, rb_client_id, rb_client_secret, rb_oauth2_url, rb_api_url]):
+    if not all([rb_org_id, rb_project_id, rb_client_id, rb_client_secret]):
         print("❌ Error: Missing one or more required environment variables.", file=sys.stderr)
-        print("  Requires: RB_ORG_ID, RB_PROJECT_ID, RB_CLIENT_ID, RB_CLIENT_SECRET, RB_OAUTH2_URL, RB_API_URL", file=sys.stderr)
+        print("  Requires: RB_ORG_ID, RB_PROJECT_ID, RB_CLIENT_ID, RB_CLIENT_SECRET", file=sys.stderr)
         sys.exit(1)
         
     print(f"  Org ID: {rb_org_id}")
     print(f"  Project ID: {rb_project_id}")
+    print(f"  Auth Base URL: {rb_oauth2_url}")
+    print(f"  API Base URL: {rb_api_url}")
 
     # 2. Authenticate with Rightbrain
     rb_token = get_rb_token()
