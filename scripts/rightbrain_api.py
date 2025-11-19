@@ -30,27 +30,49 @@ def get_rb_token() -> str:
     client_id = os.environ.get("RB_CLIENT_ID")
     client_secret = os.environ.get("RB_CLIENT_SECRET")
     token_url_base = os.environ.get("RB_OAUTH2_URL")
+    
+    # Default to /oauth2/token if not provided, as that is the standard for Rightbrain
+    token_path = os.environ.get("RB_OAUTH2_TOKEN_PATH", "/oauth2/token")
+
     if not token_url_base:
         print("❌ Error: Missing RB_OAUTH2_URL environment variable.", file=sys.stderr)
         sys.exit(1)
-    # Use the OAuth2 URL directly (should be the full endpoint URL)
-    token_url = token_url_base
+
+    # Construct the full URL
+    token_url = f"{token_url_base.rstrip('/')}/{token_path.lstrip('/')}"
 
     if not all([client_id, client_secret]):
         print("❌ Error: Missing RB_CLIENT_ID or RB_CLIENT_SECRET.", file=sys.stderr)
         sys.exit(1)
 
+    print(f"🔐 Requesting token from: {token_url}")
+
     try:
+        # Documentation says to use Client Credentials flow
         response = requests.post(
             token_url,
             auth=(client_id, client_secret),
-            data={"grant_type": "client_credentials"}
+            data={"grant_type": "client_credentials", "scope": "offline_access"}
         )
-        response.raise_for_status()
-        response_data = response.json()
+        
+        # Debugging: Check for common non-JSON responses (like 404 HTML pages)
+        if not response.ok:
+            print(f"❌ HTTP Error {response.status_code}", file=sys.stderr)
+            print(f"Response: {response.text}", file=sys.stderr)
+            sys.exit(1)
+
+        try:
+            response_data = response.json()
+        except json.JSONDecodeError:
+            print(f"❌ JSON Decode Error. Server returned:", file=sys.stderr)
+            print(response.text, file=sys.stderr)
+            sys.exit(1)
+
         token = response_data.get("access_token")
         if not token:
-            raise ValueError("No access_token in response.")
+            print(f"❌ Error: Response did not contain 'access_token'. Raw data:", file=sys.stderr)
+            print(json.dumps(response_data, indent=2), file=sys.stderr)
+            sys.exit(1)
         
         # Cache the token with expiry (default to 3600 seconds if not provided)
         expires_in = response_data.get("expires_in", 3600)
@@ -59,8 +81,9 @@ def get_rb_token() -> str:
         
         print(f"✅ Rightbrain token acquired (expires in {expires_in}s).")
         return token
-    except Exception as e:
-        print(f"❌ Error getting Rightbrain token: {e}", file=sys.stderr)
+
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Connection Error getting Rightbrain token: {e}", file=sys.stderr)
         sys.exit(1)
 
 def _get_api_headers(rb_token: str) -> Dict[str, str]:
@@ -124,7 +147,7 @@ def create_task(rb_token: str, task_body: Dict[str, Any]) -> Optional[str]:
     except requests.exceptions.RequestException as e:
         print(f"  ❌ FAILED to create task '{task_body.get('name')}': {e}", file=sys.stderr)
         if e.response is not None:
-             print(f"  Response Body: {e.response.json()}", file=sys.stderr)
+             print(f"  Response Body: {e.response.text}", file=sys.stderr)
         return None
 
 def run_rb_task(
@@ -135,19 +158,9 @@ def run_rb_task(
 ) -> Dict[str, Any]:
     """
     Runs a specific Rightbrain task with the given payload.
-    
-    Args:
-        rb_token: The authenticated bearer token.
-        task_id: The unique ID of the task to run.
-        task_input_payload: A dictionary of inputs for the task.
-        task_name: A human-readable name for logging.
-
-    Returns:
-        The full task run object as a dictionary, or an error dict.
     """
     org_id = os.environ.get("RB_ORG_ID")
     project_id = os.environ.get("RB_PROJECT_ID")
-    # RB_API_URL is already validated by _get_base_url() which is called via run_url construction
     
     if not all([org_id, project_id, task_id]):
         print(f"❌ Error: Missing RB_ORG_ID, RB_PROJECT_ID, or task_id for {task_name}.", file=sys.stderr)
@@ -170,7 +183,6 @@ def run_rb_task(
         response = requests.post(run_url, headers=headers, json=payload, timeout=600) # 10 min timeout
         response.raise_for_status()
         print(f"✅ {task_name} complete.")
-        # Return the *entire* task run object
         return response.json()
     except requests.exceptions.RequestException as e:
         print(f"❌ {task_name} API call failed: {e}", file=sys.stderr)
