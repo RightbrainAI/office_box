@@ -358,8 +358,7 @@ def main():
         
         # REFACTORED: Use new run_rb_task signature
         classifier_input_main_legal = {"document_url": main_terms_url}
-        main_terms_run = run_rb_task(rb_token, rb_api_url, rb_org_id, rb_project_id,
-                                     classifier_task_id, classifier_input_main_legal, "Classifier Task (Main T&Cs)")
+        main_terms_run = run_rb_task(rb_token, classifier_task_id, classifier_input_main_legal, "Classifier Task (Main T&Cs)")
 
         if main_terms_run:
             relevance_dicts = main_terms_run.get("response", {}).get("relevance_categories", [{"category": "none"}])
@@ -423,9 +422,6 @@ def main():
         
         # REFACTORED: Use new run_rb_task signature
         classifier_input_main_sec = {"document_url": main_sec_url}
-        sec_run = run_rb_task(rb_token, rb_api_url, rb_org_id, rb_project_id,
-                              classifier_task_id, classifier_input_main_sec, "Classifier Task (Main Security)")
-
         sec_run = run_rb_task(rb_token, classifier_task_id,
                               classifier_input_main_sec, "Classifier Task (Main Security)")
 

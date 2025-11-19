@@ -2,10 +2,14 @@ import os
 import sys
 import json
 import requests
+import time
 from datetime import datetime
 from typing import Dict, Any, Optional, Literal
 
 # This module centralizes all Rightbrain API interactions.
+
+# Token cache: stores (token, expiry_timestamp)
+_token_cache: Optional[tuple[str, float]] = None
 
 # --- Centralized Logging ---
 
@@ -42,7 +46,20 @@ def log(
 def get_rb_token() -> str:
     """
     Authenticates with the Rightbrain API using environment variables.
+    Caches the token and reuses it until expiry to minimize OAuth requests.
     """
+    global _token_cache
+    
+    # Check if we have a valid cached token
+    if _token_cache is not None:
+        cached_token, expiry_time = _token_cache
+        # Add 60 second buffer before expiry to be safe
+        if time.time() < (expiry_time - 60):
+            log("success", "Reusing cached Rightbrain token.")
+            return cached_token
+        else:
+            log("info", "Cached token expired, requesting new token.")
+
     client_id = os.environ.get("RB_CLIENT_ID")
     client_secret = os.environ.get("RB_CLIENT_SECRET")
     token_url_base = os.environ.get("RB_OAUTH2_URL")
@@ -63,10 +80,17 @@ def get_rb_token() -> str:
             data={"grant_type": "client_credentials"}
         )
         response.raise_for_status()
-        token = response.json().get("access_token")
+        response_data = response.json()
+        token = response_data.get("access_token")
         if not token:
             raise ValueError("No access_token in response.")
-        log("success", "Rightbrain token acquired.")
+        
+        # Cache the token with expiry (default to 3600 seconds if not provided)
+        expires_in = response_data.get("expires_in", 3600)
+        expiry_time = time.time() + expires_in
+        _token_cache = (token, expiry_time)
+        
+        log("success", f"Rightbrain token acquired (expires in {expires_in}s).")
         return token
     except Exception as e:
         log("error", "Failed to get Rightbrain token", details=str(e))
