@@ -2,20 +2,10 @@ import os
 import sys
 import json
 import requests
-<<<<<<< Updated upstream
-from typing import Dict, Any, Optional
-
-# This module centralizes all Rightbrain API interactions.
-
-=======
-import time
 from datetime import datetime
 from typing import Dict, Any, Optional, Literal
 
 # This module centralizes all Rightbrain API interactions.
-
-# Token cache: stores (token, expiry_timestamp)
-_token_cache: Optional[tuple[str, float]] = None
 
 # --- Centralized Logging ---
 
@@ -49,27 +39,10 @@ def log(
     print(f"[{timestamp}] {icon} {message}", file=output)
     if details:
         print(f"               {details}", file=output)
-
->>>>>>> Stashed changes
 def get_rb_token() -> str:
     """
     Authenticates with the Rightbrain API using environment variables.
     """
-<<<<<<< Updated upstream
-=======
-    global _token_cache
-    
-    # Check if we have a valid cached token
-    if _token_cache is not None:
-        cached_token, expiry_time = _token_cache
-        # Add 60 second buffer before expiry to be safe
-        if time.time() < (expiry_time - 60):
-            log("success", "Reusing cached Rightbrain token.")
-            return cached_token
-        else:
-            log("info", "Cached token expired, requesting new token.")
-
->>>>>>> Stashed changes
     client_id = os.environ.get("RB_CLIENT_ID")
     client_secret = os.environ.get("RB_CLIENT_SECRET")
     token_url_base = os.environ.get("RB_OAUTH2_URL")
@@ -93,17 +66,7 @@ def get_rb_token() -> str:
         token = response.json().get("access_token")
         if not token:
             raise ValueError("No access_token in response.")
-<<<<<<< Updated upstream
-        print("✅ Rightbrain token acquired.")
-=======
-        
-        # Cache the token with expiry (default to 3600 seconds if not provided)
-        expires_in = response_data.get("expires_in", 3600)
-        expiry_time = time.time() + expires_in
-        _token_cache = (token, expiry_time)
-        
-        log("success", f"Rightbrain token acquired (expires in {expires_in}s).")
->>>>>>> Stashed changes
+        log("success", "Rightbrain token acquired.")
         return token
     except Exception as e:
         log("error", "Failed to get Rightbrain token", details=str(e))
