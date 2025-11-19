@@ -7,7 +7,8 @@ from typing import Dict, Any
 
 # --- 1. Fix Import Path for 'utils' ---
 # Get the project root directory (two levels up from this script)
-project_root = Path(__file__).resolve().parent.parent
+current_dir = Path(__file__).resolve().parent
+project_root = current_dir.parent
 if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 

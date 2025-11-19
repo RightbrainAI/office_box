@@ -31,6 +31,7 @@ jobs:
       - name: "Run Rightbrain setup script"
         run: python scripts/setup_rightbrain.py
         env:
+          PYTHONPATH: ${{ github.workspace }}
           # Pass in the secrets as environment variables for the script
           RB_ORG_ID: ${{ secrets.RB_ORG_ID }}
           RB_PROJECT_ID: ${{ secrets.RB_PROJECT_ID }}
