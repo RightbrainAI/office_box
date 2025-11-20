@@ -62,10 +62,20 @@ def get_rb_token() -> str:
 
     client_id = os.environ.get("RB_CLIENT_ID")
     client_secret = os.environ.get("RB_CLIENT_SECRET")
-    token_url_base = os.environ.get("RB_OAUTH2_URL")
     
-    # Default to /oauth2/token if not provided, as that is the standard for Rightbrain
+    # --- DEBUGGING START ---
+    raw_base_url = os.environ.get("RB_OAUTH2_URL")
+    print(f"🔍 DEBUG: Raw RB_OAUTH2_URL env var: '{raw_base_url}'")
+    
+    # Default to the correct OAuth host if not provided
+    token_url_base = raw_base_url if raw_base_url else "https://oauth.rightbrain.ai"
+    
+    # Default to /oauth2/token if not provided
     token_path = os.environ.get("RB_OAUTH2_TOKEN_PATH", "/oauth2/token")
+    
+    print(f"🔍 DEBUG: Using Base URL: '{token_url_base}'")
+    print(f"🔍 DEBUG: Using Token Path: '{token_path}'")
+    # --- DEBUGGING END ---
 
     if not token_url_base:
         log("error", "Missing RB_OAUTH2_URL environment variable.")
@@ -73,32 +83,41 @@ def get_rb_token() -> str:
 
     # Construct the full URL
     token_url = f"{token_url_base.rstrip('/')}/{token_path.lstrip('/')}"
+    print(f"🔐 Requesting token from FULL URL: {token_url}")
 
     if not all([client_id, client_secret]):
         log("error", "Missing RB_CLIENT_ID or RB_CLIENT_SECRET.")
         sys.exit(1)
 
-    print(f"🔐 Requesting token from: {token_url}")
-
     try:
-        # Documentation says to use Client Credentials flow
+        # Using Client Credentials flow via POST body (standard for Rightbrain)
+        payload = {
+            "grant_type": "client_credentials",
+            "scope": "offline_access",
+            "client_id": client_id,
+            "client_secret": client_secret
+        }
+        
         response = requests.post(
             token_url,
-            auth=(client_id, client_secret),
-            data={"grant_type": "client_credentials", "scope": "offline_access"}
+            data=payload,
+            headers={"Content-Type": "application/x-www-form-urlencoded"}
         )
         
         # Debugging: Check for common non-JSON responses (like 404 HTML pages)
         if not response.ok:
             print(f"❌ HTTP Error {response.status_code}", file=sys.stderr)
-            print(f"Response: {response.text}", file=sys.stderr)
+            print(f"   Target URL: {token_url}", file=sys.stderr)
+            # Print first 500 chars to verify if it's HTML (Dashboard) or JSON error
+            print(f"   Response Preview: {response.text[:500]}", file=sys.stderr)
             sys.exit(1)
 
         try:
             response_data = response.json()
         except json.JSONDecodeError:
-            print(f"❌ JSON Decode Error. Server returned:", file=sys.stderr)
-            print(response.text, file=sys.stderr)
+            print(f"❌ JSON Decode Error. Server returned non-JSON content.", file=sys.stderr)
+            print(f"   Target URL: {token_url}", file=sys.stderr)
+            print(f"   Response Start: {response.text[:500]}", file=sys.stderr)
             sys.exit(1)
 
         token = response_data.get("access_token")
@@ -124,10 +143,8 @@ def _get_api_headers(rb_token: str) -> Dict[str, str]:
 
 def _get_base_url() -> str:
     """Internal helper to get the base API URL."""
-    api_url = os.environ.get("RB_API_URL")
-    if not api_url:
-        log("error", "Missing RB_API_URL environment variable.")
-        sys.exit(1)
+    # Default to the standard app URL if not provided
+    api_url = os.environ.get("RB_API_URL", "https://app.rightbrain.ai")
     return api_url.rstrip('/')
 
 def _get_project_path() -> str:
@@ -137,8 +154,7 @@ def _get_project_path() -> str:
     if not all([org_id, project_id]):
         log("error", "Missing RB_ORG_ID or RB_PROJECT_ID.")
         sys.exit(1)
-    # API URL should already include /api/v1, so just use the path
-    return f"/org/{org_id}/project/{project_id}"
+    return f"/api/v1/org/{org_id}/project/{project_id}"
 
 def get_task(rb_token: str, task_id: str) -> Dict[str, Any]:
     """Fetches the full task object, including all revisions."""
@@ -155,8 +171,7 @@ def get_task(rb_token: str, task_id: str) -> Dict[str, Any]:
 
 def update_task(rb_token: str, task_id: str, update_payload: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Updates a task. Can be used to create a new revision (by sending prompts)
-    or to update settings (by sending `active_revisions`).
+    Updates a task. Can be used to create a new revision or update settings.
     """
     url = f"{_get_base_url()}{_get_project_path()}/task/{task_id}"
     try:
@@ -211,7 +226,7 @@ def run_rb_task(
     log("info", f"🚀 Running {task_name}", details=f"Input: {json.dumps(logged_input)}")
     
     try:
-        response = requests.post(run_url, headers=headers, json=payload, timeout=600) # 10 min timeout
+        response = requests.post(run_url, headers=headers, json=payload, timeout=600)
         response.raise_for_status()
         log("success", f"{task_name} complete.")
         # Return the *entire* task run object

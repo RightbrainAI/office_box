@@ -5,13 +5,23 @@ import requests
 from pathlib import Path
 from typing import Dict, Any
 
-# Add parent directory to path to import shared utilities
-sys.path.append(str(Path(__file__).parent.parent))
-from utils.rightbrain_api import get_rb_token, log
+# --- 1. Fix Import Path for 'utils' ---
+# Get the project root directory (two levels up from this script)
+current_dir = Path(__file__).resolve().parent
+project_root = current_dir.parent
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
+
+try:
+    from utils.rightbrain_api import get_rb_token, log
+except ImportError as e:
+    print(f"❌ Error importing 'utils.rightbrain_api': {e}", file=sys.stderr)
+    print(f"   Current sys.path: {sys.path}", file=sys.stderr)
+    sys.exit(1)
 
 # --- Configuration ---
-TASK_TEMPLATE_DIR = Path("task_templates")
-TASK_MANIFEST_PATH = Path("tasks/task_manifest.json")
+TASK_TEMPLATE_DIR = project_root / "task_templates"
+TASK_MANIFEST_PATH = project_root / "tasks/task_manifest.json"
 
 def create_rb_task(rb_token: str, api_url_base: str, org_id: str, project_id: str, task_body: Dict[str, Any]) -> str:
     """Creates a single Rightbrain task and returns its new ID."""
@@ -20,6 +30,8 @@ def create_rb_task(rb_token: str, api_url_base: str, org_id: str, project_id: st
     # Intelligent URL construction: check if api_url_base already contains /api/v1
     base = api_url_base.rstrip('/')
     if base.endswith("/api/v1"):
+        # If base has /api/v1, strip it so we can build the full path correctly if needed, 
+        # OR just append the rest. The safest way with the provided vars is usually:
         create_url = f"{base}/org/{org_id}/project/{project_id}/task"
     else:
         create_url = f"{base}/api/v1/org/{org_id}/project/{project_id}/task"
@@ -66,6 +78,7 @@ def create_rb_task(rb_token: str, api_url_base: str, org_id: str, project_id: st
 
 def main():
     print("🚀 Starting Rightbrain Task Setup Script...")
+    print(f"📂 Project Root detected as: {project_root}")
 
     # 1. Load configuration from GitHub Actions environment variables
     print("Loading configuration from environment variables...")
@@ -87,13 +100,21 @@ def main():
     print(f"  Auth Base URL: {rb_oauth2_url}")
     print(f"  API Base URL: {rb_api_url}")
 
-    # 2. Authenticate with Rightbrain
-    rb_token = get_rb_token()
+    # 2. Authenticate with Rightbrain (using shared utility)
+    try:
+        rb_token = get_rb_token()
+    except Exception as e:
+        print(f"❌ Authentication failed in main script: {e}", file=sys.stderr)
+        sys.exit(1)
     
     # 3. Find and load all task templates
     print(f"Looking for task templates in '{TASK_TEMPLATE_DIR}'...")
     if not TASK_TEMPLATE_DIR.is_dir():
         log("error", f"Task template directory not found at '{TASK_TEMPLATE_DIR}'")
+        # Try printing contents of root to help debug
+        print(f"Contents of root ({project_root}):", file=sys.stderr)
+        for item in project_root.iterdir():
+            print(f" - {item}", file=sys.stderr)
         sys.exit(1)
         
     task_files = list(TASK_TEMPLATE_DIR.glob("*.json"))
