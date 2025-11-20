@@ -3,7 +3,8 @@ import sys
 import json
 import requests
 import time
-from typing import Dict, Any, Optional
+from datetime import datetime
+from typing import Dict, Any, Optional, Literal
 
 # This module centralizes all Rightbrain API interactions.
 
@@ -143,6 +144,39 @@ def create_task(rb_token: str, task_body: Dict[str, Any]) -> Optional[str]:
         if e.response is not None:
              print(f"  Response Body: {e.response.text}", file=sys.stderr)
         return None
+
+# --- Centralized Logging ---
+
+def log(
+    level: Literal["success", "error", "info", "warning", "debug"],
+    message: str,
+    details: Optional[str] = None,
+    to_stderr: bool = False
+) -> None:
+    """
+    Centralized logging function with consistent emoji prefixes and timestamps.
+    
+    Args:
+        level: The log level (success, error, info, warning, debug)
+        message: The main log message
+        details: Optional additional details to print on a new line
+        to_stderr: If True, writes to stderr instead of stdout (default for errors)
+    """
+    icons = {
+        "success": "✅",
+        "error": "❌",
+        "info": "ℹ️",
+        "warning": "⚠️",
+        "debug": "🔍"
+    }
+
+    icon = icons.get(level, "ℹ️")
+    output = sys.stderr if (to_stderr or level == "error") else sys.stdout
+    timestamp = datetime.now().strftime("%H:%M:%S.%f")[:-3]  # Include milliseconds
+
+    print(f"[{timestamp}] {icon} {message}", file=output)
+    if details:
+        print(f"               {details}", file=output)
 
 def run_rb_task(
     rb_token: str,
