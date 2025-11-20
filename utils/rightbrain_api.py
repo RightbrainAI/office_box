@@ -4,23 +4,58 @@ import json
 import requests
 import time
 from pathlib import Path
-from typing import Dict, Any, Optional
+from datetime import datetime
+from typing import Dict, Any, Optional, Literal
+
+# --- Centralized Logging ---
+
+def log(
+    level: Literal["success", "error", "info", "warning", "debug"],
+    message: str,
+    details: Optional[str] = None,
+    to_stderr: bool = False
+) -> None:
+    """
+    Centralized logging function with consistent emoji prefixes and timestamps.
+    """
+    icons = {
+        "success": "✅",
+        "error": "❌",
+        "info": "ℹ️",
+        "warning": "⚠️",
+        "debug": "🔍"
+    }
+
+    icon = icons.get(level, "ℹ️")
+    output = sys.stderr if (to_stderr or level == "error") else sys.stdout
+    timestamp = datetime.now().strftime("%H:%M:%S.%f")[:-3]
+
+    print(f"[{timestamp}] {icon} {message}", file=output)
+    if details:
+        print(f"               {details}", file=output)
 
 # --- Configuration Loader ---
+
 def load_rb_config() -> Dict[str, str]:
     """Loads public configuration from rightbrain.config.json in the project root."""
-    # Find root relative to this file (utils/rightbrain_api.py -> project_root)
-    root_dir = Path(__file__).resolve().parent.parent
-    config_path = root_dir / "rightbrain.config.json"
-    
-    if not config_path.exists():
-        print(f"❌ Error: Configuration file not found at {config_path}", file=sys.stderr)
-        sys.exit(1)
+    try:
+        # Find root relative to this file (utils/rightbrain_api.py -> project_root)
+        root_dir = Path(__file__).resolve().parent.parent
+        config_path = root_dir / "rightbrain.config.json"
         
-    with open(config_path, "r") as f:
-        return json.load(f)
+        if not config_path.exists():
+            # Fallback if file is missing, though file is preferred
+            log("warning", f"Config file not found at {config_path}. Using defaults.")
+            return {}
+            
+        with open(config_path, "r") as f:
+            return json.load(f)
+    except Exception as e:
+        log("error", f"Failed to load config file: {e}")
+        sys.exit(1)
 
-# Token cache: stores (token, expiry_timestamp)
+# --- API Functions ---
+
 _token_cache: Optional[tuple[str, float]] = None
 
 def get_rb_token() -> str:
@@ -33,24 +68,29 @@ def get_rb_token() -> str:
     if _token_cache is not None:
         cached_token, expiry_time = _token_cache
         if time.time() < (expiry_time - 60):
-            print("✅ Reusing cached Rightbrain token.")
+            log("success", "Reusing cached Rightbrain token.")
             return cached_token
 
     # Load Configuration
     config = load_rb_config()
+    
+    # Credentials still come from secrets (Env vars)
     client_id = os.environ.get("RB_CLIENT_ID")
     client_secret = os.environ.get("RB_CLIENT_SECRET")
 
     if not all([client_id, client_secret]):
-        print("❌ Error: Missing RB_CLIENT_ID or RB_CLIENT_SECRET env vars.", file=sys.stderr)
+        log("error", "Missing RB_CLIENT_ID or RB_CLIENT_SECRET env vars.")
         sys.exit(1)
 
-    # Construct URL from Config
-    base = config.get("oauth_url", "").rstrip('/')
-    path = config.get("auth_path", "/oauth2/token").lstrip('/')
+    # Construct URL from Config (with fallbacks)
+    base = config.get("oauth_url") or os.environ.get("RB_OAUTH2_URL") or "https://oauth.rightbrain.ai"
+    path = config.get("auth_path") or os.environ.get("RB_OAUTH2_TOKEN_PATH") or "/oauth2/token"
+    
+    base = base.rstrip('/')
+    path = path.lstrip('/')
     token_url = f"{base}/{path}"
 
-    print(f"🔐 Requesting token from: {token_url}")
+    log("debug", f"Requesting token from: {token_url}")
 
     try:
         # Client Credentials Flow
@@ -66,26 +106,24 @@ def get_rb_token() -> str:
         )
         
         if not response.ok:
-            print(f"❌ HTTP Error {response.status_code}", file=sys.stderr)
-            print(f"   Target: {token_url}", file=sys.stderr)
-            print(f"   Response: {response.text[:500]}", file=sys.stderr)
+            log("error", f"HTTP Error {response.status_code}", details=f"Response: {response.text[:500]}")
             sys.exit(1)
 
         response_data = response.json()
         token = response_data.get("access_token")
         
         if not token:
-            print(f"❌ Error: No access_token in response.", file=sys.stderr)
+            log("error", "No access_token in response.", details=json.dumps(response_data, indent=2))
             sys.exit(1)
         
         expires_in = response_data.get("expires_in", 3600)
         _token_cache = (token, time.time() + expires_in)
         
-        print(f"✅ Rightbrain token acquired.")
+        log("success", "Rightbrain token acquired.")
         return token
 
     except Exception as e:
-        print(f"❌ Connection Error: {e}", file=sys.stderr)
+        log("error", f"Connection Error during auth: {e}")
         sys.exit(1)
 
 def _get_api_headers(rb_token: str) -> Dict[str, str]:
@@ -94,13 +132,15 @@ def _get_api_headers(rb_token: str) -> Dict[str, str]:
 def _get_base_url() -> str:
     """Gets API base URL from config."""
     config = load_rb_config()
-    return config.get("api_url", "").rstrip('/')
+    # Fallback to env var or default
+    url = config.get("api_url") or os.environ.get("RB_API_URL") or "https://app.rightbrain.ai"
+    return url.rstrip('/')
 
 def _get_project_path() -> str:
     org_id = os.environ.get("RB_ORG_ID")
     project_id = os.environ.get("RB_PROJECT_ID")
     if not all([org_id, project_id]):
-        print("❌ Error: Missing RB_ORG_ID or RB_PROJECT_ID.", file=sys.stderr)
+        log("error", "Missing RB_ORG_ID or RB_PROJECT_ID.")
         sys.exit(1)
     return f"/api/v1/org/{org_id}/project/{project_id}"
 
@@ -131,25 +171,36 @@ def create_task(rb_token: str, task_body: Dict[str, Any]) -> Optional[str]:
         response.raise_for_status()
         return response.json().get("id")
     except Exception as e:
-        print(f"  ❌ FAILED to create task: {e}", file=sys.stderr)
+        log("error", f"FAILED to create task '{task_body.get('name')}'", details=str(e))
         return None
 
 def run_rb_task(rb_token: str, task_id: str, task_input_payload: Dict[str, Any], task_name: str) -> Dict[str, Any]:
-    # Implementation remains the same, relies on _get_base_url()
     org_id = os.environ.get("RB_ORG_ID")
     project_id = os.environ.get("RB_PROJECT_ID")
     
     if not all([org_id, project_id, task_id]):
+        log("error", f"Missing configuration for {task_name}")
         return {"error": "Missing configuration", "is_error": True}
 
     run_url = f"{_get_base_url()}{_get_project_path()}/task/{task_id}/run"
-    print(f"🚀 Running {task_name} at {run_url}")
+    
+    # Redact sensitive data for logging
+    logged_input = task_input_payload.copy()
+    if 'document_text' in logged_input:
+        logged_input['document_text'] = f"<Redacted text>"
+        
+    log("info", f"Running {task_name}", details=f"Input keys: {list(logged_input.keys())}")
     
     try:
-        response = requests.post(run_url, headers=_get_api_headers(rb_token), json={"task_input": task_input_payload}, timeout=600)
+        response = requests.post(
+            run_url, 
+            headers=_get_api_headers(rb_token), 
+            json={"task_input": task_input_payload}, 
+            timeout=600
+        )
         response.raise_for_status()
-        print(f"✅ {task_name} complete.")
+        log("success", f"{task_name} complete.")
         return response.json()
     except Exception as e:
-        print(f"❌ {task_name} failed: {e}", file=sys.stderr)
+        log("error", f"{task_name} failed", details=str(e))
         return {"error": str(e), "is_error": True}
