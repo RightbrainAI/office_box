@@ -37,11 +37,11 @@ def log(
 # --- Configuration Loader ---
 
 def load_rb_config() -> Dict[str, str]:
-    """Loads public configuration from rightbrain.config.json in the project root."""
+    """Loads public configuration from rightbrain.config.json in the config folder."""
     try:
         # Find root relative to this file (utils/rightbrain_api.py -> project_root)
         root_dir = Path(__file__).resolve().parent.parent
-        config_path = root_dir / "rightbrain.config.json"
+        config_path = root_dir / "config/rightbrain.config.json"
         
         if not config_path.exists():
             # Fallback if file is missing, though file is preferred
