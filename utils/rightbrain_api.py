@@ -7,6 +7,17 @@ from pathlib import Path
 from datetime import datetime
 from typing import Dict, Any, Optional, Literal
 
+# Load .env file from project root if it exists (for local development)
+try:
+    from dotenv import load_dotenv
+    project_root = Path(__file__).resolve().parent.parent
+    env_path = project_root / ".env"
+    if env_path.exists():
+        load_dotenv(env_path)
+except ImportError:
+    # python-dotenv not installed, skip .env loading
+    pass
+
 # --- Centralized Logging ---
 
 def log(

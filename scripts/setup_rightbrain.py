@@ -5,8 +5,19 @@ import requests
 from pathlib import Path
 from typing import Dict, Any
 
-# --- 1. Fix Import Path for 'utils' ---
+# --- 0. Determine project root and load .env file if it exists (for local development) ---
 project_root = Path(__file__).resolve().parent.parent
+
+try:
+    from dotenv import load_dotenv
+    env_path = project_root / ".env"
+    if env_path.exists():
+        load_dotenv(env_path)
+except ImportError:
+    # python-dotenv not installed, skip .env loading
+    pass
+
+# --- 1. Fix Import Path for 'utils' ---
 if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 

@@ -5,26 +5,37 @@ import requests
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Add parent directory to path to import shared utilities
-sys.path.append(str(Path(__file__).parent.parent))
-from utils.rightbrain_api import get_rb_token, log
+# --- 1. Fix Import Path for 'utils' ---
+# Get the project root directory (two levels up from this script)
+# file -> scripts/ -> root
+project_root = Path(__file__).resolve().parent.parent
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
+
+try:
+    # Import shared utilities
+    from utils.rightbrain_api import get_rb_token, log, load_rb_config
+except ImportError as e:
+    print(f"❌ Error importing 'utils.rightbrain_api': {e}", file=sys.stderr)
+    sys.exit(1)
 
 def get_available_models(token, api_url, org_id, project_id):
     """
     Fetches the list of all available LLM models for the project.
-    [cite_start][cite: 609, 610]
     """
-    # [cite_start]Endpoint definition from API docs [cite: 609]
-    # API URL should already include /api/v1
-    models_url = f"{api_url.rstrip('/')}/org/{org_id}/project/{project_id}/model"
-    # [cite_start]Auth header requirement from API docs [cite: 616]
+    # Remove /api/v1 suffix if present to avoid duplication, then reconstruct path
+    base = api_url.rstrip('/')
+    if base.endswith("/api/v1"):
+        models_url = f"{base}/org/{org_id}/project/{project_id}/model"
+    else:
+        models_url = f"{base}/api/v1/org/{org_id}/project/{project_id}/model"
+
     headers = {"Authorization": f"Bearer {token}"}
     
     log("info", f"Fetching models from {models_url}...")
     try:
         response = requests.get(models_url, headers=headers)
         response.raise_for_status()
-        # [cite_start]The API returns a list of model objects [cite: 617]
         models_list = response.json()
         log("success", f"Found {len(models_list)} available models.")
         return models_list
@@ -37,36 +48,39 @@ def update_manifest(manifest_path, models_list):
     """
     Reads the existing manifest, adds the model map, and writes it back.
     """
-    # Load existing data, or create a new dict
     if manifest_path.exists():
-        print(f"Loading existing manifest from {manifest_path}...")
+        log("info", f"Loading existing manifest from {manifest_path}...")
         with open(manifest_path, 'r') as f:
             manifest_data = json.load(f)
     else:
-        print(f"No manifest found at {manifest_path}. Creating a new one.")
+        log("warning", f"No manifest found at {manifest_path}. Creating a new one.")
         manifest_data = {}
 
     # Create the alias -> id mapping
-    # [cite_start]Model object schema contains 'alias' and 'id' [cite: 620]
+    # We filter for active models (not retired) if possible, or just map all
     model_mapping = {}
     for model in models_list:
-        alias = model.get('alias')
+        # Prefer 'alias' (e.g. "gpt-4"), fallback to 'name', then 'id'
+        alias = model.get('alias') or model.get('name')
         model_id = model.get('id')
+        
         if alias and model_id:
             model_mapping[alias] = model_id
         else:
-            log("warning", f"Skipping model with missing alias or id: {model.get('name')}")
+            log("warning", f"Skipping model with missing info: {model.get('name', 'Unknown')}")
             continue
             
-    # Update the manifest data with the new model map
+    # Update the manifest data
     manifest_data["models"] = model_mapping
     
-    # Write the updated data back to the file
     try:
+        # Ensure directory exists
+        manifest_path.parent.mkdir(parents=True, exist_ok=True)
+        
         with open(manifest_path, 'w') as manifest_file:
             json.dump(manifest_data, manifest_file, indent=2)
         
-        log("success", f"Successfully updated {manifest_path} with model ID mappings.")
+        log("success", f"Successfully updated {manifest_path} with {len(model_mapping)} models.")
         return True
         
     except IOError as e:
@@ -74,52 +88,51 @@ def update_manifest(manifest_path, models_list):
         return False
 
 def main():
-    # --- 1. Setup Paths ---
-    # This script is in /scripts, so we go up one level to the root
+    log("info", "Starting Model Fetch Script...")
+    log("debug", f"Project Root detected as: {project_root}")
+
+    # --- 2. Load Environment & Config ---
+    # Load .env file if it exists (useful for local development)
+    env_path = project_root / ".env"
+    if env_path.exists():
+        log("info", f"Loading environment from {env_path}")
+        load_dotenv(env_path)
+
+    # Load config for URLs
     try:
-        script_dir = Path(__file__).parent
-        project_root = script_dir.parent
-    except NameError:
-        # Handle cases where __file__ is not defined (e.g., interactive REPL)
-        project_root = Path.cwd()
-        print(f"Running in interactive mode. Using CWD as project root: {project_root}")
+        config = load_rb_config()
+        # Fallback logic consistent with other scripts
+        rb_api_url = config.get("api_url") or os.environ.get("RB_API_URL") or "https://app.rightbrain.ai"
+    except Exception as e:
+        log("error", f"Configuration Error: {e}")
+        sys.exit(1)
 
-    # Load .env file from the project root
-    load_dotenv(project_root / ".env")
-    
-    # Define the manifest path
-    manifest_path = project_root / "tasks" / "task_manifest.json"
-
-    # --- 2. Load Configuration ---
-    rb_client_id = os.environ.get("RB_CLIENT_ID")
-    rb_client_secret = os.environ.get("RB_CLIENT_SECRET")
+    # Load IDs from Environment
     rb_org_id = os.environ.get("RB_ORG_ID")
     rb_project_id = os.environ.get("RB_PROJECT_ID")
-    rb_api_url = os.environ.get("RB_API_URL")
-    rb_oauth_url = os.environ.get("RB_OAUTH2_URL")
     
-    if not rb_api_url or not rb_oauth_url:
-        log("error", "Missing RB_API_URL or RB_OAUTH2_URL environment variable.")
-        sys.exit(1)
-    
-    # Use the OAuth2 URL directly (should be the full endpoint URL)
-    rb_token_url = rb_oauth_url
-
-    # Check for required env vars
-    required_vars = [rb_client_id, rb_client_secret, rb_org_id, rb_project_id]
-    if not all(required_vars):
-        print("❌ Error: Missing one or more required environment variables.")
-        print("Ensure RB_CLIENT_ID, RB_CLIENT_SECRET, RB_ORG_ID, and RB_PROJECT_ID are set.")
+    if not all([rb_org_id, rb_project_id]):
+        log("error", "Missing required environment variables.", 
+            details="Ensure RB_ORG_ID and RB_PROJECT_ID are set.")
         sys.exit(1)
 
-    # --- 3. Run the script ---
-    token = get_rb_token(rb_client_id, rb_client_secret, rb_token_url)
+    # Define the manifest path
+    manifest_path = project_root / "config" / "model_manifest.json"
+
+    # --- 3. Execute ---
+    try:
+        # No arguments needed; it pulls from env/config automatically
+        token = get_rb_token()
+    except Exception as e:
+        log("error", f"Failed to get token: {e}")
+        sys.exit(1)
+
     models = get_available_models(token, rb_api_url, rb_org_id, rb_project_id)
     
     if models:
         update_manifest(manifest_path, models)
     else:
-        print("No models returned from API. Manifest not updated.")
+        log("warning", "No models returned from API. Manifest not updated.")
 
 if __name__ == "__main__":
     main()
