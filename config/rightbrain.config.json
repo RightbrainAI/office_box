@@ -1,0 +1,5 @@
+{
+    "oauth_url": "https://oauth.rightbrain.ai",
+    "api_url": "https://app.rightbrain.ai",
+    "auth_path": "/oauth2/token"
+  }
