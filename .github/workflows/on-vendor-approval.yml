@@ -8,10 +8,10 @@ jobs:
   commit_vendor_data:
     # We combine both checks:
     # 1. Was the issue closed as 'completed'? (Ignores 'not planned')
-    # 2. Does it have the 'vendor-review' label?
+    # 2. Does it have the 'vendor-approved' label?
     if: >
       github.event.issue.state_reason == 'completed' &&
-      contains(github.event.issue.labels.*.name, 'vendor-review')
+      contains(github.event.issue.labels.*.name, 'vendor-approved')
       
     runs-on: ubuntu-latest
     
