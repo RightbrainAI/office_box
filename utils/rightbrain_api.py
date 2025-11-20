@@ -93,14 +93,13 @@ def get_rb_token() -> str:
     log("debug", f"Requesting token from: {token_url}")
 
     try:
-        # Client Credentials Flow
+        # FIX: Reverted to Basic Auth (client_secret_basic) as required by the server config
         response = requests.post(
             token_url,
+            auth=(client_id, client_secret),
             data={
                 "grant_type": "client_credentials",
-                "scope": "offline_access",
-                "client_id": client_id,
-                "client_secret": client_secret
+                "scope": "offline_access"
             },
             headers={"Content-Type": "application/x-www-form-urlencoded"}
         )
