@@ -13,6 +13,7 @@ from datetime import datetime, timedelta
 sys.path.append(str(Path(__file__).parent.parent))
 try:
     from utils.github_api import fetch_issue_comments
+    from utils.rightbrain_api import log
 except ImportError:
     print("❌ Error: Could not import 'utils.github_api'. Make sure script is run from project root or PYTHONPATH is set.", file=sys.stderr)
     sys.exit(1)
@@ -54,11 +55,11 @@ def fetch_comments_and_approved_json(repo_name, issue_number):
                 approved_json = json.loads(match.group(1))
                 break # Found the most recent one
             except json.JSONDecodeError:
-                print(f"::error::Could not parse the JSON in the comment.")
+                log("error", "Could not parse the JSON in the comment.")
                 sys.exit(1)
     
     if not approved_json:
-        print("::error::Could not find 'Reviewer-Approved Data' JSON block in any comment.")
+        log("error", "Could not find 'Reviewer-Approved Data' JSON block in any comment.")
         sys.exit(1)
         
     return approved_json, all_comments
@@ -121,7 +122,7 @@ def update_central_json(summary_data, vendor_type):
         print(f"Set next_review_date: {summary_data['next_review_date']} (Risk: {risk}, Days: {review_days})")
 
     except Exception as e:
-        print(f"::error::Failed to calculate review dates: {e}")
+        log("error", "Failed to calculate review dates", details=str(e))
         # Assign placeholder dates so the schema remains consistent
         summary_data["last_review_date"] = "N/A"
         summary_data["next_review_date"] = "N/A"
@@ -158,7 +159,7 @@ def update_central_json(summary_data, vendor_type):
 
     with open(json_path, 'w', encoding='utf-8') as f:
         json.dump(all_records, f, indent=2, ensure_ascii=False)
-    print(f"Successfully updated {json_path}.")
+    log("success", f"Successfully updated {json_path}.")
 
 def create_audit_markdown_file(full_issue_body, all_comments, issue_url, vendor_type, sanitized_vendor_name):
     """
@@ -200,7 +201,7 @@ def create_audit_markdown_file(full_issue_body, all_comments, issue_url, vendor_
                 
         print(f"Created full audit file at: {file_path}")
     except IOError as e:
-        print(f"::error::Failed to create audit file {file_path}: {e}")
+        log("error", f"Failed to create audit file {file_path}", details=str(e))
         sys.exit(1)
 
 
@@ -230,7 +231,7 @@ def parse_files_from_checklist(issue_body, issue_number, check_status="[x]"):
             local_path = Path(unquote(local_path_encoded))
             files.append((local_path, url))
         except Exception as e:
-            print(f"::warning::Could not parse file path: {local_path_encoded}. Error: {e}")
+            log("warning", f"Could not parse file path: {local_path_encoded}", details=str(e))
             
     return files
 
@@ -273,7 +274,7 @@ def archive_approved_files(approved_files, vendor_type, sanitized_vendor_name, d
             print(f"Archived: {new_path}")
             
         except Exception as e:
-            print(f"::error::Failed to archive {local_path}: {e}")
+            log("error", f"Failed to archive {local_path}", details=str(e))
 
 def cleanup_source_directory(issue_body, issue_number):
     """
@@ -315,8 +316,8 @@ def main():
     issue_url = os.getenv("ISSUE_URL")
 
     if not all([issue_body, github_token, repo_name, issue_number, issue_closed_at, issue_url]):
-        print("::error::Missing one or more required environment variables.")
-        print("::error::Requires: ISSUE_BODY, GITHUB_TOKEN, REPO_NAME, ISSUE_NUMBER, ISSUE_CLOSED_AT, ISSUE_URL")
+        log("error", "Missing one or more required environment variables.",
+            details="Requires: ISSUE_BODY, GITHUB_TOKEN, REPO_NAME, ISSUE_NUMBER, ISSUE_CLOSED_AT, ISSUE_URL")
         sys.exit(1)
 
     # 2. Parse common data
@@ -343,7 +344,7 @@ def main():
     # 6. Clean up all source files for this issue
     cleanup_source_directory(issue_body, issue_number)
     
-    print("\n✅ Vendor commit and archive process complete.")
+    log("success", "Vendor commit and archive process complete.")
 
 if __name__ == "__main__":
     main()

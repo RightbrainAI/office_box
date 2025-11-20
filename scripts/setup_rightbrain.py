@@ -13,7 +13,7 @@ if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
 try:
-    from utils.rightbrain_api import get_rb_token
+    from utils.rightbrain_api import get_rb_token, log
 except ImportError as e:
     print(f"❌ Error importing 'utils.rightbrain_api': {e}", file=sys.stderr)
     print(f"   Current sys.path: {sys.path}", file=sys.stderr)
@@ -41,38 +41,48 @@ def create_rb_task(rb_token: str, api_url_base: str, org_id: str, project_id: st
         "Content-Type": "application/json"
     }
     
-    print(f"  Attempting to create task: '{task_name}'...")
+    log("info", f"Attempting to create task: '{task_name}'...")
     
     try:
         response = requests.post(create_url, headers=headers, json=task_body)
         
         if not response.ok:
-            print(f"  ❌ Error creating task '{task_name}' (Status: {response.status_code})", file=sys.stderr)
+            error_msg = f"Error creating task '{task_name}' (Status: {response.status_code})"
             try:
-                print(f"  Response: {response.json()}", file=sys.stderr)
+                error_details = f"Response: {response.json()}"
             except:
-                print(f"  Response: {response.text}", file=sys.stderr)
+                error_details = f"Response: {response.text}"
+            log("error", error_msg, details=error_details)
             return None
             
         task_id = response.json().get("id")
         if not task_id:
             raise ValueError(f"Task creation for '{task_name}' did not return an ID.")
             
-        print(f"  ✅ Successfully created task '{task_name}' with ID: {task_id}")
+        log("success", f"Successfully created task '{task_name}' with ID: {task_id}")
         return task_id
 
     except requests.exceptions.RequestException as e:
-        print(f"  ❌ Connection error creating task '{task_name}': {e}", file=sys.stderr)
+        error_details = f"Status: {e.response.status_code}" if e.response else str(e)
+        if e.response is not None:
+            try:
+                error_details += f"\nResponse: {e.response.json()}"
+            except json.JSONDecodeError:
+                error_details += f"\nResponse: {e.response.text}"
+        log("error", f"Failed to create Rightbrain task '{task_name}'", details=error_details)
+        return None
+    except ValueError as e:
+        log("error", str(e))
         return None
 
 # --- Main Setup Function ---
 
 def main():
-    print("🚀 Starting Rightbrain Task Setup Script...")
-    print(f"📂 Project Root detected as: {project_root}")
+    log("info", "🚀 Starting Rightbrain Task Setup Script...")
+    log("info", f"📂 Project Root detected as: {project_root}")
 
     # 1. Load configuration from GitHub Actions environment variables
-    print("Loading configuration from environment variables...")
+    log("info", "Loading configuration from environment variables...")
     rb_org_id = os.environ.get("RB_ORG_ID")
     rb_project_id = os.environ.get("RB_PROJECT_ID")
     rb_client_id = os.environ.get("RB_CLIENT_ID")
@@ -82,49 +92,46 @@ def main():
     rb_api_url = os.environ.get("RB_API_URL", "https://app.rightbrain.ai")
 
     if not all([rb_org_id, rb_project_id, rb_client_id, rb_client_secret]):
-        print("❌ Error: Missing one or more required environment variables.", file=sys.stderr)
-        print("  Requires: RB_ORG_ID, RB_PROJECT_ID, RB_CLIENT_ID, RB_CLIENT_SECRET", file=sys.stderr)
+        log("error", "Missing one or more required environment variables.", 
+            details="Requires: RB_ORG_ID, RB_PROJECT_ID, RB_CLIENT_ID, RB_CLIENT_SECRET")
         sys.exit(1)
         
-    print(f"  Org ID: {rb_org_id}")
-    print(f"  Project ID: {rb_project_id}")
-    print(f"  Auth Base URL: {rb_oauth2_url}")
-    print(f"  API Base URL: {rb_api_url}")
+    log("debug", f"Org ID: {rb_org_id}")
+    log("debug", f"Project ID: {rb_project_id}")
+    log("debug", f"Auth Base URL: {rb_oauth2_url}")
+    log("debug", f"API Base URL: {rb_api_url}")
 
     # 2. Authenticate with Rightbrain (using shared utility)
     try:
         rb_token = get_rb_token()
     except Exception as e:
-        print(f"❌ Authentication failed in main script: {e}", file=sys.stderr)
+        log("error", "Authentication failed in main script", details=str(e))
         sys.exit(1)
     
     # 3. Find and load all task templates
-    print(f"Looking for task templates in '{TASK_TEMPLATE_DIR}'...")
+    log("info", f"Looking for task templates in '{TASK_TEMPLATE_DIR}'...")
     if not TASK_TEMPLATE_DIR.is_dir():
-        print(f"❌ Error: Task template directory not found at '{TASK_TEMPLATE_DIR}'", file=sys.stderr)
-        # Try printing contents of root to help debug
-        print(f"Contents of root ({project_root}):", file=sys.stderr)
-        for item in project_root.iterdir():
-            print(f" - {item}", file=sys.stderr)
+        debug_info = f"Contents of root ({project_root}):\n" + "\n".join([f" - {item}" for item in project_root.iterdir()])
+        log("error", f"Task template directory not found at '{TASK_TEMPLATE_DIR}'", details=debug_info)
         sys.exit(1)
         
     task_files = list(TASK_TEMPLATE_DIR.glob("*.json"))
     if not task_files:
-        print(f"❌ Error: No .json task templates found in '{TASK_TEMPLATE_DIR}'", file=sys.stderr)
+        log("error", f"No .json task templates found in '{TASK_TEMPLATE_DIR}'")
         sys.exit(1)
         
-    print(f"Found {len(task_files)} task templates.")
+    log("info", f"Found {len(task_files)} task templates.")
     
     # 4. Create tasks and build the manifest
     task_manifest = {}
-    print("Creating tasks in Rightbrain project...")
+    log("info", "Creating tasks in Rightbrain project...")
     
     for task_file_path in task_files:
         try:
             with open(task_file_path, 'r') as f:
                 task_body = json.load(f)
         except json.JSONDecodeError:
-            print(f"  ⚠️ Warning: Could not parse '{task_file_path}'. Skipping.", file=sys.stderr)
+            log("warning", f"Could not parse '{task_file_path}'. Skipping.")
             continue
             
         task_id = create_rb_task(rb_token, rb_api_url, rb_org_id, rb_project_id, task_body)
@@ -135,22 +142,22 @@ def main():
             task_manifest[task_file_path.name] = task_id
 
     if not task_manifest:
-        print("❌ Error: No tasks were successfully created. Aborting.", file=sys.stderr)
+        log("error", "No tasks were successfully created. Aborting.")
         sys.exit(1)
 
     # 5. Write the task manifest file
-    print(f"Writing new task manifest to '{TASK_MANIFEST_PATH}'...")
+    log("info", f"Writing new task manifest to '{TASK_MANIFEST_PATH}'...")
     try:
         TASK_MANIFEST_PATH.parent.mkdir(parents=True, exist_ok=True)
         with open(TASK_MANIFEST_PATH, 'w') as f:
             json.dump(task_manifest, f, indent=2)
-        print("✅ Task manifest created successfully.")
+        log("success", "Task manifest created successfully.")
     except IOError as e:
-        print(f"❌ Error writing manifest file: {e}", file=sys.stderr)
+        log("error", "Failed to write manifest file", details=str(e))
         sys.exit(1)
 
-    print("\n🎉 Rightbrain setup complete!")
-    print(f"The '{TASK_MANIFEST_PATH}' file has been created (or updated) and must be committed to your repository.")
+    log("success", "🎉 Rightbrain setup complete!")
+    log("info", f"The '{TASK_MANIFEST_PATH}' file has been created (or updated) and must be committed to your repository.")
 
 if __name__ == "__main__":
     main()

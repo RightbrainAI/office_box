@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 
 # Add parent directory to path to import shared utilities
 sys.path.append(str(Path(__file__).parent.parent))
-from utils.rightbrain_api import get_rb_token
+from utils.rightbrain_api import get_rb_token, log
 
 def get_available_models(token, api_url, org_id, project_id):
     """
@@ -20,17 +20,17 @@ def get_available_models(token, api_url, org_id, project_id):
     # [cite_start]Auth header requirement from API docs [cite: 616]
     headers = {"Authorization": f"Bearer {token}"}
     
-    print(f"Fetching models from {models_url}...")
+    log("info", f"Fetching models from {models_url}...")
     try:
         response = requests.get(models_url, headers=headers)
         response.raise_for_status()
         # [cite_start]The API returns a list of model objects [cite: 617]
         models_list = response.json()
-        print(f"✅ Found {len(models_list)} available models.")
+        log("success", f"Found {len(models_list)} available models.")
         return models_list
     except requests.exceptions.RequestException as e:
-        print(f"❌ Error fetching models: {e}")
-        print(f"Response Text: {e.response.text if e.response else 'N/A'}")
+        log("error", "Failed to fetch models", 
+            details=f"{e}\nResponse: {e.response.text if e.response else 'N/A'}")
         sys.exit(1)
 
 def update_manifest(manifest_path, models_list):
@@ -55,22 +55,23 @@ def update_manifest(manifest_path, models_list):
         if alias and model_id:
             model_mapping[alias] = model_id
         else:
-            print(f"⚠️ Skipping model with missing alias or id: {model.get('name')}")
+            log("warning", f"Skipping model with missing alias or id: {model.get('name')}")
+            continue
             
     # Update the manifest data with the new model map
     manifest_data["models"] = model_mapping
     
     # Write the updated data back to the file
     try:
-        with open(manifest_path, 'w') as f:
-            json.dump(manifest_data, f, indent=2)
-        print(f"✅ Successfully updated {manifest_path} with model ID mappings.")
-        print("\n--- Models Written ---")
-        print(json.dumps(model_mapping, indent=2))
-        print("----------------------")
+        with open(manifest_path, 'w') as manifest_file:
+            json.dump(model_map, manifest_file, indent=2)
+        
+        log("success", f"Successfully updated {manifest_path} with model ID mappings.")
+        return True
+        
     except IOError as e:
-        print(f"❌ Error writing to manifest file {manifest_path}: {e}")
-        sys.exit(1)
+        log("error", f"Failed to write to manifest file {manifest_path}", details=str(e))
+        return False
 
 def main():
     # --- 1. Setup Paths ---
@@ -98,7 +99,7 @@ def main():
     rb_oauth_url = os.environ.get("RB_OAUTH2_URL")
     
     if not rb_api_url or not rb_oauth_url:
-        print("❌ Error: Missing RB_API_URL or RB_OAUTH2_URL environment variable.")
+        log("error", "Missing RB_API_URL or RB_OAUTH2_URL environment variable.")
         sys.exit(1)
     
     # Use the OAuth2 URL directly (should be the full endpoint URL)
