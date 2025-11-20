@@ -65,7 +65,7 @@ def get_rb_token() -> str:
     
     # --- DEBUGGING START ---
     raw_base_url = os.environ.get("RB_OAUTH2_URL")
-    print(f"🔍 DEBUG: Raw RB_OAUTH2_URL env var: '{raw_base_url}'")
+    log("debug", f"Raw RB_OAUTH2_URL env var: '{raw_base_url}'")
     
     # Default to the correct OAuth host if not provided
     token_url_base = raw_base_url if raw_base_url else "https://oauth.rightbrain.ai"
@@ -73,8 +73,8 @@ def get_rb_token() -> str:
     # Default to /oauth2/token if not provided
     token_path = os.environ.get("RB_OAUTH2_TOKEN_PATH", "/oauth2/token")
     
-    print(f"🔍 DEBUG: Using Base URL: '{token_url_base}'")
-    print(f"🔍 DEBUG: Using Token Path: '{token_path}'")
+    log("debug", f"Using Base URL: '{token_url_base}'")
+    log("debug", f"Using Token Path: '{token_path}'")
     # --- DEBUGGING END ---
 
     if not token_url_base:
@@ -83,7 +83,7 @@ def get_rb_token() -> str:
 
     # Construct the full URL
     token_url = f"{token_url_base.rstrip('/')}/{token_path.lstrip('/')}"
-    print(f"🔐 Requesting token from FULL URL: {token_url}")
+    log("info", f"Requesting token from: {token_url}")
 
     if not all([client_id, client_secret]):
         log("error", "Missing RB_CLIENT_ID or RB_CLIENT_SECRET.")
@@ -106,24 +106,21 @@ def get_rb_token() -> str:
         
         # Debugging: Check for common non-JSON responses (like 404 HTML pages)
         if not response.ok:
-            print(f"❌ HTTP Error {response.status_code}", file=sys.stderr)
-            print(f"   Target URL: {token_url}", file=sys.stderr)
-            # Print first 500 chars to verify if it's HTML (Dashboard) or JSON error
-            print(f"   Response Preview: {response.text[:500]}", file=sys.stderr)
+            error_details = f"Target URL: {token_url}\nResponse Preview: {response.text[:500]}"
+            log("error", f"HTTP Error {response.status_code}", details=error_details)
             sys.exit(1)
 
         try:
             response_data = response.json()
         except json.JSONDecodeError:
-            print(f"❌ JSON Decode Error. Server returned non-JSON content.", file=sys.stderr)
-            print(f"   Target URL: {token_url}", file=sys.stderr)
-            print(f"   Response Start: {response.text[:500]}", file=sys.stderr)
+            error_details = f"Target URL: {token_url}\nResponse Start: {response.text[:500]}"
+            log("error", "JSON Decode Error. Server returned non-JSON content.", details=error_details)
             sys.exit(1)
 
         token = response_data.get("access_token")
         if not token:
-            print(f"❌ Error: Response did not contain 'access_token'. Raw data:", file=sys.stderr)
-            print(json.dumps(response_data, indent=2), file=sys.stderr)
+            error_details = f"Raw data:\n{json.dumps(response_data, indent=2)}"
+            log("error", "Response did not contain 'access_token'", details=error_details)
             sys.exit(1)
         
         # Cache the token with expiry (default to 3600 seconds if not provided)

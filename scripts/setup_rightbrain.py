@@ -41,17 +41,18 @@ def create_rb_task(rb_token: str, api_url_base: str, org_id: str, project_id: st
         "Content-Type": "application/json"
     }
     
-    print(f"  Attempting to create task: '{task_name}'...")
+    log("info", f"Attempting to create task: '{task_name}'...")
     
     try:
         response = requests.post(create_url, headers=headers, json=task_body)
         
         if not response.ok:
-            print(f"  ❌ Error creating task '{task_name}' (Status: {response.status_code})", file=sys.stderr)
+            error_msg = f"Error creating task '{task_name}' (Status: {response.status_code})"
             try:
-                print(f"  Response: {response.json()}", file=sys.stderr)
+                error_details = f"Response: {response.json()}"
             except:
-                print(f"  Response: {response.text}", file=sys.stderr)
+                error_details = f"Response: {response.text}"
+            log("error", error_msg, details=error_details)
             return None
             
         task_id = response.json().get("id")
@@ -77,11 +78,11 @@ def create_rb_task(rb_token: str, api_url_base: str, org_id: str, project_id: st
 # --- Main Setup Function ---
 
 def main():
-    print("🚀 Starting Rightbrain Task Setup Script...")
-    print(f"📂 Project Root detected as: {project_root}")
+    log("info", "🚀 Starting Rightbrain Task Setup Script...")
+    log("info", f"📂 Project Root detected as: {project_root}")
 
     # 1. Load configuration from GitHub Actions environment variables
-    print("Loading configuration from environment variables...")
+    log("info", "Loading configuration from environment variables...")
     rb_org_id = os.environ.get("RB_ORG_ID")
     rb_project_id = os.environ.get("RB_PROJECT_ID")
     rb_client_id = os.environ.get("RB_CLIENT_ID")
@@ -95,26 +96,23 @@ def main():
             details="Requires: RB_ORG_ID, RB_PROJECT_ID, RB_CLIENT_ID, RB_CLIENT_SECRET")
         sys.exit(1)
         
-    print(f"  Org ID: {rb_org_id}")
-    print(f"  Project ID: {rb_project_id}")
-    print(f"  Auth Base URL: {rb_oauth2_url}")
-    print(f"  API Base URL: {rb_api_url}")
+    log("debug", f"Org ID: {rb_org_id}")
+    log("debug", f"Project ID: {rb_project_id}")
+    log("debug", f"Auth Base URL: {rb_oauth2_url}")
+    log("debug", f"API Base URL: {rb_api_url}")
 
     # 2. Authenticate with Rightbrain (using shared utility)
     try:
         rb_token = get_rb_token()
     except Exception as e:
-        print(f"❌ Authentication failed in main script: {e}", file=sys.stderr)
+        log("error", "Authentication failed in main script", details=str(e))
         sys.exit(1)
     
     # 3. Find and load all task templates
-    print(f"Looking for task templates in '{TASK_TEMPLATE_DIR}'...")
+    log("info", f"Looking for task templates in '{TASK_TEMPLATE_DIR}'...")
     if not TASK_TEMPLATE_DIR.is_dir():
-        log("error", f"Task template directory not found at '{TASK_TEMPLATE_DIR}'")
-        # Try printing contents of root to help debug
-        print(f"Contents of root ({project_root}):", file=sys.stderr)
-        for item in project_root.iterdir():
-            print(f" - {item}", file=sys.stderr)
+        debug_info = f"Contents of root ({project_root}):\n" + "\n".join([f" - {item}" for item in project_root.iterdir()])
+        log("error", f"Task template directory not found at '{TASK_TEMPLATE_DIR}'", details=debug_info)
         sys.exit(1)
         
     task_files = list(TASK_TEMPLATE_DIR.glob("*.json"))
@@ -122,11 +120,11 @@ def main():
         log("error", f"No .json task templates found in '{TASK_TEMPLATE_DIR}'")
         sys.exit(1)
         
-    print(f"Found {len(task_files)} task templates.")
+    log("info", f"Found {len(task_files)} task templates.")
     
     # 4. Create tasks and build the manifest
     task_manifest = {}
-    print("Creating tasks in Rightbrain project...")
+    log("info", "Creating tasks in Rightbrain project...")
     
     for task_file_path in task_files:
         try:
@@ -148,7 +146,7 @@ def main():
         sys.exit(1)
 
     # 5. Write the task manifest file
-    print(f"Writing new task manifest to '{TASK_MANIFEST_PATH}'...")
+    log("info", f"Writing new task manifest to '{TASK_MANIFEST_PATH}'...")
     try:
         TASK_MANIFEST_PATH.parent.mkdir(parents=True, exist_ok=True)
         with open(TASK_MANIFEST_PATH, 'w') as f:
@@ -158,8 +156,8 @@ def main():
         log("error", "Failed to write manifest file", details=str(e))
         sys.exit(1)
 
-    print("\n🎉 Rightbrain setup complete!")
-    print(f"The '{TASK_MANIFEST_PATH}' file has been created (or updated) and must be committed to your repository.")
+    log("success", "🎉 Rightbrain setup complete!")
+    log("info", f"The '{TASK_MANIFEST_PATH}' file has been created (or updated) and must be committed to your repository.")
 
 if __name__ == "__main__":
     main()

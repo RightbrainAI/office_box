@@ -80,17 +80,17 @@ def format_task_for_creation(full_task_def: dict) -> dict:
 def fetch_task_definition(rb_token, api_url, org_id, project_id, task_id):
     """Fetches a specific task definition by its ID."""
     # API URL should already include /api/v1
-    fetch_url = f"{api_url.rstrip('/')}/org/{org_id}/project/{project_id}/task/{task_id}"
-    headers = {"Authorization": f"Bearer {rb_token}"}
-    
-    print(f"📡 Fetching task definition for ID: {task_id}...")
+    log("info", f"Fetching task definition for ID: {task_id}...")
     try:
+        fetch_url = f"{api_url.rstrip('/')}/org/{org_id}/project/{project_id}/task/{task_id}"
+        headers = {"Authorization": f"Bearer {rb_token}"}
         response = requests.get(fetch_url, headers=headers)
         response.raise_for_status()
         log("success", "Full task definition fetched successfully.")
         return response.json()
     except requests.exceptions.RequestException as e:
-        sys.exit(f"❌ Error fetching task definition: {e.response.text}")
+        log("error", "Failed to fetch task definition", details=str(e))
+        sys.exit(1)
 
 # --- Main Execution ---
 
@@ -104,7 +104,7 @@ def main():
         from dotenv import load_dotenv
     except ImportError:
         log("warning", "Required packages not found.")
-        print("Please run: pip install requests python-dotenv")
+        log("error", "Please run: pip install requests python-dotenv")
         sys.exit(1)
 
     project_root = Path(__file__).resolve().parent.parent
@@ -119,7 +119,8 @@ def main():
     for var in required_vars:
         value = os.getenv(var)
         if not value:
-            sys.exit(f"❌ Error: Environment variable '{var}' is not set. Please add it to your .env file in the project root.")
+            log("error", f"Environment variable '{var}' is not set. Please add it to your .env file in the project root.")
+            sys.exit(1)
         config[var] = value
     
     # Use the OAuth2 URL directly (should be the full endpoint URL)
@@ -128,7 +129,8 @@ def main():
     # --- Script Logic ---
     task_id = input("➡️ Please enter the Rightbrain Task ID to fetch: ")
     if not task_id:
-        sys.exit("❌ No Task ID provided. Exiting.")
+        log("error", "No Task ID provided. Exiting.")
+        sys.exit(1)
 
     rb_token = get_rb_token()
 
@@ -146,20 +148,22 @@ def main():
     # --- Dynamic Filename Generation ---
     task_name = creation_ready_definition.get("name")
     if not task_name:
-        sys.exit("❌ Error: Task definition is missing the 'name' field.")
+        log("error", "Task definition is missing the 'name' field.")
+        sys.exit(1)
     
     filename = f"{sanitize_filename(task_name)}.json"
     output_file_path = project_root / "tasks" / filename
-    print(f"📄 Task name found: '{task_name}'. Saving to '{output_file_path}'.")
+    log("info", f"Saving creation-ready task definition to: {output_file_path}")
 
     try:
         output_file_path.parent.mkdir(parents=True, exist_ok=True)
         with open(output_file_path, 'w') as f:
             json.dump(creation_ready_definition, f, indent=2)
         log("success", f"The file '{output_file_path}' has been updated with a creation-ready definition.")
-        print("You can now commit the changes to your repository.")
+        log("success", "You can now commit the changes to your repository.")
     except IOError as e:
-        sys.exit(f"❌ Error writing to file '{output_file_path}': {e}")
+        log("error", f"Error writing to file '{output_file_path}': {e}")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
