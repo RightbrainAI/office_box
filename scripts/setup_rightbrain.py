@@ -17,7 +17,7 @@ except ImportError as e:
     sys.exit(1)
 
 # --- Configuration ---
-TASK_TEMPLATE_DIR = project_root / "task_templates"
+TASK_TEMPLATE_DIR = project_root / "tasks"
 TASK_MANIFEST_PATH = project_root / "tasks/task_manifest.json"
 
 def create_rb_task(rb_token: str, api_url_base: str, org_id: str, project_id: str, task_body: Dict[str, Any]) -> str:
