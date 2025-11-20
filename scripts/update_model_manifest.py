@@ -64,7 +64,7 @@ def update_manifest(manifest_path, models_list):
     # Write the updated data back to the file
     try:
         with open(manifest_path, 'w') as manifest_file:
-            json.dump(model_map, manifest_file, indent=2)
+            json.dump(manifest_data, manifest_file, indent=2)
         
         log("success", f"Successfully updated {manifest_path} with model ID mappings.")
         return True
