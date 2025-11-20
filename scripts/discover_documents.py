@@ -8,8 +8,18 @@ from dotenv import load_dotenv
 from pathlib import Path
 from typing import List, Dict, Any
 from urllib.parse import quote as url_quote # Needed for creating safe URLs
-from utils.github_api import update_issue_body, post_failure_and_exit
-from utils.rightbrain_api import get_rb_token, run_rb_task, log
+
+# --- Fix Import Path for 'utils' ---
+project_root = Path(__file__).resolve().parent.parent
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
+
+try:
+    from utils.github_api import update_issue_body, post_failure_and_exit
+    from utils.rightbrain_api import get_rb_token, run_rb_task, log
+except ImportError as e:
+    print(f"❌ Error importing 'utils' modules: {e}", file=sys.stderr)
+    sys.exit(1)
 
 # --- Helper: Filename Sanitization ---
 
@@ -259,7 +269,10 @@ def format_documents_as_checklist(main_legal: List, classified_docs: List,
 # --- Main Execution ---
 
 def main():
-    load_dotenv()
+    # Load .env file from project root if it exists (for local development)
+    env_path = project_root / ".env"
+    if env_path.exists():
+        load_dotenv(env_path)
 
     # --- 1. Load Config & Environment Variables ---
     gh_token = os.environ["GITHUB_TOKEN"]
