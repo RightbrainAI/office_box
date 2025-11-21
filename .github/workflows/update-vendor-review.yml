@@ -58,7 +58,7 @@ jobs:
             git checkout -b $BRANCH_NAME
             
             # Add and commit both files
-            git add "$VENDOR_FILE" "eng/data-processors.json"
+            git add "$VENDOR_FILE" "suppliers/subprocessors/data-processors.json"
             git commit -m "feat(vendor): Update analysis for $(basename $VENDOR_FILE)"
             git push origin $BRANCH_NAME
             

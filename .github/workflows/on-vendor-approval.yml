@@ -48,7 +48,8 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           
-          git add "eng/" "suppliers/" "_vendor_analysis_source/"
+          # NEW: Target the suppliers directory
+          git add "suppliers/" "_vendor_analysis_source/"
           
           if ! git diff --staged --quiet; then
             git commit -m "docs(vendor): Finalize records for approved vendor #${{ github.event.issue.number }}"
@@ -56,3 +57,5 @@ jobs:
           else
             echo "No new vendor files to commit."
           fi
+          
+         
