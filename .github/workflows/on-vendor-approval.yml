@@ -6,16 +6,14 @@ on:
 
 jobs:
   commit_vendor_data:
-    # We combine both checks:
-    # 1. Was the issue closed as 'completed'? (Ignores 'not planned')
-    # 2. Does it have the 'vendor-approved' label?
+    # 1. Closed as completed
+    # 2. Has 'vendor-approved' label
     if: >
       github.event.issue.state_reason == 'completed' &&
       contains(github.event.issue.labels.*.name, 'vendor-approved')
       
     runs-on: ubuntu-latest
     
-    # Add 'issues: read' to allow the script to fetch comments
     permissions:
       contents: write
       issues: read
@@ -23,10 +21,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          # This token needs write permissions to commit files
-          # A Personal Access Token (PAT) stored in secrets is best
-          token: ${{ secrets.VENDOR_TOKEN }}
+        # Removed 'token' input; defaults to GITHUB_TOKEN which has write access per above permissions
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -40,15 +35,12 @@ jobs:
 
       - name: Run Finalize Script
         env:
-          # --- Pass all required data to the script ---
           ISSUE_BODY: ${{ github.event.issue.body }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO_NAME: ${{ github.repository }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           ISSUE_CLOSED_AT: ${{ github.event.issue.closed_at }}
           ISSUE_URL: ${{ github.event.issue.html_url }}
-        
-        # This uses the path from your original YAML
         run: python scripts/commit_approved_vendor.py
 
       - name: Commit updated files
@@ -56,11 +48,9 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           
-          # Add all three directories that the script modifies
-          git add "eng/" "general_vendors/" "_vendor_analysis_source/"
+          git add "eng/" "suppliers/" "_vendor_analysis_source/"
           
           if ! git diff --staged --quiet; then
-            # Commit message now includes the issue number for traceability
             git commit -m "docs(vendor): Finalize records for approved vendor #${{ github.event.issue.number }}"
             git push
           else
