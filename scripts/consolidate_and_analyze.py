@@ -8,9 +8,17 @@ from dotenv import load_dotenv
 from typing import Dict, List, Set, Any
 from urllib.parse import unquote
 
-# --- Refactored Imports ---
-from utils.github_api import post_github_comment
-from utils.rightbrain_api import get_rb_token, run_rb_task, log
+# --- Fix Import Path for 'utils' ---
+project_root = Path(__file__).resolve().parent.parent
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
+
+try:
+    from utils.github_api import post_github_comment
+    from utils.rightbrain_api import get_rb_token, run_rb_task, log
+except ImportError as e:
+    print(f"❌ Error importing 'utils' modules: {e}", file=sys.stderr)
+    sys.exit(1)
 # --- End Refactored Imports ---
 
 # --- Constants ---
@@ -237,7 +245,10 @@ def format_report_as_markdown(report_data: Dict[str, Any],
 # --- Main Execution ---
 
 def main():
-    load_dotenv()
+    # Load .env file from project root if it exists (for local development)
+    env_path = project_root / ".env"
+    if env_path.exists():
+        load_dotenv(env_path)
 
     # --- 1. Load Config & Environment Variables ---
     gh_token = os.environ.get("GITHUB_TOKEN")
@@ -290,7 +301,7 @@ def main():
 
     if not legal_docs_text and not security_docs_text:
         log("error", "No text compiled from any approved documents. Aborting analysis.")
-        post_github_comment(gh_token, repo_name, issue_number, 
+        post_github_comment(repo_name, issue_number, 
                             "**Analysis Failed:** No approved documents were found or read. Please check the files in `_vendor_analysis_source` and ensure the correct items are checked in the issue checklist.")
         sys.exit()
 
@@ -374,7 +385,7 @@ def main():
     
     # Refactored to use new util function
     try:
-        post_github_comment(gh_token, repo_name, issue_number, final_comment_body)
+        post_github_comment(repo_name, issue_number, final_comment_body)
     except Exception as e:
         log("error", "CRITICAL: Failed to post final comment to GitHub", details=str(e))
         
