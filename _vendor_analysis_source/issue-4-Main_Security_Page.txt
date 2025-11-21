@@ -1,0 +1,712 @@
+Manual Insert of https://trust.anthropic.com/
+
+Anthropic logo
+|
+Trust Center
+Welcome to the Anthropic Trust Center
+Anthropic is an AI safety and research company with a mission of ensuring the world safely makes the transition through transformative AI. We believe deeply in transparency and the need for secure practices in this rapidly evolving industry.
+
+
+fa-link alpaca-fa-regular
+Privacy Policy
+Filter by
+
+
+Product
+Overview
+Resources
+Controls
+Subprocessors
+FAQ
+Updates
+Here you can find our compliance artifacts, request documentation, and view high-level details on controls we adhere to. To access sensitive documents, please click the "request access" button at the top of the page and complete the request form. This access will also enable the Trust Center AI feature, allowing you to query our documentation.
+
+Scope	SOC 2 Type 2	ISO 27001	ISO 42001	CSA Star	HIPAA	FedRAMP High	DoD IL4	DoD IL5
+Claude via Anthropic's API	✅	✅	✅	✅	✅	N/A	N/A	N/A
+Claude for Enterprise	✅	✅	✅	✅	N/A	N/A	N/A	N/A
+Claude in Amazon Bedrock *	✅	✅	✅	✅	N/A	N/A	N/A	N/A
+Claude on Google Cloud's Vertex AI *	✅	✅	✅	✅	N/A	N/A	N/A	N/A
+Claude for Government	N/A	N/A	N/A	N/A	N/A	✅	N/A	N/A
+Claude on Amazon Bedrock in AWS GovCloud **	N/A	N/A	N/A	N/A	N/A	✅	✅	✅
+Claude on Google Vertex AI in Google Assured Workloads **	N/A	N/A	N/A	N/A	N/A	✅	N/A	N/A
+*(Only applicable to the model itself and containers supplied to partners by Anthropic)
+
+**(Only applicable to the partner hosting environment where Claude models are running; Claude models themselves are not standalone cloud service offerings that require separate certification)
+
+Compliance
+HIPAA
+SOC 2
+SOC 2 Type II
+ISO 27001:2022
+ISO/IEC 42001:2023
+FedRAMP High
+UK Cyber Essentials
+UK Cyber Essentials
+Resources
+View all 25 resources
+System / Model Cards
+
+[Anthropic] - Claude 4.5 Sonnet System Card
+
+[Anthropic] - Claude 4 System Card
+
+[Anthropic] - Claude 3.7 Sonnet System Card
+
+[Anthropic] - Claude 3.5 Sonnet Model Card Addendum
+SOC 2
+
+[Anthropic] 2025 Type 2 SOC 2 and CSA STAR L2 Report.pdf
+ISO
+
+[Anthropic] ISO 27001 Certificate (2025).pdf
+
+[Anthropic] ISO 42001 Certificate (2025).pdf
+
+[Anthropic] - ISO Statement of Applicability
+HIPAA
+
+[Anthropic] 2025 Type 1 HIPAA Report (1P API).pdf
+FedRAMP
+Claude for Government (C4G) PFCS-SS FedRAMP High Authorization Package
+International Compliance
+
+[Anthropic Ireland Limited] Cyber Essentials Certificate (2025)
+Questionnaires
+
+[Anthropic] - SIG Lite (March 2025)
+
+[Anthropic] - CAIQ Lite (March 2025)
+
+[Anthropic] - VSA Core (March 2025)
+
+[Anthropic] - HECVAT v4.04 (July 2025 v2)
+Diagrams
+
+[Anthropic] - Infrastructure Diagram - April 2025
+Code of Conduct
+
+Global Code of Conduct
+
+Global Vendor Code of Conduct
+Other Documents
+[Anthropic] Data Processing Addendum
+
+[Anthropic] 2025 Annual Penetration Testing Reports
+
+[Anthropic] Evidence of Insurance (COI)
+
+[Anthropic] VPAT - Accessibility Conformance Report (ACR) - Claude.ai Enterprise (web) - July 30, 2025
+Controls
+Updated 8 minutes ago
+
+View all controls
+Infrastructure security
+fa-chevron-right alpaca-fa-regular
+fa-circle-check alpaca-fa-solid
+Encryption key access restricted
+fa-circle-check alpaca-fa-solid
+Unique account authentication enforced
+fa-circle-check alpaca-fa-solid
+Production application access restricted
+View 10 more Infrastructure security controls
+Organizational security
+fa-chevron-right alpaca-fa-regular
+fa-circle-check alpaca-fa-solid
+Asset disposal procedures utilized
+fa-circle-check alpaca-fa-solid
+Production inventory maintained
+fa-circle-check alpaca-fa-solid
+Portable media encrypted
+View 4 more Organizational security controls
+Product security
+fa-chevron-right alpaca-fa-regular
+fa-circle-check alpaca-fa-solid
+Data encryption utilized
+fa-circle-check alpaca-fa-solid
+Control self-assessments conducted
+fa-circle-check alpaca-fa-solid
+Data transmission encrypted
+View 1 more Product security control
+Internal security procedures
+fa-chevron-right alpaca-fa-regular
+fa-circle-check alpaca-fa-solid
+Continuity and Disaster Recovery plans established
+fa-circle-check alpaca-fa-solid
+Production deployment access restricted
+fa-circle-check alpaca-fa-solid
+Development lifecycle established
+View 6 more Internal security procedures controls
+Data and privacy
+fa-chevron-right alpaca-fa-regular
+fa-circle-check alpaca-fa-solid
+Data retention procedures established
+fa-circle-check alpaca-fa-solid
+Data classification policy established
+Subprocessors
+View all 14 subprocessors
+Google Cloud Platform
+•
+Cloud infrastructure
+Worldwide
+Products: All Products
+
+Amazon Web Services
+•
+Cloud Infrastructure
+Worldwide
+Products: All Products
+
+Cloudflare
+•
+Traffic Routing (CDN)
+Worldwide (Local to Customer)
+Products: All Products
+
+Stripe
+•
+Billing
+United States
+Products: Claude Pro/Max, Anthropic API, Claude for Work
+
+FAQ
+View all 24 FAQs
+Will you be using our Claude for Work conversations to train your generative models?
+Is Anthropic willing to sign a BAA?
+I found a security bug. How can I let you know?
+Updates
+View all 5 updates
+Updated Compliance Artifacts Now Available!
+Compliance
+
+Published November 18, 2025
+
+Our updated compliance artifacts are now available in the Trust Center. This includes a refreshed SOC 2 Type II report, HIPAA attestation (1P API), ISO 27001 and ISO 42001 certificates, and our new Cyber Essentials Certificate.
+
+Anthropic Subprocessor Updates
+General
+
+Published September 19, 2025
+
+We are writing to inform you of recent updates to Anthropic's subprocessor list:
+
+We have added Iterable, which supports product updates, notifications, and email communications.
+Additionally, we have removed Retool from our list of subprocessors.
+The complete and updated list of subprocessors is available in your Anthropic Trust Center dashboard under the “Subprocessors” tab. Should you have any questions regarding these changes or require additional information, please contact your account representative.
+
+Read more
+Anthropic Subprocessor Changes
+General
+
+Published September 18, 2025
+
+We are writing to inform you of recent updates to Anthropic's subprocessor list. We have added Arkose Labs, which supports fraud and abuse detection across all of our products.
+
+The complete and updated list of subprocessors is available in your Anthropic Trust Center dashboard under the “Subprocessors” tab. Should you have any questions regarding these changes or require additional information, please contact your account representative.
+
+Read more
+Anthropic Trust Center Updates - September 2025
+General
+
+Published September 16, 2025
+
+We're announcing several updates to our Trust Center: 
+
+HECVAT v4 Assessment Now Available
+We've added our HECVAT v4 assessment to the Trust Center, making it easier for higher education institutions to evaluate our security practices.
+
+2025 Penetration Testing Summary Report
+We've uploaded our most recent penetration testing summary report, conducted by independent assessors and providing additional insights into the security posture of our infrastructure and services.
+
+Accessibility Conformance Report (ACR)
+The Accessibility Conformance Report for Claude.ai Enterprise (web) is now available, documenting the current state of our compliance with accessibility standards.
+
+Announcing Claude for Government (C4G)
+We are pleased to announce the availability of Claude for Government (C4G), our FedRAMP High authorized implementation of the Claude AI assistant.
+
+Key Features:
+FedRAMP High Authorization for federal agencies and organizations working with sensitive unclassified data
+Advanced AI capabilities while meeting stringent security and compliance requirements
+Deployed within Palantir's FedRAMP-authorized cloud environment
+Getting Started:
+Complete Authority to Operate (ATO) package available in the FedRAMP Marketplace as part of the Palantir Federal Cloud Services (PFCS) offering
+Contact Anthropic's Public Sector Sales for demonstrations and more information
+Subprocessor Updates
+Effective Date: September 3, 2025
+
+We have made the following updates to Anthropic's subprocessor list:
+
+Added:
+Palantir Federal Cloud Service (PFCS) - FedRAMP Cloud (more info)
+Supporting our new Claude for Government offering
+Important Notes:
+The complete and updated subprocessor list is available in your Trust Center dashboard under the "Subprocessors" tab
+For questions regarding these changes, please contact your account representative
+Read more
+
+Anthropic logo
+|
+Trust Center
+Welcome to the Anthropic Trust Center
+Anthropic is an AI safety and research company with a mission of ensuring the world safely makes the transition through transformative AI. We believe deeply in transparency and the need for secure practices in this rapidly evolving industry.
+
+
+fa-link alpaca-fa-regular
+Privacy Policy
+Filter by
+
+
+Product
+Overview
+Resources
+Controls
+Subprocessors
+FAQ
+Updates
+Resources
+fa-magnifying-glass alpaca-fa-regular
+Search resources
+System / Model Cards
+SOC 2
+ISO
+HIPAA
+FedRAMP
+International Compliance
+Questionnaires
+Diagrams
+Code of Conduct
+Other Documents
+System / Model Cards
+[Anthropic] - Claude 4.5 Sonnet System Card
+[Anthropic] - Claude 4 System Card
+[Anthropic] - Claude 3.7 Sonnet System Card
+[Anthropic] - Claude 3.5 Sonnet Model Card Addendum
+[Anthropic] - Claude 3.5 Haiku and Upgraded 3.5 Sonnet Model Card Addendum
+[Anthropic] - Claude 3 Model Card
+SOC 2
+[Anthropic] 2025 Type 2 SOC 2 and CSA STAR L2 Report.pdf
+ISO
+[Anthropic] ISO 27001 Certificate (2025).pdf
+[Anthropic] ISO 42001 Certificate (2025).pdf
+[Anthropic] - ISO Statement of Applicability
+ISO Statement of Applicability
+HIPAA
+[Anthropic] 2025 Type 1 HIPAA Report (1P API).pdf
+FedRAMP
+Claude for Government (C4G) PFCS-SS FedRAMP High Authorization Package
+International Compliance
+[Anthropic Ireland Limited] Cyber Essentials Certificate (2025)
+Questionnaires
+[Anthropic] - SIG Lite (March 2025)
+[Anthropic] - CAIQ Lite (March 2025)
+[Anthropic] - VSA Core (March 2025)
+[Anthropic] - HECVAT v4.04 (July 2025 v2)
+Diagrams
+[Anthropic] - Infrastructure Diagram - April 2025
+Code of Conduct
+Global Code of Conduct
+Global Vendor Code of Conduct
+Other Documents
+[Anthropic] Data Processing Addendum
+Anthropic's Data Processing Addendum
+[Anthropic] 2025 Annual Penetration Testing Reports
+July 2025 Status Update
+[Anthropic] Evidence of Insurance (COI)
+[Anthropic] VPAT - Accessibility Conformance Report (ACR) - Claude.ai Enterprise (web) - July 30, 2025
+[Anthropic] Statement on Modern Slavery Act 2015
+
+# Controls
+
+Anthropic logo
+|
+Trust Center
+Welcome to the Anthropic Trust Center
+Anthropic is an AI safety and research company with a mission of ensuring the world safely makes the transition through transformative AI. We believe deeply in transparency and the need for secure practices in this rapidly evolving industry.
+
+
+fa-link alpaca-fa-regular
+Privacy Policy
+Filter by
+
+
+Product
+Overview
+Resources
+Controls
+Subprocessors
+FAQ
+Updates
+Controls
+fa-magnifying-glass alpaca-fa-regular
+Search controls
+Infrastructure security
+Organizational security
+Product security
+Internal security procedures
+Data and privacy
+Infrastructure security
+Control
+Status
+Encryption key access restricted
+The company restricts privileged access to encryption keys to authorized users with a business need.
+
+fa-circle-check alpaca-fa-solid
+Unique account authentication enforced
+The company requires authentication to systems and applications to use unique username and password or authorized Secure Socket Shell (SSH) keys.
+
+fa-circle-check alpaca-fa-solid
+Production application access restricted
+System access restricted to authorized access only
+
+fa-circle-check alpaca-fa-solid
+Production database access restricted
+The company restricts privileged access to databases to authorized users with a business need.
+
+fa-circle-check alpaca-fa-solid
+Firewall access restricted
+The company restricts privileged access to the firewall to authorized users with a business need.
+
+fa-circle-check alpaca-fa-solid
+Production OS access restricted
+The company restricts privileged access to the operating system to authorized users with a business need.
+
+fa-circle-check alpaca-fa-solid
+Production network access restricted
+The company restricts privileged access to the production network to authorized users with a business need.
+
+fa-circle-check alpaca-fa-solid
+Unique network system authentication enforced
+The company requires authentication to the "production network" to use unique usernames and passwords or authorized Secure Socket Shell (SSH) keys.
+
+fa-circle-check alpaca-fa-solid
+Remote access encrypted enforced
+The company's production systems can only be remotely accessed by authorized employees via an approved encrypted connection.
+
+fa-circle-check alpaca-fa-solid
+Log management utilized
+The company utilizes a log management tool to identify events that may have a potential impact on the company's ability to achieve its security objectives.
+
+fa-circle-check alpaca-fa-solid
+Infrastructure performance monitored
+An infrastructure monitoring tool is utilized to monitor systems, infrastructure, and performance and generates alerts when specific predefined thresholds are met.
+
+fa-circle-check alpaca-fa-solid
+Network firewalls utilized
+The company uses firewalls and configures them to prevent unauthorized access.
+
+fa-circle-check alpaca-fa-solid
+Network and system hardening standards maintained
+The company's network and system hardening standards are documented, based on industry best practices, and reviewed at least annually.
+
+fa-circle-check alpaca-fa-solid
+Organizational security
+Control
+Status
+Asset disposal procedures utilized
+The company has electronic media containing confidential information purged or destroyed in accordance with best practices, and certificates of destruction are issued for each device destroyed.
+
+fa-circle-check alpaca-fa-solid
+Production inventory maintained
+The company maintains a formal inventory of production system assets.
+
+fa-circle-check alpaca-fa-solid
+Portable media encrypted
+The company encrypts portable and removable media devices when used.
+
+fa-circle-check alpaca-fa-solid
+Anti-malware technology utilized
+The company deploys anti-malware technology to environments commonly susceptible to malicious attacks and configures this to be updated routinely, logged, and installed on all relevant systems.
+
+fa-circle-check alpaca-fa-solid
+Password policy enforced
+The company requires passwords for in-scope system components to be configured according to the company's policy.
+
+fa-circle-check alpaca-fa-solid
+MDM system utilized
+The company has a mobile device management (MDM) system in place to centrally manage mobile devices supporting the service.
+
+fa-circle-check alpaca-fa-solid
+Visitor procedures enforced
+The company requires visitors to sign-in, wear a visitor badge, and be escorted by an authorized employee when accessing the data center or secure areas.
+
+fa-circle-check alpaca-fa-solid
+Product security
+Control
+Status
+Data encryption utilized
+The company's datastores housing sensitive customer data are encrypted at rest.
+
+fa-circle-check alpaca-fa-solid
+Control self-assessments conducted
+The company performs control self-assessments at least annually to gain assurance that controls are in place and operating effectively. Corrective actions are taken based on relevant findings. If the company has committed to an SLA for a finding, the corrective action is completed within that SLA.
+
+fa-circle-check alpaca-fa-solid
+Data transmission encrypted
+The company uses secure data transmission protocols to encrypt confidential and sensitive data when transmitted over public networks.
+
+fa-circle-check alpaca-fa-solid
+Vulnerability and system monitoring procedures established
+The company's formal policies outline the requirements for the following functions related to IT / Engineering:
+
+vulnerability management;
+
+system monitoring.
+
+fa-circle-check alpaca-fa-solid
+Internal security procedures
+Control
+Status
+Continuity and Disaster Recovery plans established
+The company has Business Continuity and Disaster Recovery Plans in place that outline communication plans in order to maintain information security continuity in the event of the unavailability of key personnel.
+
+fa-circle-check alpaca-fa-solid
+Production deployment access restricted
+The company restricts access to migrate changes to production to authorized personnel.
+
+fa-circle-check alpaca-fa-solid
+Development lifecycle established
+The company has a formal systems development life cycle (SDLC) methodology in place that governs the development, acquisition, implementation, changes (including emergency changes), and maintenance of information systems and related technology requirements.
+
+fa-circle-check alpaca-fa-solid
+Management roles and responsibilities defined
+The company management has established defined roles and responsibilities to oversee the design and implementation of information security controls.
+
+fa-circle-check alpaca-fa-solid
+Incident response policies established
+The company has security and privacy incident response policies and procedures that are documented and communicated to authorized users.
+
+fa-circle-check alpaca-fa-solid
+Incident management procedures followed
+The company's security and privacy incidents are logged, tracked, resolved, and communicated to affected or relevant parties by management according to the company's security incident response policy and procedures.
+
+fa-circle-check alpaca-fa-solid
+Physical access processes established
+The company has processes in place for granting, changing, and terminating physical access to company data centers based on an authorization from control owners.
+
+fa-circle-check alpaca-fa-solid
+Data center access reviewed
+The company reviews access to the data centers at least annually.
+
+fa-circle-check alpaca-fa-solid
+Risk management program established
+The company has a documented risk management program in place that includes guidance on the identification of potential threats, rating the significance of the risks associated with the identified threats, and mitigation strategies for those risks.
+
+fa-circle-check alpaca-fa-solid
+Data and privacy
+Control
+Status
+Data retention procedures established
+The company has formal retention and disposal procedures in place to guide the secure retention and disposal of company and customer data.
+
+fa-circle-check alpaca-fa-solid
+Data classification policy established
+The company has a data classification policy in place to help ensure that confidential data is properly secured and restricted to authorized personnel.
+
+fa-circle-check alpaca-fa-solid
+Top
+
+# Subprocessors
+
+Anthropic logo
+|
+Trust Center
+Welcome to the Anthropic Trust Center
+Anthropic is an AI safety and research company with a mission of ensuring the world safely makes the transition through transformative AI. We believe deeply in transparency and the need for secure practices in this rapidly evolving industry.
+
+
+fa-link alpaca-fa-regular
+Privacy Policy
+Filter by
+
+
+Product
+Overview
+Resources
+Controls
+Subprocessors
+FAQ
+Updates
+Subprocessors
+fa-magnifying-glass alpaca-fa-regular
+Search subprocessors
+Logo for Google Cloud Platform
+Google Cloud Platform
+•
+Cloud infrastructure
+Worldwide
+Products: All Products
+
+Amazon Web Services
+•
+Cloud Infrastructure
+Worldwide
+Products: All Products
+
+Cloudflare
+•
+Traffic Routing (CDN)
+Worldwide (Local to Customer)
+Products: All Products
+
+Logo for Stripe
+Stripe
+•
+Billing
+United States
+Products: Claude Pro/Max, Anthropic API, Claude for Work
+
+Logo for WorkOS
+WorkOS
+•
+Security, Single Sign-On
+United States
+Products: Claude for Work
+
+More Information
+
+Intercom
+•
+User support
+United States
+Products: All Products
+
+Logo for Twilio
+Twilio
+•
+Analytics, email/SMS communications
+United States
+Products: All Products
+
+Logo for Iterable
+Iterable
+•
+Email communications
+United States
+Products: All Products
+
+Logo for Functional Software, dba Sentry
+Functional Software, dba Sentry
+•
+Error Handling, User Support
+United States
+Products: All products except Claude for Government
+
+Logo for Sift
+Sift
+•
+Fraud and abuse detection
+United States
+Products: All products except Claude for Government
+
+Arkose Labs
+Arkose Labs
+•
+Fraud and abuse detection
+United States
+Products: All products except Claude for Government
+
+Logo for Brave Search
+Brave Search
+•
+Web Search
+United States
+Products: All products except Claude for Government
+
+More Information
+
+Logo for ElevenLabs
+ElevenLabs
+•
+Text to speech
+United States
+Product: Claude for Work
+
+More Information
+
+Palantir Federal Cloud Service (PFCS)
+Palantir Federal Cloud Service (PFCS)
+•
+FedRAMP Cloud
+United States
+Product: Claude for Government (C4G)
+
+# FAQ
+
+Anthropic logo
+|
+Trust Center
+Welcome to the Anthropic Trust Center
+Anthropic is an AI safety and research company with a mission of ensuring the world safely makes the transition through transformative AI. We believe deeply in transparency and the need for secure practices in this rapidly evolving industry.
+
+
+fa-link alpaca-fa-regular
+Privacy Policy
+Filter by
+
+
+Product
+Overview
+Resources
+Controls
+Subprocessors
+FAQ
+Updates
+FAQ
+fa-magnifying-glass alpaca-fa-regular
+Search questions and answers
+Security
+AI Safety and Transparency
+Data Processing
+U.S. Federal Compliance
+Model Training
+Other
+Security
+What is ISO 27001?
+ISO 27001 is an international standard for information security management systems. It provides requirements for establishing, implementing, maintaining and continually improving an organization's information security management.
+
+What can customers assume about Anthropic based on this ISO 27001 certificate?
+Customers can have confidence that Anthropic takes a proactive, structured approach to information security. ISO 27001 certification validates that we have implemented a comprehensive information security management system to protect our own and our customers' information assets. 
+
+Refer to our published Statement of Applicability on the Trust Portal for the full list of controls in scope for this ISO standard.
+
+How will Anthropic maintain its ISO 27001 certification over time?
+How can stakeholders learn more about Anthropic's ISO 27001 certification?
+AI Safety and Transparency
+What is ISO 42001?
+How does Anthropic’s ISO 42001 certification relate to our Responsible Scaling Policy (RSP)?
+What can customers assume about Anthropic based on this ISO 42001 certificate?
+Does Anthropic expect its own vendors and partners to achieve ISO 42001 certification?
+How will Anthropic maintain its ISO 42001 certification over time?
+How can stakeholders learn more about Anthropic's ISO 42001 certification?
+Beyond ISO 42001, what other steps are Anthropic taking to uphold AI ethics and safety as the company continues to advance the state-of-the-art in artificial intelligence?
+Data Processing
+What security measures are in place to protect customer data?
+Anthropic has a comprehensive set of security measures in place to protect models and customer data. You can review our externally committed security controls (as a part of our SOC 2 certification) at our Trust Center: https://trust.anthropic.com/controls. All data that Anthropic stores is encrypted at rest using AES-256 GCM, and protected in transit using TLS 1.2+. Our Trust Center has additional information about our security practice.
+
+Where are your data centers located?
+For more information, please view this post.
+
+How long is data retained?
+By default, Anthropic retains all Customer Data within the Claude for Work platform until the data is deleted by the customer. After deletion, we may retain for up to 30 days in our systems. Prompts/responses that have been flagged as violating our Acceptable Use Policy may be retained longer.
+
+Can we have our own environment, meaning our data is not stored alongside any other customer?
+Anthropic uses a multi-tenant architecture for serving responses from our inference model to customer-provided prompts. We do not offer single-tenancy. However, while the physical systems hosting the inference model are shared, all customer data is logically separated to protect its confidentiality and integrity.
+
+U.S. Federal Compliance
+What is Claude for Government (C4G)?
+Are Claude’s models FedRAMP authorized?
+How do I find Claude for Government (C4G) in the FedRAMP Marketplace?
+Why is Claude for Government (C4G) listed under Palantir in the FedRAMP Marketplace?
+What are Claude Gov models?
+Model Training
+Will you be using our Claude for Work conversations to train your generative models?
+No. By default, we will not use your chats or coding sessions when using our Commercial products (Claude for Work, Anthropic API, etc.).
+
+If you provide feedback or otherwise explicitly opt-in to training, then we may use those materials to train our models. Learn more about disabling feedback for your Claude for Enterprise plan here.
+
+Other
+Is Anthropic willing to sign a BAA?
+I found a security bug. How can I let you know?
+What tools does Anthropic use to conduct due diligence on third-parties?
+Top
+
+

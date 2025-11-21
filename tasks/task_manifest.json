@@ -1,8 +1,7 @@
 {
-  "discovery_task.json": "0199e36e-3d45-15ec-5136-90cfa8323cb6",
-  "sub_processor_terms_analyzer.json": "019840e6-e560-76b3-61b6-d90e12ad698f",
-  "security_posture_analyzer.json": "0199ed5a-2f14-675b-de5d-0e019526b673",
-  "general_vendor_terms_analyzer.json": "019928c3-ab4a-270b-9202-f921095f68ce",
-  "document_classifier.json": "019a01b9-025c-592e-d231-48f8509ad88d",
-  "vendor_risk_reporter.json": "019a0665-cee6-4ba8-faf3-932f3d52e69c"
+  "discovery_task.json": "019aa1f0-972a-e776-7cfe-6409f6295000",
+  "document_classifier.json": "019aa1f0-9a93-7cf4-a579-4fc6ce42b17c",
+  "sub_processor_terms_analyzer.json": "019aa1f0-9d78-7ca4-95f4-400ca060c212",
+  "vendor_risk_reporter.json": "019aa1f0-a0a0-09b7-4a7d-dbe0414c89f7",
+  "security_posture_analyzer.json": "019aa1f0-a686-3295-ee92-f6b8bcad86cb"
 }
