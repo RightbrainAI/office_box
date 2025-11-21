@@ -1,4 +1,4 @@
-name: "Setup Rightbrain Tasks"
+name: "0. Setup Rightbrain Tasks"
 
 on:
   # Allows you to run this workflow manually from the Actions tab

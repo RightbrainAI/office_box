@@ -1,4 +1,4 @@
-name: Finalize Vendor Records on Approval
+name: "3. Finalize Vendor Records on Approval"
 
 on:
   issues:

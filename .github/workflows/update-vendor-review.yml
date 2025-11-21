@@ -1,4 +1,4 @@
-name: Update Vendor Review
+name: "4. Update Vendor Review"
 
 on:
   workflow_dispatch:

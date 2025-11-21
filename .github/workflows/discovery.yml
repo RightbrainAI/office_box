@@ -1,4 +1,4 @@
-name: 1. Vendor Document Discovery
+name: "1. Vendor Document Discovery"
 
 on:
   issues:
