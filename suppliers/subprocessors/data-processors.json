@@ -1,0 +1,16 @@
+[
+  {
+    "mitigations": "Request SOC 2 report within 30 days; Document liability gap in risk register; Review contract if expanding to sensitive data",
+    "risk_rating": "Low",
+    "usage_summary": "AI functionality for customer D&D game interactions",
+    "processor_name": "Anthropic",
+    "key_legal_finding": "Liability capped at 12 months' fees with no data breach carve-out, but acceptable given low-sensitivity game data",
+    "relationship_owner": "N/A",
+    "termination_notice": "30 days prior notice by Anthropic; Customer may terminate at any time",
+    "service_description": "Anthropic API to power AI functionality in our app",
+    "key_security_finding": "Strong security certifications (SOC 2, ISO 27001) and controls, though application security practices need verification",
+    "data_processing_status": "Processor",
+    "last_review_date": "2025-11-21",
+    "next_review_date": "2027-11-21"
+  }
+]

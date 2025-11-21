@@ -1,3 +1,7 @@
+Original Source URL: https://github.com/RightbrainAI/office_box/blob/main/_vendor_analysis_source/issue-4-Main_Security_Page.txt
+Approved on: 2025-11-21
+--------------------
+
 **Welcome to Anthropic! Before accessing our Services, please read these Commercial Terms of Service.**
 These Commercial Terms of Service (“**Terms** ”) are an agreement between Anthropic and you or the organization, company, or other entity that you represent (“**Customer** ”). “**Anthropic** ” means Anthropic Ireland, Limited if Customer resides in the European Economic Area (“**EEA** ”), Switzerland or UK, and Anthropic, PBC if Customer resides anywhere else. They govern Customer’s use of Anthropic API keys and any other Anthropic offerings that references these Terms, as well as all related Anthropic tools, documentation and services (the “**Services** ”). These Terms are effective on the earlier of the date that Customer first electronically consents to a version of these Terms and the date that Customer first accesses the Services (“**Effective Date** ”).
 **Please note : You may not enter into these Terms on behalf of an organization, company, or other entity unless you have the legal authority to bind that entity. Services under these Terms are not for consumer use. Our consumer offerings (e.g., Claude.ai) are governed by our [Consumer Terms of Service](https://www.anthropic.com/legal/terms) instead.**
