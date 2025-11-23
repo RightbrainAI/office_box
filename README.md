@@ -114,7 +114,7 @@ This project has been refactored for clarity and maintainability for its open-so
 
     * `ISSUE_TEMPLATE/`: Contains the issue template needed for the discover_documents.py script to parse inputs.
 
-* `eng/` & `general_vendors/`: (Auto-generated) These directories are created by commit_approved_vendor.py to store your final vendor data and audit logs.
+* `suppliers/eng/` & `suppliers/general_vendors/`: (Auto-generated) These directories are created by commit_approved_vendor.py to store your final vendor data and audit logs.
 
 * `_vendor_analysis_source/`: (Temporary) This directory is used to store fetched document text during an active review. It is automatically cleaned up by commit_approved_vendor.py.
 
