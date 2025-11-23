@@ -1,143 +1,101 @@
-## 🤝 Contributing Guide
+# 🤝 Contributing Guide
 
 First off, thank you for considering contributing to the AI-Powered Vendor Onboarding Tool! We're excited to have you.
 
 This project welcomes two main types of contributions:
 
-For Subject Matter Experts (SMEs): You can help by improving the AI's intelligence. This involves editing the JSON task templates (like system_prompt and user_prompt) to make the AI's analysis and risk reporting more accurate and insightful.
+1. Subject Matter Experts (SMEs): You help by improving the AI's intelligence. This involves editing the JSON task templates (like system_prompt) to make the AI's analysis and risk reporting more accurate and insightful.
 
-For Developers: You can help by improving the Python code, fixing bugs, or adding new features to the automation workflows.
+2. Developers: You help by improving the Python code, fixing bugs, or adding new features to the automation workflows.
 
-## 📜 The Golden Rules
+# 📜 The Golden Rules
 
-Start with an Issue: All contributions—whether they are bug reports, feature requests, or simple prompt tweaks—must begin by creating a GitHub Issue. This prevents duplicated work and allows us to discuss the change before you spend time on it.
+- **Start with an Issue:** All contributions—whether they are bug reports, feature requests, or prompt tweaks—must begin by creating a GitHub Issue. This prevents duplicated work.
 
-Be Respectful: Please be friendly, respectful, and collaborative in all discussions and contributions.
+- **Be Respectful:** Please be friendly, respectful, and collaborative in all discussions.
 
-Get Help: If you have questions about the contribution process, you can file an Issue or email us at support@rightbrain.ai.
+- **Get Help:** If you have questions, file an Issue or email support.
 
-## 🧑‍⚖️ How to Contribute as a Subject Matter Expert (AI Prompt Editor)
+# 🧑‍⚖️ How to Contribute as a Subject Matter Expert (AI Prompt Editor)
 
-Your role is to improve the intelligence of the AI Tasks, which are defined in the .json files within the task_templates/ directory.
+Your role is to improve the intelligence of the AI Tasks defined in the .json files within the task_templates/ directory.
 
-### ⚠️ SME Golden Rules: What to Edit
+## ⚠️ SME Golden Rules: Managing Automation Risk
 
-To prevent breaking the automation, it is critical that you only edit specific fields within the JSON task files.
+The AI tasks are tightly integrated with Python automation scripts. Because the Python code injects specific data into the prompts and reads specific data from the outputs, you must follow these rules to avoid breaking the tool.
 
-### ✅ Safe to Edit:
+### ✅ Safe to Edit (Go Wild!)
 
-These fields control the AI's "brain" and are perfect for SME contributions:
+These changes are low-risk and high-impact:
 
-* **name:** The display name of the task.
+**System Prompt (system_prompt):** This is the best place to contribute. You can completely rewrite the AI's instructions, persona, and reasoning logic.
 
-* **description:** A high-level description of what the task does.
+- _Safe Change:_ "You are a cynical security auditor who distrusts vagueness."
 
-* **system_prompt:** The AI's persona, rules, and overall instructions.
+- _Safe Change:_ "Focus specifically on UK GDPR data transfer mechanisms."
 
-* **user_prompt:** The specific instructions and dynamic inputs ({variable}) for a single run.
+**Output Descriptions:** Inside output_format, you can edit the description of any field. This is often the best way to fix AI hallucinations.
 
-### ❌ Do Not Edit (File an Issue Instead):
+**Adding New Output Fields:** You can generally add new fields to the output_format.
 
-Changing these fields will break the Python scripts and is considered a "Developer Change."
+- _Example:_ Adding a confidence_score field to an existing object.
 
-* **output_format:** (Critical) Do not add, remove, or rename any fields here. This JSON schema is what the Python code expects. If you think the schema is wrong or missing something, please file an Issue to discuss it.
+- _Result:_ The AI will generate it, and it will appear in the raw JSON logs. (Note: It won't appear in the GitHub comment summary until a developer updates the Python formatter, but it won't break the build).
 
-* **llm_model_id:** Do not change the AI model.
+### ☢️ Dangerous (Requires Developer Pair)
 
-* input_processors:** Do not change any input processors.
+These changes will likely break the Python automation:
 
-* Any other top-level field not in the "Safe to Edit" list.
+**User Prompt Variables (user_prompt):** The user_prompt contains variables wrapped in curly braces, like {company_profile} or {document_text}.
 
-If you believe one of these fields needs to be changed, please file a new Issue with the "feature request" template to discuss it.
+- **Do NOT remove variables:** The Python script specifically injects data here. Removing them effectively "blinds" the AI to that data.
 
-## 📝 Your First Contribution (The Easy Way)
+- **Do NOT add new variables:** If you add {new_data_point} to the prompt, the Python script does not know it needs to send that data. The task will fail or the variable will remain as raw text.
 
-You don't need to be a Git expert. You can make your changes entirely through the GitHub website.
+**Renaming/Deleting Output Fields:** The Python scripts look for specific JSON keys (e.g., overall_assessment, key_legal_risks) to generate the final report.
 
-1. **Find the file:** Navigate to the task_templates/ directory in this repository.
+- **Do NOT rename keys:** If you rename overall_assessment to risk_score, the report generation will fail.
 
-2. **Open the file:** Click on the task you want to improve (e.g., sub_processor_terms_analyzer.json).
+- **Do NOT delete fields:** If you delete a field the code expects, the script may crash.
 
-3. **Click the Edit icon:** In the top-right corner of the file view, click the pencil icon (✏️) to "Edit this file."
+## 🧪 How to Test Your Changes
 
-4. **Make your changes:** Edit the system_prompt or user_prompt in the text editor.
+**Use the Rightbrain UI:** The best way to test is to copy your modified JSON into a temporary task in your Rightbrain account.
 
-5. **Save your changes:** Once you're done, scroll to the bottom of the page.
+**Manually Fill Variables:** When you run the task in the UI, it will ask you to manually fill in the variables (like {company_profile}). You can copy this data from a previous GitHub issue comment to test realistic scenarios.
 
-6. **Write a clear commit message** (e.g., "task: Improves risk analysis in vendor_risk_reporter").
+**Verify Output:** Check that the AI output follows your new instructions and that the JSON structure is valid.
 
-7. **Add a description** (e.g., "Updated the system prompt to be more aggressive in flagging liability carve-outs.")
+# 👩‍💻 How to Contribute as a Developer (Python Code)
 
-8. Make sure "Create a new branch for this commit and start a pull request" is selected.
+## 🔀 The Workflow
 
-9. Click "Propose changes."
+1. Fork the repository to your own GitHub account.
 
-10. **Open the Pull Request:** On the next screen, click "Create pull request." Please fill out the template, linking to the Issue you created in Step 1.
+2. Clone your fork: git clone https://github.com/YOUR-USERNAME/vendor-risk-tool.git
 
-### 🧪 Testing Your Changes (Highly Recommended)
+3. Branch: git checkout -b feat/my-new-feature
 
-The best way to test your prompt changes is in your own Rightbrain account.
+4. Edit: Make your changes.
 
-1. In your Rightbrain project, create a new, temporary Task.
+5. Commit & Push: Push to your fork.
 
-2. Copy and paste your entire edited JSON from GitHub into the task's JSON editor.
+6. Pull Request: Open a PR linking to the Issue.
 
-3. Go to the "Run Task" view in the Rightbrain UI.
+## 💻 Local Setup
 
-4. Fill in the input variables with test data and run the task.
+1. Ensure you have Python 3.9+ installed.
 
-5. Check the results. Does the AI's output match your new instructions? Is the JSON output still valid?
+2. Install dependencies: pip install -r requirements.txt
 
-6. In your Pull Request, please describe the tests you ran and confirm that the new prompt produced better results. If you don't have a Rightbrain account, please explain in detail why you believe your changes are an improvement.
+3. Set up your .env file with RB_API_KEY and GITHUB_TOKEN (see .env.example).
 
-## 👩‍💻 How to Contribute as a Developer (Python Code)
-
-(Note: This section is a placeholder. We will add details on code style and testing soon!)
-
-### The Workflow
-
-Fork the repository to your own GitHub account.
-
-Clone your fork to your local machine: git clone https://github.com/YOUR-USERNAME/vendor-risk-tool.git
-
-Create a branch for your changes: git checkout -b feat/my-new-feature
-
-Make your changes.
-
-Commit and push to your fork.
-
-Open a Pull Request.
-
-⚙️ Local Setup
-
-(Placeholder)
-
-We will add details on setting up a Python virtual environment and installing dependencies from requirements.txt here.
-
-🎨 Code Style
-
-(Placeholder)
-
-We will add details on our linter (e.g., black, flake8) and any code formatting standards here.
-
-🔬 Running Tests
-
-(Placeholder)
-
-We will add details on how to run the test suite (e.g., pytest) here.
-
-✅ Submitting Your Pull Request
-
-Before you submit your Pull Request, please make sure you've done the following:
+# 📋 Checklist Before Submitting
 
 - [ ] Linked your Pull Request to the GitHub Issue it resolves.
 
-- [ ] Written a clear, descriptive title (e.g., fix: ..., feat: ..., task: ...).
+- [ ] SMEs: Confirmed you did not remove {variables} from the User Prompt or rename Output keys.
 
-- [ ] For SMEs: Confirmed you only edited "Safe to Edit" fields.
-
-- [ ] For SMEs: Described your testing process and results in the PR description.
-
-- [ ] For Developers: Ensured your code passes all (forthcoming) tests and style checks.
+- [ ] Developers: Ensured code passes linting and local tests.
 
 Thank you for helping make this tool better!
