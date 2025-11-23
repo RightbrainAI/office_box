@@ -130,14 +130,14 @@ We will add details on how to run the test suite (e.g., pytest) here.
 
 Before you submit your Pull Request, please make sure you've done the following:
 
-[ ] Linked your Pull Request to the GitHub Issue it resolves.
+- [ ] Linked your Pull Request to the GitHub Issue it resolves.
 
-[ ] Written a clear, descriptive title (e.g., fix: ..., feat: ..., task: ...).
+- [ ] Written a clear, descriptive title (e.g., fix: ..., feat: ..., task: ...).
 
-[ ] For SMEs: Confirmed you only edited "Safe to Edit" fields.
+- [ ] For SMEs: Confirmed you only edited "Safe to Edit" fields.
 
-[ ] For SMEs: Described your testing process and results in the PR description.
+- [ ] For SMEs: Described your testing process and results in the PR description.
 
-[ ] For Developers: Ensured your code passes all (forthcoming) tests and style checks.
+- [ ] For Developers: Ensured your code passes all (forthcoming) tests and style checks.
 
 Thank you for helping make this tool better!
