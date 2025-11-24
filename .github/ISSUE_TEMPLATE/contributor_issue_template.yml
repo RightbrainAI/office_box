@@ -1,0 +1,75 @@
+name: 🧠 SME Prompt Improvement
+description: Suggest a change to the AI's logic or risk analysis rules.
+title: 'sme: [Short description of change]'
+labels: ["prompt-improvement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve the AI! 
+        
+        Please contribute in whichever way suits your workflow best:
+        * **Paste your changes below:** Great for quick edits or if you prefer to avoid Git.
+        * **Link a Pull Request:** Perfect if you are comfortable with Git and want to run local tests.
+
+  - type: input
+    id: task
+    attributes:
+      label: Which Task are you improving?
+      description: e.g., `vendor_risk_reporter.json`, `sub_processor_terms_analyzer.json`
+      placeholder: filename.json
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-behavior
+    attributes:
+      label: What is the current behavior?
+      description: Describe what the AI is currently doing wrong or missing.
+      placeholder: e.g., "The AI currently misses liability caps if they are in the DPA."
+    validations:
+      required: true
+
+  - type: textarea
+    id: desired-behavior
+    attributes:
+      label: What is the desired behavior?
+      description: Describe what the AI *should* do instead.
+      placeholder: e.g., "The AI should check the DPA for liability caps if they are missing from the MSA."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-change
+    attributes:
+      label: Proposed Change / PR Link
+      description: Paste your suggested text edits here, OR paste the link to your Pull Request if you've already opened one.
+      render: json
+    validations:
+      required: true
+
+  - type: dropdown
+    id: testing
+    attributes:
+      label: Did you test this?
+      options:
+        - Yes, I tested in the Rightbrain UI.
+        - No, I need a developer to help test.
+        - I have opened a PR with test results.
+    validations:
+      required: true
+
+  - type: textarea
+    id: test-results
+    attributes:
+      label: Test Results (Optional)
+      description: If you tested manually in the UI, paste the output here to help us verify the fix. If you opened a PR, you can leave this blank.
+      placeholder: e.g., "Before: Missed the liability cap. After: Correctly identified the cap in section 9.2."
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ### ⚠️ Heads Up on Automation Risk
+        Please note that the Python scripts rely on specific **`{variables}`** in the user prompt and **JSON keys** in the output. Please keep these in mind while editing (or let the reviewer check for them!).
