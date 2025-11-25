@@ -1,0 +1,524 @@
+Skip to content
+Last updated: 26 August 2025
+# Cookie Policy
+## About the Cookie Policy
+When you visit the Sum and Substance Ltd.’s (hereinafter – Sumsub) websites (sumsub.com) and its subdomains, we automatically collect certain data using cookies, web beacons, tracking pixels, and other tracking technologies. This Cookie Policy details the tracking technologies we use and why we use them.The types of cookies we collect when you visit Sumsub's public facing websites, including subdomains (e.g., cockpit.sumsub.com) are listed below in [this Table](https://sumsub.com/cookie-policy/#cockpit-table).
+What are cookies?
+Cookies are small text files that assign a unique and temporary identifier to your device when you visit our website and its subdomains. Upon any following visits, your browser provides this identifier — your “cookies” — to our website and its subdomains.
+Why does Sumsub use cookies?
+We use cookies to store your preferences and settings, enable you to sign in, personalize content and ads, combat fraud, and analyze traffic, among other legitimate purposes. Accordingly, cookies help us improve user experience and understand how our website and its subdomains are being used. You can enable or disable optional cookies as desired.
+What types of cookies does Sumsub use?
+  * Necessary cookies
+We use these by default, as they enable you to navigate our website and its subdomains and use its features. Without the required cookies, our website and its subdomains cannot function properly. Therefore, this is the only type of cookie that cannot be disabled. Please note that required cookies do not collect any information that can be used to identify you.
+  * Advertisement cookies
+These collect information about your online activity over time in order to personalize advertisements—allowing us to limit how often you see our ads and measure the effectiveness of our marketing campaigns.
+  * Performance/functionality cookies
+These collect information about how you use our website and its subdomains and its features and are used to enhance the performance and functionality of our website and its subdomains. If you choose to disable these cookies, certain functionality, such as video, may become unavailable; or, you may be required to enter login credentials each time you visit our website and its subdomains.
+  * Analytics cookies
+These gather data on how you interact with our website and its subdomains. They show us which pages are visited most frequently and help detect any difficulties you may have while using our website and its subdomains.
+  * Our Cookies
+These are “first-party cookies” that allow the features and functionality of our website and its subdomains to work properly. You can manually disable some of these in your browser, but this may impact your experience with our website and its subdomains.
+  * Third-Party Cookies
+These may be placed on your device when you visit our website and its subdomains through third parties that use our services. Third parties may track you or gather data using these cookies. You can manually disable them in your browser. Sumsub is not responsible for third-party cookies.
+
+
+How long does Sumsub keep my cookies?
+The storage period may vary based on cookie-type and your cookie preferences. The table below indicates the retention period for each file.
+Where can I find descriptions of each cookie we use?
+The table below describes all the cookies we use. It includes the name, type, and retention period of each cookie-type as well as a description of the purpose of each file.
+Cookie table for: Sumsub.com, Greenflag.me
+Necessary cookies
+Cookie
+Type
+Duration
+Description
+cookielawinfo-checkbox-analytics
+firstparty
+11 months 29 days23 hours 59 minutes
+This cookie is set by us and is used store user consent for cookies under the ''Analytics'' category.
+cookielawinfo-checkbox-functional
+firstparty
+11 months 29 days 23 hours 59 minutes
+The cookie is set by us and is used to store user consent for cookies under the ''Functionality'' category.
+cookielawinfo-checkbox-advertisement
+firstparty
+11 months 29 days 23 hours 59 minutes
+The cookie is set by us and is used for store user consent for cookies under the ''Advertisement'' category.
+viewed_cookie_policy
+firstparty
+11 months
+The cookie is set by us and is used and is used to store whether or not a user has consented to the use of cookies. It does not store any personal data.
+cookielawinfo-checkbox-necessary
+firstparty
+11 months
+The cookie is set by us and is used and is used to store user consent for the cookies in the "Necessary" category.
+__cf_bm
+thirdparty
+30 minutes
+The cookie is set by Cloudflare and is used to distinguish between humans and bots in order to protect the website and its subdomains from malicious traffic. It does not store any personal data.
+Analytics cookies
+Cookie
+Type
+Duration
+Description
+utm_campaign
+firstparty
+364 days
+The cookie is used to identify the name of a specific product promotion or strategic campaign and keep track of site usage for the site's analytics report.
+utm_medium
+firstparty
+364 days
+The cookie is used to identify the type of the traffic and keep track of site usage for the site's analytics report.
+utm_source
+firstparty
+364 days
+The cookie is used to identify the source of the traffic and keep track of site usage for the site's analytics report.
+utm_term
+firstparty
+364 days
+The cookie is used to store the value of the key phrase used in any of the search engines to get to our website and its subdomains specified in the url parameter utm_term, regardless of the source of the transition to our site for the advertising's analytics report.
+_gaexp_rc
+thirdparty
+past
+This cookie is set by Google Analytics and is used to determine a user's inclusion in an experiment and the expiry of experiments that a user has been included in.
+_gaexp
+thirdparty
+1 months 25 days 5 hours 39 minutes
+This cookie is set by Google Analytics and is used to determine a user's inclusion in an experiment and the expiry of experiments that a user has been included in.
+GPS
+thirdparty
+29 minutes
+This cookie is set by Youtube and is used for registering a unique ID for tracking users based on their geographic location.
+lissc
+thirdparty
+11 months 29 days23 hours 59 minutes
+This cookie is set by LinkedIn and is used for tracking embedded services and ensuring that the SameSite attribute is correct for all cookies in a browser.
+_uetsid
+thirdparty
+23 hours 59 minutes
+This cookie is set by Microsoft Bing Ads and is used to gather analytics on how visitors use a website and its subdomains. This information is used to compile reports and improve our website and its subdomains.
+_ga_ZF910PGWRL
+thirdparty
+1 years 11 months28 days 23 hours59 minutes
+This cookie is stored by Google Analytics and is used to store information on how visitors use a website and its subdomains and helps create analytics reports on website and its subdomains and its subdomains usage.
+_gat_UA-79634211-1
+thirdparty
+1 year
+This cookie is set by Google Analytics and is used to store information on how visitors use a website and its subdomains and helps create analytics reports on website and its subdomains usage in order to throttle the request rate.
+prism_649983765
+thirdparty
+29 days 23 hours59 minutes
+This cookie is set by Active Campaign and is used to store information about how visitors use a website and its subdomains and helps create analytics reports about how the website and its subdomains is used.
+_gid
+thirdparty
+24 hours
+This cookie is installed by Google Analytics. The cookie is used to store information of how visitors use a website and its subdomains (such as number of visitors, pages viewed, and from which pages the users arrived) and helps in creating an analytics report.
+site_user_id
+firstparty
+1 year
+A unique user identifier that we assign to site visitors to analyze their interaction with the site. It does not store any personal data.
+src
+firstparty
+session
+This cookie is used to identify the address of the web page, from which our website and its subdomains was visited.
+_lfa_test_cookie_stored
+thirdparty
+1 second
+A cookie that is only temporarily used to check if the browser supports cookies or not. This cookie might show up in a cookie scanner for your consent management platform.
+li_fat_id
+thirdparty
+30 days
+Indirect identifier for Members (Linkedin Users) for conversion tracking, retargeting, analytics set by LinkedIn.
+_vis_opt_exp_{CAMPAIGNID}_goal_{GOALID}
+thirdparty
+100 Days
+This cookie is set by VWO. This cookie is created when a campaign goal is triggered. This cookie, when created, will always have a value of 1
+_vis_opt_test_cookie
+thirdparty
+Expires on browser close
+This cookie is set by VWO. This cookie is created to detect if the cookies are enabled on the visitor’s browser or not. It also helps in tracking the number of browser sessions a visitor has gone through. The value of this cookie is always 1
+_vis_opt_exp_{CAMPAIGNID}_combi
+thirdparty
+100 Days
+This cookie is set by VWO. This cookie is created when a visitor is chosen for a particular variation for a test. This cookie makes sure that visitors see the same variation when they revisit the page in the future. Here the Control has a value of 1, Variation #1 has a value of 2, Variation #2 has a value of 3, and so on
+_vis_opt_exp_{CAMPAIGNID}_exclude
+thirdparty
+100 Days
+This cookie is set by VWO. This cookie is created when a visitor has been excluded from a Test Campaign due to the traffic percentage specifications. The value is always 1
+_vis_opt_exp_{CAMPAIGNID}_split
+thirdparty
+100 Days
+This cookie is set by VWO. This cookie is created when one of the variations is chosen for the visitor, but the visitor is not yet redirected to the variation page. It exists so that VWO can verify that the variation page corresponds to the chosen variation after landing on the page. The value is >=2 (as 1 corresponds to Control and it’s not created in case the Control is chosen)
+_vis_opt_s
+thirdparty
+100 days
+This cookie is set by VWO. This cookie tracks session created for a visitor, i.e., the number of times the browser was closed and reopened. The value is >=1, followed by a pipe sign. For example, the value of 2 indicates that the visitor restarted the browser once while 3 means twice
+_vis_opt_out
+thirdparty
+10 years
+This cookie is set by VWO. This cookie indicates that the visitor should not be made part of any campaign. Its value is 1
+_vwo_uuid
+thirdparty
+10 Years
+This cookie is set by VWO. This cookie generates a unique id for every visitor and is used for the report segmentation feature in VWO, and it also allows you to view data in a more refined manner
+_vwo_uuid_{CAMPAIGNID}
+thirdparty
+10 Years
+This cookie is set by VWO. This cookie is created for each cross-domain campaign. It generates a unique id for every visitor and is used for the report segmentation feature in VWO, and it also allows you to view data in a more refined manner
+_vwo_ds
+thirdparty
+60 days
+This cookie is set by VWO. This cookie stores persistent visitor-level data for VWO Insights
+_vwo_sn
+thirdparty
+30 mins and reset again to 30 mins on visitor activity
+This cookie is set by VWO. This cookie stores session-level information
+_vwo_uuid_v2
+thirdparty
+366 Days
+This cookie is set by VWO. This cookie calculates unique traffic on a website and its subdomains
+_vis_opt_exp_{CAMPAIGNID}_combi_choose
+thirdparty
+Persists until campaign changes are applied
+This cookie is set by VWO. This cookie stores the chosen combination. It’s a temporary cookie that gets deleted when the campaign changes are applied
+_vwo_referrer
+thirdparty
+15 secs
+This cookie is set by VWO. This cookie stores referral info allowing VWO to identify the original Traffic source in case of the Split URL campaign
+_vwo
+thirdparty
+Expires in 2096 Years
+This cookie is set by VWO. This cookie is a jar of all the cookies. It is currently created only for the Safari browser. In the future, it would replace all the cookies. The actual expiry of a cookie doesn’t matter as it stores the expiry of cookies set in it and keeps on expiring them
+_vwo_global_opt_out
+thirdparty
+100 days
+This cookie is set by VWO. This cookie is persisted when a visitor opts out of vwo on all websites in a given browser.
+_vwo_ssm
+thirdparty
+3650 days
+This cookie is set by VWO. This cookie is used for testing and is created only on sites that use the HTTP protocol. This is used to check if VWO can create cookies on them, post which this cookie is deleted.
+ln_or
+thirdparty
+1 day
+This cookie is set be LinkedIn. This cookie registers statistical data on users' behaviour on the website and its subdomains.
+intercom-id-ov17f0j7
+thirdparty
+9 months
+Anonymous visitor identifier cookie. As people visit Sumsub website and its subdomains, they get this cookie.
+intercom-session-ov17f0j7
+thirdparty
+7 days
+Identifier for each unique browser session. The user can access their conversations and have data communicated on logged out pages for 1 week, as long as the session isn't intentionally terminated with `Intercom('shutdown');`, which usually happens on logout.
+intercom-device-id-ov17f0j7
+thirdparty
+9 months
+Identifier for each unique device that interacts with the Intercom Messenger. Refreshed on each successful ping, extending it for another 9 months.The user can access the conversations that were created on this device for the durations of this cookies life.
+sliguid
+thirdparty
+12 months
+This cookie is set by Salesloft. This cookie provides an anonymous user identifier across multiple requests.
+slirequested
+thirdparty
+12 months
+This cookie is set by Salesloft. Once the sliguid cookie has been confirmed against a central server, this cookie is set for every request that comes in.
+slireg
+thirdparty
+7 days
+This cookie identifies the Salesloft server region that Sumsub's data is on.
+sli_token
+thirdparty
+30 days
+This cookie is set by Salesloft. This cookie is set when the email recipient clicks through a Live Web Tracking tracked link.
+site_identity
+thirdparty
+1000 days
+This cookie is set by Salesloft. This cookie is set when the email recipient clicks through a Live Web Tracking tracked link. This cookie is for scout.salesloft.com. We do this to allow multi-site tracking.
+__hstc
+thirdparty
+6 months
+This cookie is set by Hubspot. The main cookie for tracking visitors.It contains the domain, hubspotutk, initial timestamp (first visit), last timestamp (last visit), current timestamp (this visit), and session number (increments for each subsequent session).
+hubspotutk
+thirdparty
+6 months
+This cookie is set by Hubspot. This cookie keeps track of a visitor's identity. It is passed to HubSpot on form submission and used when deduplicating contacts. It contains an opaque GUID to represent the current visitor.
+__hssc
+thirdparty
+30 minutes
+This cookie is set by Hubspot. This cookie keeps track of sessions. This is used to determine if HubSpot should increment the session number and timestamps in the __hstc cookie. It contains the domain, viewCount (increments each pageView in a session), and session start timestamp.
+__hssrc
+thirdparty
+Session
+This cookie is set by Hubspot. Whenever HubSpot changes the session cookie, this cookie is also set to determine if the visitor has restarted their browser. If this cookie does not exist when HubSpot manages cookies, it is considered a new session. It contains the value "1" when present.
+sa_aid_pv
+thirdparty
+1 hour
+This cookie is set by StackAdapt and stores an auction ID of a recent ad click (if engagement tracking is enabled on the universal pixel).
+sa_*_sid
+thirdparty
+1 hour
+This cookie is set by StackAdapt and stores an impression ID of each Auction ID of a recent ad click (if engagement tracking is enabled on the universal pixel).
+sa_*_adurl
+thirdparty
+1 hour
+This cookie is set by StackAdapt and stores a region ID of each Auction ID of a recent ad click (if engagement tracking is enabled on the universal pixel).
+Performance/functionality cookies
+Cookie
+Type
+Duration
+Description
+bcookie
+thirdparty
+1 years 11 months29 days 11 hours37 minutes
+This cookie is set by LinkedIn and is used to enable LinkedIn functionalities on a page.
+lidc
+thirdparty
+23 hours 59 minutes
+This cookie is set by LinkedIn and is used for routing in order to optimize data center selection.
+locale
+firstparty
+4 years 11 months28 days 23 hours59 minutes
+This cookie is used to store the language preferences of a user in order to provide content in the user's preferred language when they visit our website and its subdomains.
+form_data
+firstparty
+30 days
+This cookie is set by us and is used to store and transfer personal data provided by a user from sumsub.com to cockpit.sumsub.com
+_ga
+thirdparty
+2 years
+This cookie is stored by Google Analytics and is used to distinguish visitors on our website and its subdomains and helps create analytics reports on website and its subdomains usage.
+Advertisement cookies
+Cookie
+Type
+Duration
+Description
+_fbc
+thirdparty
+2 months 28 days23 hours 59 minutes
+This cookie is set by Facebook when user arrives at our website and its subdomains from any Ad that our company promote on Facebook, and the destination URL contains the click identifier «fbclid» (Facebook click identificator).
+_an_uid
+thirdparty
+7 days
+This cookies is set by 6sense and is used to present the user with relevant content and advertisement. The service is provided by third-party advertisement hubs, which facilitate real-time bidding for advertisers.
+YSC
+thirdparty
+session
+This cookie is set by Youtube and is used to track the views of embedded Youtube videos.
+IDE
+thirdparty
+1 years 23 days 23 hours 59 minutes
+This cookie is set by Google DoubleClick and is used to store information about how users interact with our website and its subdomains as well as any other advertisements prior to visiting our website and its subdomains. This is used to present users with ads that are relevant to them.
+_fbp
+thirdparty
+2 months 28 days23 hours 59 minutes
+This cookie is set by Facebook and is used to deliver advertisements on Facebook or digital platforms powered by Facebook after visiting our website and its subdomains.
+fr
+thirdparty
+2 months 28 days23 hours 59 minutes
+The cookie is set by Facebook and is used to show advertisements relevant to users as well measure and improve advertisements. The cookie also tracks user behavior on sites that have Facebook Pixel or Facebook Social plugins.
+bscookie
+thirdparty
+1 years 11 months 29 days 11 hours 37 minutes
+This cookie is set by LinkedIn and is used to identify users' browser.
+personalization_id
+thirdparty
+1 years 11 months28 days 23 hours59 minutes
+This cookie is set by twitter.com and is used to integrate sharing features on Twitter. It also stores information about how visitors use our website and its subdomains for tracking and targeting.
+VISITOR_INFO1_LIVE
+thirdparty
+5 months 26 days 23 hours 59 minutes
+This cookie is set by Youtube and is used to track embedded Youtube videos.
+MUID
+thirdparty
+1 years 23 days23 hours 59 minutes
+Used by Microsoft as a unique identifier. The cookie is set by embedded Microsoft scripts. The purpose of this cookie is to synchronize this unique identifier across many different Microsoft domains to enable user tracking.
+_rdt_uuid
+thirdparty
+2 months 28 days23 hours 59 minutes
+This cookie is set by Reddit and is used for remarketing on reddit.com.
+_uetvid
+thirdparty
+16 days 5 hours59 minutes
+This is a cookie utilised by Microsoft Bing Ads and is a tracking cookie. It allows us to engage with a user that has previously visited our website and its subdomains. This is a Microsoft cookie.
+__ar_v4
+thirdparty
+1 year
+This cookie is associated with the DoubleClick advertising service from Google. It helps with tracking conversion rates for ads.
+_gd_visitor
+thirdparty
+1 year
+6sense cookie that collects visitor data related to the user’s visit to the website and its subdomains, such as number of visits, average time spent on the website and its subdomains and which pages have been loaded, for the purpose of serving targeted advertisements.
+_gd_session
+thirdparty
+4 hours
+6sense cookie that collects visitor data related to the user’s visit to the website and its subdomains, such as number of visits, average time spent on the website and its subdomains and which pages have been loaded, for the purpose of serving targeted advertisements.
+_gcl_aw
+thirdparty
+90 days
+This cookie is set by Google Ads and is used to provide ad delivery or retargeting.
+_gcl_dc
+thirdparty
+90 days
+This cookie is set by Google Ads and is used to provide ad delivery or retargeting.
+_gcl_gb
+thirdparty
+90 days
+This cookie is set by Google Ads and is used to provide ad delivery or retargeting.
+sa-user-id
+thirdparty
+1 year
+This cookie is set by StackAdapt and is used to be able to uniquely identify a user for retargeting, conversion, or look-a-like purposes.
+sa-user-id-v2
+thirdparty
+1 year
+This cookie is set by StackAdapt and is used to be able to uniquely identify a user for retargeting, conversion, or look-a-like purposes.
+sa-user-id-v3
+thirdparty
+1 year
+This cookie is set by StackAdapt and is used to be able to uniquely identify a user for retargeting, conversion, or look-a-like purposes.
+sa-camp-*
+thirdparty
+90 days
+This cookie is set by StackAdapt and is used to track a campaign ID that a user has viewed or clicked.
+sa-r-date
+thirdparty
+30 days
+This cookie is set by StackAdapt and is used for attribution and optimization.
+sa-r-source
+thirdparty
+30 days
+This cookie is set by StackAdapt and is used for attribution and optimization.
+sa-u-date
+thirdparty
+30 days
+This cookie is set by StackAdapt and is used for attribution and optimization.
+sa-u-source
+thirdparty
+30 days
+This cookie is set by StackAdapt and is used for attribution and optimization.
+_gcl_au
+thirdparty
+90 days
+The cookie is set by Google AdSense and is used to store and track conversions as well as to measure the efficiency of ads across the website and its subdomains.
+cockpit.sumsub.com cookie table
+Necessary cookies
+Cookie
+Type
+Duration
+Description
+_ss_ver
+firstparty
+Session
+For navigation across different application environments
+CONSENT
+thirdparty
+8 month
+This cookie is set by Google and intended for storing user’s settings in the search engine, for advertising and for analyzing the use of the search engine recorded by Google for its purposes.
+1P_JAR
+thirdparty
+6 months
+This cookie is set by Google and used for logging in to our website and its subdomains with a Google account.
+NID
+thirdparty
+30 days
+This cookie is set by Google and used for logging in to our website and its subdomains with a Google account.
+__Host-1PLSID
+thirdparty
+2 years
+This cookie is set by Google and used for logging in to our website and its subdomains with a Google account.
+__Host-3PLSID
+thirdparty
+2 years
+This cookie is set by Google and used for logging in to our website and its subdomains with a Google account.
+__Host-GAPS
+thirdparty
+2 years
+This cookie is set by Google and used for logging in to our website and its subdomains with a Google account.
+__Secure-1PAPISID
+thirdparty
+2 years
+This cookie is set by Google and used for logging in to our website and its subdomains with a Google account.
+__Secure-1PSID
+thirdparty
+2 years
+This cookie is set by Google and used for logging in to our website and its subdomains with a Google account.
+__Secure-1PSIDCC
+thirdparty
+2 years
+This cookie is set by Google and used for logging in to our website and its subdomains with a Google account.
+__Secure-3PAPISID
+thirdparty
+2 years
+This cookie is set by Google and used for logging in to our website and its subdomains with a Google account.
+__Secure-3PSID
+thirdparty
+2 years
+This cookie is set by Google and used for logging in to our website and its subdomains with a Google account.
+__Secure-3PSIDCC
+thirdparty
+1 year
+This cookie is set by Google and used for logging in to our website and its subdomains with a Google account.
+ACCOUNT_CHOOSER
+thirdparty
+2 years
+This cookie is set by Google and used for logging in to our website and its subdomains with a Google account.
+ADS_VISITOR_ID
+thirdparty
+6 months
+This cookie is set by Google Ads and is required to use the options and on-site web services
+AEC
+thirdparty
+6 months
+This cookie is set by Google and used for logging in to our website and its subdomains with a Google account.
+APISID
+thirdparty
+2 years
+This cookie is set by Google and used for logging in to our website and its subdomains with a Google account.
+HSID
+thirdparty
+2 years
+This cookie is set by Google for security to confirm visitor authenticity, prevent fraudulent use of login data and protect visitor data from unauthorized access.
+LSID
+thirdparty
+2 years
+This cookie is set by Google and used for logging in to our website and its subdomains with a Google account.
+LSOLH
+thirdparty
+2 years
+This cookie is set by Google to link devices usage and visits to our website and its subdomains with your Google account / user.
+OTZ
+thirdparty
+2 years
+This cookie is set by Google and used for logging in to our website and its subdomains with a Google account.
+SAPISID
+thirdparty
+2 years
+This cookie is set by Google and used for logging in to our website and its subdomains with a Google account.
+SID
+thirdparty
+2 years
+This cookie is set by Google and contains digitally signed and encrypted records of a user’s Google Account ID and most recent sign-in time. It allows Google to block many types of attack, such as attempts to steal the content of forms submitted in Google services.
+SIDCC
+thirdparty
+1 year
+This cookie is set by Google to provide the identification of trusted web traffic.
+SMSV
+thirdparty
+309 days
+This cookie is set by Google to link devices usage and visits to our website and its subdomains with your Google account / user.
+SSID
+thirdparty
+2 years
+This cookie is set by Google to collect visitor information for videos hosted by YouTube on maps integrated with Google Maps.
+user_id
+thirdparty
+Session
+This cookie is set by Google and used for logging in to our website and its subdomains with a Google account.
+Performance/functionality cookies
+Same as provided for Sumsub.com
+Advertisement cookies
+Same as provided for Sumsub.com
+How do I change my cookie settings?
+When you first visit our website and its subdomains, you will be notified about options for customizing cookie preferences. You can change your cookie preferences at any time by clicking on the ‘Manage Your Cookies’. Adjust the available sliders to ‘Enabled’ or ‘Disabled’ and then click ‘Browse with selected cookies’.A variety of tools can be used to control the data collected by cookies. Most web browsers enable you to control cookies through the browser settings. Accordingly, you can limit how websites and its subdomains use cookies and withdraw consent by clearing or blocking cookies.
+If you have any questions about our Cookie Policy, please contact us at hello@sumsub.com or privacy@sumsub.com. Our technical and legal support works 24/7 and will quickly be in touch.
+How do we make changes to our Cookie Policy?
+Our Cookie Policy may change as our website and its subdomains and services continue to improve and expand. Additionally, our Cookie Policy may change if legal and business conditions impact personal data protection. Our Cookie Policy is available on our website, sumsub.com.Sumsub reserves the right to make amendments to our Cookie Policy at any time and for any reason. Any amendments will be effective immediately upon us posting the updated Cookie Policy on our website. Users of our website and its subdomains waive the right to receive specific notice about such amendments.You are invited to review this Cookie Policy at any time to stay informed about updates. You will be deemed to have been made aware of and have accepted the amendments in any revised Cookie Policy as a result of your continued use of the Site after the date of publication of such revised Cookie Policy.
