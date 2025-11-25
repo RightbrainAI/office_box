@@ -1,0 +1,53 @@
+Cookie Break Time
+We use cookies to enhance the functionality of our website and its subdomains, and to personalize content and ads, **always prioritizing your privacy and data security**. You have the control to enable or disable optional cookies as you wish. For a deeper dive into our cookie usage, do check out our [Cookie Policy](https://sumsub.com/cookie-policy/).
+Manage cookiesAccept all cookies
+Skip to content
+# Sumsub Trust Center
+Setting new standards in compliance, fraud prevention, and verification is only half the story — at the heart of our commitment is complete transparency with our clients about the robust systems, certifications, audits, and policies that back it up. We conduct regular penetration testing and adhere to stringent data privacy regulations, including GDPR and CCPA, to safeguard your information with unwavering diligence. These efforts, combined with our comprehensive security measures, position Sumsub as a globally trusted and secure verification leader, serving industries such as fintech, cryptocurrency, transportation, online marketplaces, and beyond.
+To maintain transparency, we’ve established the Sumsub Trust Center—a dedicated hub where clients can independently evaluate our security practices, access restricted documents (like our SOC 2 Type 2 report, AOC of PCI DSS, and more), review our compliance certifications, and gain deeper insight into our protective frameworks.
+To request additional information about our security measures, including non-public reports, please submit a request.
+Submit request
+## Third-Party Audits and Security Standards
+SOC 2 Type 2
+Independent security assessment
+Request Report
+ETSI 119 and 319 Standards
+Conformity Assessment under eIDAS
+View Certificate
+PCI DSS
+Secure payment card data processing
+Request Report
+Penetration Testing
+Regular security audits
+Request Report
+iBeta Level 2 Report
+Biometric Presentation Attack Detection
+View Report
+iBeta Level 1 Report
+Biometric Presentation Attack Detection
+View Report
+## ISO Standards for Security, Risk, and Quality Management
+ISO/IEC 27001
+Information Security Management System
+View Certificate
+ISO 22301:2019
+Business continuity management system compliance
+View Certificate
+ISO/IEC 27017
+Independent security assessment
+View Certificate
+ISO/IEC 27018
+Protection of personal data in the cloud
+View Certificate
+ISO 31000:2018
+Risk management framework compliance
+View Certificate
+ISO 9001:2015
+Quality management system compliance
+View Certificate
+ISO/IEC 29115:2013
+Entity authentication assurance framework
+View Certificate
+ISO/IEC 29003:2018
+Identity proofing
+View Certificate
