@@ -1,12 +1,37 @@
 {
-  "name": "SecureCloud Solutions Ltd.",
-  "industry": "B2B SaaS (Cybersecurity & Compliance)",
-  "services": "We provide cloud data-loss-prevention (DLP) and compliance monitoring services for enterprise customers.",
-  "regulations": [
-    "GDPR (as Data Controller & Processor)",
-    "CCPA",
-    "HIPAA (as a Business Associate)",
-    "ISO 27001 Certified"
+  "company_name": "Pied Piper Inc.",
+  "description": "We are a Series B startup building a decentralized internet based on middle-out compression technology.",
+  "jurisdiction": "California, USA (Silicon Valley)",
+  "key_data_processed": [
+    "User Metadata (Decentralized IDs)",
+    "Encrypted Shards of User Files",
+    "Compressed Video Streams (4K/8K)"
   ],
-  "risk_profile": "Our company has a very low-risk appetite for data privacy or security breaches, as this is core to our business. We require vendors handling PII/PHI to meet high standards. We have a moderate-risk appetite for operational or financial risks from general (non-data) suppliers."
+  "compliance_frameworks": [
+    "COPPA (The 'PiperChat' Incident)",
+    "GDPR (Global Users)",
+    "CCPA",
+    "App Store Guidelines"
+  ],
+  "risk_tolerance": {
+    "privacy_and_security": "Zero. We pitch a 'new internet' that respects privacy. A leak destroys our core value proposition.",
+    "legal_liability": "Very Low. We are constantly under threat of litigation from Hooli. We cannot accept IP indemnities that are weak.",
+    "operational_uptime": "Critical. Our Weissman Score depends on low latency. We cannot tolerate slow vendors."
+  },
+  "hard_requirements": [
+    "MUST NOT be a subsidiary of Hooli or Endframe.",
+    "MUST support decentralized storage protocols (IPFS/Filecoin compatible).",
+    "MUST NOT track user data for advertising purposes."
+  ],
+  "risk_strategy_context": {
+    "legal_bandwidth": "Low. Our CFO/COO (Jared) handles all legal reviews manually. We need simple, standard contracts.",
+    "engineering_bandwidth": "Very High. We prefer to build custom encryption wrappers (Gilfoyle's standard) rather than trust vendor security.",
+    "financial_budget": "Volatile. We are cash-poor but engineering-rich. We prefer Open Source or self-hosted solutions over expensive Enterprise SaaS.",
+    "preferred_resolution_hierarchy": [
+      "1. Technical Control (encrypt it ourselves)",
+      "2. Build it internal (Dinesh/Gilfoyle build)",
+      "3. Legal Negotiation (Jared begs)",
+      "4. Insurance (We probably can't afford it)"
+    ]
+  }
 }
