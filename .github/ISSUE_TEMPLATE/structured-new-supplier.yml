@@ -3,19 +3,18 @@ description: Request addition of a new supplier
 title: "[New Supplier]: "
 labels: ["vendor-onboarding", "triage"]
 projects: []
-assignees:
-  - tisats
+assignees: []
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to register a new supplier. For any technical queries on this form, or process, contact @tisats
+        Thanks for taking the time to register a new supplier. For any technical queries on this form, or process, contact the security team.
   - type: input
     id: supplier_name
     attributes:
       label: Supplier Name
       description: Name of the supplier
-      placeholder: ex. Rightbrain.ai
+      placeholder: ex. Hooli
     validations:
       required: true
   - type: dropdown
@@ -42,15 +41,15 @@ body:
     attributes:
       label: Supplier Site
       description: Website of the supplier
-      placeholder: "http://www.rightbrain.ai"
+      placeholder: "http://www.hooli.xyz"
     validations:
       required: true
   - type: input
-    id: supplier_rightbrain_contact
+    id: supplier_internal_contact
     attributes:
-      label: Rightbrain contact
-      description: Who at Rightbrain owns the relationship
-      placeholder: "Pete Tiarks (tisats)"
+      label: Internal Contact
+      description: Who in the organization owns the relationship
+      placeholder: "Richard Hendricks (rhendricks)"
     validations:
       required: true
   - type: input
@@ -58,7 +57,7 @@ body:
     attributes:
       label: T&Cs
       description: Link to terms and conditions
-      placeholder: "https://vendor.com/customer-terms"
+      placeholder: "https://hooli.xyz/legal/terms"
     validations:
       required: true
   - type: input
@@ -66,7 +65,7 @@ body:
     attributes:
       label: Security Documents URL
       description: A link to the vendor's security portal, trust center, or specific security whitepaper.
-      placeholder: "https://vendor.com/security"
+      placeholder: "https://hooli.xyz/trust-center"
     validations:
       required: false
   - type: textarea
@@ -74,7 +73,7 @@ body:
     attributes:
       label: Vendor/Service Usage Context
       description: What specific business problem will this vendor solve for us?
-      placeholder: "To process customer support tickets via their API and provide automated responses."
+      placeholder: "Using their Nucleus platform to compress our user logs by 40%."
     validations:
       required: true
   - type: textarea
@@ -82,7 +81,7 @@ body:
     attributes:
       label: Data Types Involved
       description: "Be specific about the types of data that will be processed. IMPORTANT: Do not include actual personal data here."
-      placeholder: "Business contact information (names, emails) and user-generated text from support queries. No special category data."
+      placeholder: "Server log files, IP addresses, and user-generated text content."
     validations:
       required: false
   - type: dropdown
@@ -99,6 +98,6 @@ body:
     attributes:
       label: Reviewer
       description: Who should review this
-      placeholder: tisats
+      placeholder: security-admin
     validations:
       required: true
