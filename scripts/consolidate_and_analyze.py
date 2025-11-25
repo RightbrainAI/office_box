@@ -38,19 +38,6 @@ def load_task_manifest() -> Dict[str, str]:
     except json.JSONDecodeError:
         sys.exit(f"❌ Error: Could not parse '{TASK_MANIFEST_PATH}'.")
 
-# 
-# <<< FUNCTION REMOVED AND MOVED TO utils/github_api.py >>>
-#
-# def post_github_comment(...): ...
-# 
-
-# 
-# <<< FUNCTIONS REMOVED AND MOVED TO utils/rightbrain_api.py >>>
-#
-# def get_rb_token(...): ...
-# def run_rb_task(...): ...
-# 
-
 # --- Core Logic: Text Compilation & Context ---
 
 def parse_form_field(body: str, label: str) -> str:
@@ -68,14 +55,14 @@ def extract_vendor_usage_details(issue_body: str) -> str:
     # Per Stage 2 spec, {vendor_usage_details} includes Usage Context, Data Types,
     # and Service Name/Description (for the reporter task).
     #
-    # Phase 1.1 Update: Also include Relationship Owner and Term Length for full context.
+    # Phase 1.1 Update: Also include Term Length for full context.
+    # PII UPDATE: 'Internal Contact' removed from here to prevent sending PII to AI.
     context_parts = [
-        f"**Service Name:** {parse_form_field(issue_body, 'Service Name')}",
+        f"**Service Name:** {parse_form_field(issue_body, 'Supplier Name')}",
         f"**Service Description:** {parse_form_field(issue_body, 'Service Description')}",
-        f"**Vendor/Service Usage Context:** {parse_form_field(issue_body, 'Vendor/Service Usage Context')}", # Updated label
+        f"**Vendor/Service Usage Context:** {parse_form_field(issue_body, 'Vendor/Service Usage Context')}", 
         f"**Data Types Involved:** {parse_form_field(issue_body, 'Data Types Involved')}",
-        f"**Relationship Owner:** {parse_form_field(issue_body, 'Relationship Owner')}",
-        f"**Term Length:** {parse_form_field(issue_body, 'Term Length')}",
+        f"**Term Length:** {parse_form_field(issue_body, 'Minimum Term Length')}",
     ]
     return "\n".join(context_parts)
 
@@ -286,7 +273,7 @@ def main():
     company_profile = load_company_profile()
     vendor_usage_details = extract_vendor_usage_details(issue_body)
     # Phase 1.1 Update: Parse Relationship Owner separately for direct injection
-    relationship_owner = parse_form_field(issue_body, 'Relationship Owner')
+    relationship_owner = parse_form_field(issue_body, 'Internal Contact')
     
     # --- 3. Determine Vendor Type Signal (Refactored for Stage 2) ---
     data_processor_status = parse_data_processor_field(issue_body)
@@ -353,7 +340,7 @@ def main():
         "company_profile": company_profile,
         "vendor_usage_details": vendor_usage_details,
         "vendor_type_signal": vendor_type_signal, # New signal
-        "relationship_owner": relationship_owner, # Phase 1.1 Update
+        # "relationship_owner": relationship_owner, # REMOVED PII: Handled locally
         "security_json_string": security_json_string,
         "legal_json_string": legal_json_string
     }
@@ -378,7 +365,35 @@ def main():
             f"```json\n{json.dumps(legal_analysis_json, indent=2)}\n```"
         )
     else:
-        log("success", "Synthesis complete. Formatting report.")
+        log("success", "Synthesis complete. Injecting local data.")
+        
+        # --- DETERMINISTIC INJECTION BLOCK ---
+        if "draft_approval_data" not in report_json:
+            report_json["draft_approval_data"] = {}
+        
+        draft = report_json["draft_approval_data"]
+
+        # 1. PII Injection
+        draft["relationship_owner"] = relationship_owner
+        
+        # 2. Known Data Injection (Cheaper/Safer than AI)
+        draft["processor_name"] = parse_form_field(issue_body, 'Supplier Name')
+        draft["service_description"] = parse_form_field(issue_body, 'Service Description')
+        draft["data_processing_status"] = vendor_type_signal
+        
+        # 3. Output Linking (AI Generated, but linked deterministically)
+        draft["risk_rating"] = report_json.get("report", {}).get("overall_assessment", "Unknown")
+        
+        # 4. Safe Extraction from Legal JSON (Deterministically)
+        # We try to grab the timeline from the legal analysis structure
+        term_notice = "Check Legal Report"
+        if legal_analysis_json:
+            term_notice = legal_analysis_json.get("termination_rights", {}).get("for_convenience_timeline", "N/A")
+        draft["termination_notice"] = term_notice
+
+        print(f"Manually injected deterministic fields into draft_approval_data.")
+        # -----------------------------------------------------------
+
         final_comment_body = format_report_as_markdown(
             report_json, security_analysis_json, legal_analysis_json
         )
