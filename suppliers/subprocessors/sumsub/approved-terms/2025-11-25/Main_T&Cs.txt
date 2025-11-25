@@ -1,3 +1,7 @@
+Original Source URL: https://github.com/RightbrainAI/office_box/blob/main/_vendor_analysis_source/issue-5-Main_Security_Page.txt
+Approved on: 2025-11-25
+--------------------
+
 Cookie Break Time
 We use cookies to enhance the functionality of our website and its subdomains, and to personalize content and ads, **always prioritizing your privacy and data security**. You have the control to enable or disable optional cookies as you wish. For a deeper dive into our cookie usage, do check out our [Cookie Policy](https://sumsub.com/cookie-policy/).
 Manage cookiesAccept all cookies
