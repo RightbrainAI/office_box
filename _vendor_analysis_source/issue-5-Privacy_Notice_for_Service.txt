@@ -1,0 +1,382 @@
+Cookie Break Time
+We use cookies to enhance the functionality of our website and its subdomains, and to personalize content and ads, **always prioritizing your privacy and data security**. You have the control to enable or disable optional cookies as you wish. For a deeper dive into our cookie usage, do check out our [Cookie Policy](https://sumsub.com/cookie-policy/).
+Manage cookiesAccept all cookies
+Skip to content
+Last updated: 28 July 2025
+[See the Bahasa Indonesia translation, as required by Sumsub's registered ESO status.](https://sumsub.com/wp/files/Privacy%20Notice%20\(Sumsub%20Service%20Delivery\)%20-%20IND%20ver.pdf)
+# Privacy Notice (Service Delivery)
+## Preamble
+This is the Privacy Notice of the Sumsub group of companies: Sum and Substance Ltd., incorporated and registered in England with company number 09688671 together with all affiliated companies and trading divisions, irrespective of location or jurisdiction (hereinafter - Sumsub or we). More information about our group can be found in [Provision 17](https://sumsub.com/privacy-notice-service/#17) of this Privacy Notice. To provide Services, Sumsub processes Personal data according to our Clients instructions. Clients are Controllers that determine purposes of data processing, exercise control over Users’ Personal data, and stipulate retention periods of Users’ data according to their purposes. Sumsub, in turn, is a Processor that conducts only those data processing activities that Clients request. Sumsub performs remote identity verification procedures for Clients as part of Services provision. Before passing such procedures, Users should be properly notified by Clients in line with their privacy policies and, depending on Clients’ legal bases for data processing, may be asked to consent to such processing. When developing and improving Services and in other cases specified in this Privacy Notice, Sumsub is the Controller of Users' Personal data.
+## 1. Scope
+This Privacy Notice outlines how we process Personal data, commit to protecting your information, and provide the framework for effective management of data protection matters while providing our Services. This Privacy Notice does not cover how Sumsub's Clients may treat Users' Personal data. Clients provide this information in their privacy statements, which are not subject to Sumsub's control.
+If you are a California resident, you may find information about the CCPA application in [Provision 19](https://sumsub.com/privacy-notice-service/#19) of this Notice.
+If you are a resident of Illinois, Washington, or Texas, it is necessary to refer to the “Special notice to residents of the states of Illinois, Washington, or Texas (USA)” ([Provision 20](https://sumsub.com/privacy-notice-service/#20) of this Privacy Notice). In case of any conflict or ambiguity between the Special Notice and the other provisions of this Privacy Notice, the former prevails.
+## 2. Definitions
+  * Agreement
+a commercial agreement governing the provision of Sumsub’s Services to a Client, concluded between a Sumsub entity and that Client (or an entity acting on that Client’s behalf, or an entity otherwise entitled to redistribute the Services to that Client);
+  * AML/CFT
+Anti-Money Laundering / Combating the Financing of Terrorism legal rules and standards as envisaged in FATF recommendations, EU regulations, and national legislation;
+  * BIPA
+the Biometric Information Privacy Act of 2008 in Illinois, US;
+  * CCPA
+the California Consumer Privacy Act of 2018, Civil Code sections 1798.100;
+  * Client
+a legal entity that uses, or is entitled to use, Sumsub’s Services in accordance with the respective Agreement and as authorized by the respective Sumsub entity. For the purposes of identity verification services involving Qualified Electronic Signature, Client is an entity that has a business relationship with Sumsub and to which Sumsub in collaboration with a QTSP provides remote identity proofing services for issuing a QES. Subscribers are the potential customers of Clients and provide their personal data (and Subjects’ personal data, if applicable) to Sumsub on behalf of the respective Client using that Client's websites/platforms;
+  * Consent
+any freely given, specific, informed and unambiguous indication of the Data Subject’s wishes by which they, by a statement or by clear affirmative action, signify agreement to the processing of their personal data;
+  * Customer due diligence procedure
+the process and rules established by the Client in line with applicable regulations, including the requirements for identifying its customers, related risks and checking they are who they say they are (may be referred to as ‘KYC’ in this Notice);
+  * Data concerning health
+personal data related to the physical or mental health of a natural person, including the provision of health care services, which reveal information about his or her health status;
+  * Data Controller, or Controller
+natural or legal person, public authority, agency or other body which, alone or jointly with others, determines the purposes and means of the processing of Personal data; i.e. Client or Sumsub when it has its own purposes - for the purpose of this Notice;
+  * Data Processor, or Processor
+a natural or legal person, public authority, agency or other body which processes personal data on behalf of the controller; i.e. Sumsub when it processes data on behalf of its Clients;
+  * Data Providers
+third-party service providers or public authorities used to collect additional information necessary for the provision of the Services;
+  * Data Subject
+any individual whose personal data Sumsub may process on behalf of the Controller (the Client’s customers);
+  * eIDAS framework
+a set of regulations which includes the following legal scope:
+    * Regulation No 910/2014 of the European Parliament and of the Council of 23 July 2014 on electronic identification and trust services for electronic transactions in the internal market and repealing Directive 1999/93/EC;
+    * ETSI EN 319 401: Electronic Signatures and Infrastructures (ESI); General Policy Requirements for Trust Service Providers;
+    * ETSI EN 319 411-1: Electronic Signatures and Infrastructures (ESI); Policy and security requirements for Trust Service Providers issuing certificates; Part 1: General requirements;
+    * ETSI EN 319 411-2: Electronic Signatures and Infrastructures (ESI); Policy and security requirements for Trust Service Providers issuing certificates; Part 2: Requirements for trust service providers issuing EU qualified certificates;
+    * ETSI TS 119 461: Electronic Signatures and Infrastructures (ESI); Policy and security requirements for trust service components providing identity proofing of trust service subjects;
+  * EEA
+European Economic Area (the European Union Member States, Norway, Iceland and, Liechtenstein);
+  * EU GDPR
+Regulation (EU) 2016/679 of the European Parliament and of the Council of 27 April 2016 on the protection of natural persons with regard to the processing of personal data and on the free movement of such data, and repealing Directive 95/46/EC (General Data Protection Regulation);
+  * Filing system
+any structured set of Personal data which is accessible according to specific criteria, whether centralised, decentralised, or dispersed on a functional or geographical basis used for service provision;
+  * Livechat
+a system that allows Users to have a real-time interaction with Sumsub’s support team in a chatbox on the Website page in the browser;
+  * Personal data
+any information relating to an identified or identifiable Data Subject;
+  * Personal data breach
+a breach of data security leading to unlawful destruction, loss, alteration, unauthorised disclosure of, or access to, personal data transmitted, stored, or otherwise processed;
+  * Politically Exposed Persons (PEPs)
+individuals who are or have been entrusted with prominent public functions (e.g., heads of state or government, senior politicians, senior government, judicial or military officials, senior executives of state-owned corporations, important political party officials), as well as their relatives and close associates;
+  * Privacy Notice or Notice
+this privacy notice available at https://sumsub.com/privacy-notice-service;
+  * Processing
+any operation or set of operations performed on personal data or on sets of personal data, whether or not by automated means, such as collection, recording, organisation, structuring, storage, adaptation or alteration, retrieval, consultation, use, disclosure by transmission, dissemination or otherwise making available, alignment or combination, restriction, erasure or destruction;
+  * Qualified trust service provider (QTSP)
+entity which provides one or more trust services such as issuance of a QES;
+  * Service(s)
+the personal identity verification service and connected services provided by Sumsub;
+  * Special categories of personal data
+personal data revealing racial or ethnic origin, political opinions, religious or philosophical beliefs, or trade union membership, and the processing of genetic data, biometric data for the purpose of uniquely identifying a natural person, or data concerning health or data concerning a natural person's sex life or sexual orientation;
+  * Standard Contractual Clauses
+standard sets of contractual terms and conditions adopted by the European Commission (or UK-designated authorities) and ensuring appropriate safeguards for data transfers from the EEA and the UK to third countries, which the Controller and the Processor both sign up to, where necessary;
+  * Subject
+legal or natural person identified in a QES certificate as the holder of the private key associated with the public key given in the QES certificate. The following Subject and Subscriber relationships may have place: when the Subscriber is a natural person and represents a legal person that is the Subject and requests a certificate for this legal person; when the Subscriber is a legal person and requests a certificate for its authorised employee/representative that is the natural person (the Subject) when the official representative of the Subscriber and the Subject are the same. Both the Subscriber and Subject may be a Data Subject according to the meaning given in the EU/UK GDPR;
+  * Subscriber
+legal or natural person applying for a qualified electronic signature/seal (“QES”) with a qualified trust service provider and entities acting on behalf of a qualified trust service provider;
+  * Sumsub ID
+a set of technical functionalities and related services provided by Sumsub to Applicants designed to assist them in simplifying identity verification and, upon their request, sharing of Personal data with Sumsub’s Clients;
+  * Third-Party Processors
+processors authorised to exercise certain processing activities under the direct authority of Sumsub;
+  * UK GDPR
+EU GDPR as implemented in the UK’s domestic legal system;
+  * User or Applicant
+any individual in respect of whom the identity verification procedure (or any of its elements) is performed as part of the Services provided to a Client (may be referred to as ‘you’ in this Notice);
+  * Website
+sumsub.com.
+
+
+## 3. Principles of personal data processing that Sumsub adheres to
+Sumsub adheres to the principles of Personal data protection as envisaged in the EU GDPR and the UK GDPR, and other applicable laws. Under these principles, Sumsub assists Controllers in ensuring that Users’ Personal data is:
+  1. Processed fairly and lawfully and in a transparent manner in relation to the Data Subject;
+  2. Processed for specified, explicit, and legitimate purposes only and not further processed in a manner that is incompatible with those purposes;
+  3. Adequate, relevant, and limited to what is necessary in relation to the purposes for which they are processed;
+  4. Kept accurate and up to date;
+  5. Retained in a form permitting identification of Data Subjects for no longer than is necessary for the purposes for which they are processed;
+  6. Processed in a manner that ensures their appropriate security;
+  7. Not transferred outside the European Economic Area (EEA) or the UK without adequate protection.
+
+
+## 4. Purposes of personal data processing
+[а] Performance of the Agreement
+While serving Clients, Sumsub mainly processes your data as a Processor for Clients’ benefit. Sumsub processes Personal data for the performance of Agreements, including indicated Services, obligations arising from Agreements, and related rights, as well as for the execution of rights and fulfilment of obligations deriving from legal acts and processing Users' requests.
+Sumsub collects and further processes Users' data for Clients, which may include matters of compliance with applicable AML/CFT and/or other laws and regulations and/or Client's internal customer due diligence procedures. Once Personal data is no longer necessary for the relevant purpose, acting on Client’s written instructions, Sumsub transfers the data to Clients and then erases it from its servers without leaving any backup copies.
+[b] Other purposes
+We may process your data for purposes that serve Sumsub's legitimate interests, which include the following purposes:
+  * Where it’s not prohibited by applicable laws and provided we have permission from our Clients, we may process some Personal data to develop and improve existing Services to prevent and detect fraud and other illicit activities, including by means of artificial intelligence. For more information, please refer to [Provision 5](https://sumsub.com/privacy-notice-service/#4) (Service Development);
+  * Given the nature of our Services, we are to detect and prevent criminal activity, fraud, and money laundering by checking the provided User data against records of confirmed or suspected illegal activity, fraud or money laundering. If any sign of this appears, we will inform our Clients of this. For more information, please refer to [Provision 5](https://sumsub.com/privacy-notice-service/#4) (Fraud detection);
+  * In connection with the purpose above, we may also conduct profiling, statistical analysis, and analytics in AML/CFT tendency, fraud detection, and prevention. Our system may aggregate Users’ data to generate reports and charts our Clients may use when assuming the risk likelihood associated with specific characteristics;
+  * We can process Personal data, including biometric data, to identify a User or a Client’s representative for identification purposes to process data subject access request or the Client’s request accordingly;
+  * We sometimes may be obliged to process or retain all or part of Personal data for the establishment, exercise, or defence of legal claims;
+  * When participating in the Sumsub Travel Rule Ecosystem, we carry out customer due diligence and all the data Client left in questionnaires may be redistributed to other participants of the ecosystem following applicable legal requirements and the Sumsub Travel Rule Ecosystem Agreement to assist in ensuring compliance of all the participants with AML/CFT regulations. These activities are carried out for our own purposes;
+  * We have our own processing purposes such as preventing fraud and money laundering as part of providing services within the UK Digital Identity and Attribute Trust Framework described in detail in [Provision 9](https://sumsub.com/privacy-notice-service/#9);
+  * In the context of the crypto-related services, Sumsub may process Users' Personal data to establish and maintain a wallet address book. Wallet address book data is processed for the purpose of wallet attribution when the Sumsub's Clients conduct transactions in compliance with Travel Rule requirements. Wallet attribution consists of linking wallet addresses to verified identities of individuals or entities which allows to flag suspicious transactions. This enables better monitoring of large or unusual transactions, tracking them back to individuals and ensuring proper reporting to authorities. Sumsub obtains personal data related to wallet address books from its Clients and/or from publicly available sources.
+
+
+We process some Personal data while adhering to the principles of Personal data handling, namely lawfulness and accountability, by obtaining the legal basis for processing specific Personal data concerning certain Users, as required under laws applicable to such Users. Maintaining records that we have obtained such a legal basis is essential to prove that we comply and adhere to our legal obligations outside and in the European Union and the United Kingdom.
+[c] Sumsub ID
+Sumsub ID allows Applicants to use their Personal data for identity verification with multiple Clients, including to be able to execute your right to data portability and obtain necessary Personal data based on your instructions using Sumsub ID. Applicants can submit their documents and other necessary information to create a Sumsub ID and subsequently request Sumsub to share their Personal data with the Clients with whom they want to verify their identity. The processing of Personal data within the Sumsub ID, including the creation of a dedicated storage space (“**Data Pool Key** ”) for an Applicant is carried out by Sumsub as a data controller. After sharing Personal data upon the Applicant’s request with a specific Client, the re-verification is carried out by Sumsub as a data processor acting on behalf of its Clients. The processing of Personal data within the Sumsub ID also includes the purposes of Service Development and Fraud detection, including profiling, as described above in point [b].
+## 5. Data processing activities
+Sumsub carries out multiple types of automated processing, including, but not limited to, collection, recording, organisation, structuring, storage, adaptation or alteration, retrieval, consultation, use, disclosure by transmission, dissemination, or otherwise making available, alignment or combination, restriction, erasure or destruction.
+• Document сheck
+For fraud detection, Sumsub subjects Personal data from photos and scanned copies of documents to automated reading and verification of authenticity by conducting different checks, such as completeness of records, screenshots detection, or cross-checking of all data from all submitted documents (e.g. name, date and place of birth, signature). We also check the document's security features, including the embedded security chip, machine-readable zone (MRZ), barcodes, QR codes and other security components used for genuine data validation. Our system analyses the results of the above to make an inference regarding the document’s trustworthiness.
+• Biometric processing methods
+Sumsub may process biometrics to verify whether the facial images submitted to it are likely to belong to the same person as part of the Services provided to a particular Client. The processing of biometrics means, for this purpose, extracting facial features from uploaded or recorded facial images (verify whether the facial images submitted to it are likely to belong to the same person as part of the Services provided to) and comparing them.
+There are several reasons why Clients ask for such biometrics processing. Generally, Clients may wish to check whether an identity document genuinely belongs to a User by comparing that User's facial image to the facial image contained in the identity document.
+In addition, Clients may ask us to check whether a User is alive and genuine. To do this, we use our Liveness check to determine if the User isn’t holding a mobile phone, showing any signs of constraint, or attempting to defraud the system using emulators, static images, or ‘deep fakes’. As a rule, Users are prompted to blink, smile, or move their device while passing Liveness. During such checks, we may also detect signs of fraud or other spoofing attacks by comparing Users’ facial features to those of known masks. Simultaneously, we may also check whether the User may be generating multiple identities by inspecting whether we have previously attempted to verify them on behalf of a particular Client. To determine if the User is known to a specific Client, we compare the User's facial image to those of other Users previously verified on behalf of that particular Client. Where multiple Clients are entitled to use Sumsub’s Services under the same Agreement (each with its own account or with one Client controlling the other Clients’ accounts) or where one Client maintains multiple accounts with Sumsub, the face search may be conducted across all the relevant accounts.
+When required by Clients, we assist in the authentication process. For this, Clients may ask their Users to pass liveness. During this process, a User’s face is recognized, and the result is compared with the biometric data records of the said User obtained previously. For each authentication attempt, we will compare the new liveness facial image with the biometrics of the said User obtained previously.
+For each authentication attempt, we will compare the new liveness facial image with the biometrics of the said User obtained previously.
+• Video identification processing
+Usually, video identification is a process where a person who is to be identified and an employee-operator sit opposite one another "face to face" in video transmission and communicate with one another. The process is carried out if a Client has a legal obligation to do so (for example, due to AML / CFT regulation). To perform video identification, we provide Clients with functionality so that they can conduct a video interview with Users during onboarding. If Clients prefer, the video identification interview can be carried out by Sumsub operators. The content of the video interview and its nature are also completely dependent on the Client’s requirements.
+• Data validation
+These data validation checks enable Clients to verify data against databases of third-party Data Providers and detect whether a User is involved in illicit activities, money laundering or terrorism financing. To do this, we will check the data extracted from the uploaded documents or provided by the User against a database of third-party Data Providers. Data Providers we may use depend on Clients’ needs and Users’ location and may include ID registers, proof of address checks, the Social Security Administration and other government or commercial sources and databases, consumer credit agencies, PEP lists, global and country-specific sanctions lists, and adverse media sources.
+Throughout the course of Clients’ relationship with their Users, we may assist Clients in periodically screening Users’ data against databases to help prevent, detect, and investigate fraud and money laundering.
+Sometimes, Clients ask us to conduct phone or email risk scoring. When we do it, we screen a User’s email address or phone number with the combination of IP address, where available, together with the publicly available information provided by the Third-Party Processors or Data Providers, based on the data mentioned above and get the risk labels based on its registrations on the web, domain name, delivery option and other parameters.
+• Know Your Transaction or KYT check
+KYT is a check that analyses transaction data relating to senders and recipients. It enables Clients to detect and report unusual/uncharacteristic behaviour and patterns that are characteristic of money laundering, terrorist financing, fraud, or other illicit activity.
+• Know Your Business or KYB check
+If a Client subscribes to the KYB check, it requires us to verify the existence, details, ownership, and control structure (e.g., ultimate beneficial owner(s)) of a legal entity through analysis of corporate documents and review of corporate registries, where available.
+• Crypto Travel Rule Solution
+Clients may order this check for compliance with their legal obligations under the AML/CFT legislation. This mandates the Virtual Asset Service Provider, or VASP, which could be our Client, to obtain, verify, hold and exchange the particular transaction sender and recipient information with their counterparty VASPs during or before the transaction. When carrying out this check, we verify a User's identity and transfer to/ receive from the Client's counterparty VASP particular User's data using special messaging protocols, such as Travel Rule Protocol (TRP), Sumsub API protocol, and platforms providing encrypted messages and data flows.
+• Fraud detection
+Sumsub implements a fraud detection and control network based on the anti-fraud checks required by our Clients and those included in our Services by default (e.g., Photoshop use or risk triggers calculation). Such checks require collecting, analysing, and re-using recorded User data.
+Generally, Sumsub verifies whether a User’s attributes—geolocation (IP address), device signature (operating system and camera name), email address, or mobile phone—have previously been involved in or related to any fraudulent activity or may currently signal suspicious behaviour patterns and otherwise point out that the User is fake. At a Client’s order, we may check information with our Data Providers on AML/CFT regulations requirements, such as screening through adverse media mentions match or checking for residency in high-risk countries. Besides, we check whether Users create multiple identities by inspecting whether we have previously verified a User on behalf of a particular Client using biometric data comparison techniques.
+All these checks are designed to help us and Clients assess the likelihood of customer trustworthiness, flag potentially fraudulent activities and assign a relevant risk score when the Client needs to acknowledge cases when Users generate multiple identities, compromise their data, or manipulate device or network information. Clients may consult with the fraud detection and control network on the fraud-related level of risk of Users under the onboarding process without accessing any Personal data.
+• Automated decision-making relief and checks
+We conduct identity verification checks on behalf of Clients; however, we do not make any final decisions. Our role is to provide Clients with reports containing information about the identity verification process and results (with the reasoning behind them reflecting the level of fraud or another risk, if any). The reasons are derived from the work of our system and its algorithms, including those based on a symbiosis of machine learning models and human supervision and intervention. The final decision on a User onboarding is made by a human on the Client’s side when the checks' result is transmitted to the particular Client. Clients consider this information while deciding to accept or decline a User application, request further checks, or continue to service that User following their risk assessment and investigations.
+The checks are either automated, semi-automated, or done by humans. When we carry out checks, we implement a complicated verification system that includes human presence and machine work. A human will be involved if the system cannot reach a verdict on its own or recheck the system verdict. It may occur when the data is uncertain or the system faces some other difficulty in analysing information during the verification session. Thus, we contribute to ensuring that the verification process is fair and safe for Users.
+Certain Sumsub checks may be fully automated due to simplicity, using machine learning, or Clients’ request. When Clients use check results to make final decisions regarding Users undergoing verification, Clients may automate the final decision-making process. When Clients make automated decisions, including those based on our check results, they shall inform you of the legal grounds and, if necessary, obtain your consent. Any User can appeal automated decisions by reviewing the methods provided on a Client's side.
+As a service provider, we may have different verification steps for some Clients that require full supervision by a human.
+When you've passed verification successfully.
+All required checks have been successfully completed. This means that the data you've provided is genuine and compliant with the requirements of a particular Client and approved by the Client. Now you are allowed to use the service for which you passed the verification process.
+When you cannot pass verification successfully.
+Some of the checks need to be carried out again with additional information. It means that some of the data provided by you do not comply with a Client's requirements by posing some risk or seeming potentially suspicious or fraudulent (e.g., the device you took the photo with is different from that which you used to pass the whole verification process or the data presented are inconsistent). In this case, we return results to the Client for further consideration by tagging them with the relevant tag (e.g., 'WRONG_ADDRESS' or 'INCOMPLETE_DOCUMENT'). Then, the service for which you initiated the verification check will consider and evaluate the results and ask for additional information from you to clarify your application. The Client may reject or freeze your application following its risk procedures or other internal policies.
+• Service development
+Our Clients use our Services to detect whether a real person is passing the identity verification process, as well as any impersonation or spoofing attempts, to prevent money laundering, terrorist financing, fraud, and other activities that are considered a matter of public interest. That is why we, as a service provider, are responsible for providing the highest quality services. For this reason, where we have the authorization of our Clients, and it is not prohibited by applicable law, we as a Data Controller use Personal data to develop and improve our Services by building and enhancing algorithms, developing and testing new verification options, products and services.
+We do this in two ways. We deploy a system recognizing specific patterns in the information and making predictions about new datasets based on those patterns by training our algorithms or so-called 'machine learning.’ Machine learning helps create models based on the information provided by Users, such as signs of potential fake data, and selects the best models to be integrated into our system. The development of services also includes continuous improvement and assessment. We review our service delivery methods to ensure that we comply with Clients’ requirements and work appropriately by testing and correcting new features and functions. We implement initial and ongoing training for our analysts to perform those tasks to prevent machine learning models' automatic judgement. It is also beneficial while machine learning models are in the stage of development and aren't adequately suited to perform such tasks.
+• Reusable KYC
+In this model, our Clients may partner with each other to simplify and speed up verification for mutual Users that have already passed KYC via Sumsub. Clients ask Sumsub to create a data flow that exchanges previously verified Sumsub KYC data between two different services. Sumsub provides such functionality only after confirmation that these Clients have all necessary legal arrangements. Before sharing the data, Users are asked for consent to such actions.
+## 6. Types of personal data processed by Sumsub
+We may collect and further process the following Personal data of Users depending on the particular Service being provided to Clients:
+  * Categories of personal data
+**Examples**
+  * General personal data
+Full name, sex, personal identification code or number, date of birth, legal capacity, nationality and citizenship, location (street, city, country, and postcode).
+  * Identity document data
+Document type, issuing country, number, expiry date, MRZ, information embedded into document barcodes (may vary depending on the document), security features.
+  * Facial image data
+Photos of the face (including selfie images) and photos or scans of the face on the identification document, videos, and sound recordings.
+  * Biometrical data
+Facial features.
+  * Banking details
+Cardholder name, expiry date, first 6 and last 4 digits of the card number. If the Client uses Enable Banking: account information, balance details, credit limit details, and transaction history
+  * Contact details
+Address, e-mail address, and phone number.
+  * Credit information records
+If the Client uses TransUnion of Canada Inc.: credit information records
+  * Data concerning health
+ID number of COVID passport, date of issuance of the passport, name, date of birth, test result.
+  * Transaction data
+Full name of the sender and the recipient, the address of the sender and the recipient, and the Unique identifier of the counterparties provided by Sumsub and the particular Client.
+  * Crypto transaction data (Crypto Travel Rule Solution and Wallet Address Book)
+Full name of the sender and the recipient, the physical (geographical) address of the sender, or national identity number, or customer identification number (i.e., not a transaction number) that uniquely identifies the originator to the ordering institution, or date and place of birth, recipient account number (e.g., wallet address), wallet address hash, asset, chain, dates of creation and update, VASP ID owner, source type, source provider, client ID.
+  * Technical data
+Information regarding the date, time, and activity in the Services; IP address and domain name; software and hardware attributes (e.g., camera name and type); general geographic location (e.g., city, country) from User’s device.
+  * Geolocation data
+IP address.
+  * Unique identifier
+Applicant ID created only for identifying the User in the Sumsub system.
+  * Relevant publicly available data
+Information regarding a person’s status as a Politically Exposed Person (PEP) or presence on sanctions lists.
+  * Additional information
+Data provided by the User during communication with Sumsub (e.g., requests, reports).
+  * Device behavioural data
+User ID, device fingerprint data (screen size, user agent, browser, incognito mode, type of device, operating system, geolocation), screen resolution, session languages, operating system verification, focus/blur of the window, time of the day, focus in/out, paste, mouse movement, battery usage to detect emulator, detect touch/mouse/keystroke events, G meter/AccelMeter
+
+
+## 7. Processing children’s personal data
+Sumsub may process Personal data of children, understood as individuals under the age of majority under national laws of a Client’s country of incorporation, when the Client ensures that the person with parental responsibility for the child has consented to such processing or when the child may consent themselves to the processing according to the national laws without parental consent. As the data controller, it is the Client's responsibility to determine when parental consent is required based on the type of Personal data collected, and to fully understand the regulatory requirements and age restrictions related to processing data without parental consent in the countries where the Client operates and from which it gathers Users. If Sumsub becomes aware that a child's Personal data has been submitted without the necessary parental consent (for instance, through an internal audit), the data may be deleted without undue delay.
+## 8. The lawfulness of personal data processing
+When Sumsub is engaged by its Clients to perform identity verification procedures in respect of their Users, the processing of Personal data by Sumsub is covered by those legal grounds that are relied on by the Clients Sumsub has the Agreement with. In line with Article 6 of the EU and UK GDPR, Controllers should rely on an appropriate legal ground when processing Personal data. Most of our Clients rely on the following grounds for processing Personal data:
+  * Article 6(1)(c) of the GDPR: “[personal data] processing is necessary for compliance with a legal obligation to which the controller is subject”;
+  * Article 6(1)(e) of the GDPR: “[personal data] processing is necessary for the performance of a task carried out in the public interest”;
+  * Article 6 (1)(a) of the GDPR: “the data subject has given consent to the processing of his or her personal data for one or more specific purposes”.
+
+
+We may process your Special categories of personal data if a Client has a reasonable legal ground for such processing. Clients who process biometric data for the purpose of uniquely identifying a User may rely on following legal bases to do so:
+  * Article 9(2)(g) of the GDPR: “processing is necessary for reasons of substantial public interest, on the basis of Union or Member State law which shall be proportionate to the aim pursued, respect the essence of the right to data protection and provide for suitable and specific measures to safeguard the fundamental rights and the interests of the data subject”;
+  * Article 9(2)(a) of the GDPR: “the data subject has given explicit consent to the processing of those personal data for one or more specified purposes, except where Union or Member State law provides that the prohibition referred to in paragraph 1 may not be lifted by the data subject”.
+
+
+For the exact legal basis of processing Special categories of personal data, please refer to the privacy policy of the Client whose services you want to use.
+Where Sumsub pursues its purposes, as said in [Provision 4](https://sumsub.com/privacy-notice-service/#4) of this Notice, Sumsub relies on Article 6(1)(f) of the GDPR – legitimate interest. Our legitimate interest arises from the strict necessity of internal analysis and ongoing development and improvement of Sumsub's Services that our Clients use to detect fraud and illicit activities to prevent money laundering, terrorist financing, and other activities, which may be considered a matter of substantial public interest in certain jurisdictions. In this case, we rely on our legitimate interests provided that the Client grants us permission to process data for Sumsub’s purposes.
+When Sumsub processes Personal data as a data controller for the purpose of providing Applicants with Sumsub ID, we rely on the necessity for the performance of a contract with the Applicant (Article 6 para. 1 letter b) of the GDPR) for normal categories of Personal data. The processing of biometric data for the purpose of Sumsub ID provision is carried out based on an Applicant’s explicit consent (Article 9 para. 2 letter a) of the GDPR).
+Sumsub may be under a 'litigation holds' requirement, such as an existing legal claim, juridical procedure, or other legal obligation. In this case, Sumsub applies the legal ground specified in Article 6(1)(c) of the GDPR, which states that processing personal data is necessary to comply with a legal obligation to which Sumsub is subject.
+## 9. Identity verification services involving Qualified Electronic Signature
+This section of the Privacy Notice explains the data processing within the services carried out for the issuance of a qualified electronic signature/seal which allows the entity to enter into a business relationship.
+**This section applies when the procedures and relevant documentation for eIDAS framework become publicly available in Sumsub`s repository.**
+The definitions used in this section are understood in the way as they are specified in the Trust Service Practice Statement (TSPS) of Sumsub which can be found in the eIDAS repository and the EU/UK GDPR.
+**Scope of services**
+Before entering into a relationship with Client, the Subscriber and Subject (if applicable) apply for a QES and previously pass identity verification procedure based on any of the available Sumsub’s certified methods. Successfully passed identity verification allows the QTSP to issue a QES. The Subject signs all documents provided by Client using the QES.
+The certified identity proofing solution includes the following methods:
+  * Autoidentification procedure: a document-based, asynchronous check of identity documents which can involve NFC-chip scanning;
+  * Video identification procedure: a live video interview with a registration officer;
+  * eID verification procedure;
+  * Know-your-business (KYB) procedure. 
+
+
+**Data controllers**
+**Sumsub group of companies** together with the **Qualified Trust Service Provider** are acting as data controllers for the entity's identity verification and issuance of a QES respectively. 
+**Purpose**
+The purpose of data processing is identity verification to issue QES certificates in accordance with eIDAS.
+**Data storage**
+The obligation to store personal data is set in accordance with the regulations of the eIDAS framework in conjunction with the national regulation to ensure the provided services are secure.
+**Data processing under eIDAS framework**
+The following rules and requirements for data processing apply to Sumsub in accordance with the established purpose and applicable legal scope:
+**Data subjects** | **Purpose for data processing** | **Categories of processed personal data** | **Lawful basis for processing** | **Retention period**  
+---|---|---|---|---  
+**Identity verification of Subscribers and Subjects by Sumsub**  
+Users applying for the certificates of qualified electronic signatures/seals  | Identity verification of Subscribers and Subjects |  **General personal data:** Full name, sex, personal identification code or number, date of birth, place of birth, age, nationality. **Identity document data:** Document type, issuing country, number, expiry date, MRZ, information embedded into document barcodes (may vary depending on the document), security features, images of the documents and video recording of the documents provided by the Subscribers and stored in the Sumsub System. **Facial image data:** Photos of the face (including selfie images) and photos or scans of the face on the identification document, videos, and sound recordings; facial features (biometrical data). **Contact details:** Phone number and e-mail address. **Technical data:** Information regarding the date, time, and activity in the Services; IP address and domain name; software and hardware attributes (e.g., camera name and type); general geographic location (e.g., city, country) from your device. Depending on a particular identity verification service provided by Sumsub the scope of collected and verified data may differ from the above mentioned list. The data scope may be less than specified in this section and/or contain additional attributes, e.g. current address verification, e-mail address verification.  | Consent & necessity for compliance with a legal obligation |  Evidence of the identity verification process, personal data contained in a certificate of QES, the confirmation of acceptance of the consent and general terms and conditions (logs) will be retained by Sumsub for **at least seven years after the certificate of QES ceases to be valid** according to the requirement of ETSI EN 319 411-1(alternatively, this data may be retained by the QTSP **for the same period of time or more**).  
+**Issuance of a QES certificate by a qualified trust service provider**  
+Subjects to whom the certificates of qualified electronic signatures/seals (QES) are being issued | Issuance of a QES certificate | Including (but not limited to): name, first name, unique applicant ID number, mobile phone number. The categories of processed personal data are defined by the qualified trust service provider.  | Consent & necessity for compliance with a legal obligation | Evidence of the identity verification process, personal data contained in a certificate of QES, the confirmation of acceptance of the consent and general terms and conditions (logs) will be retained by Sumsub for **at least seven years after the certificate of QES ceases to be valid** according to the requirement of ETSI EN 319 411-1(alternatively, this data may be retained by the QTSP **for the same period of time or more**).  
+**Data subject's rights**
+The Data subject is endowed with rights specified in the Privacy Notice, however, taking into account that a consent for processing of personal data cannot be withdrawn in regards to the issuance of QES and supporting procedures, e.g. identity verification.
+**Application of the Privacy Notice to this section**
+The relationship between Client and Sumsub where Sumsub acts as a processor on behalf of Client (data controller) explained in the Privacy Notice may apply to the relationship described in this section upon a request of Client in order to comply with Client’s applicable AML/CFT, anti-fraud laws and regulations, age restrictions acts and/or other laws and regulations and/or the entity`s customer due diligence procedures in accordance with the laws governing the intended business relationship. 
+The remaining provisions of the Privacy Notice apply to this section unless this section expressly states otherwise. 
+## 10. Personal data retention period
+The retention period depends entirely on the processing purpose. Our Clients define how long personal data should be stored and when to delete it. Generally, in line with AML / CFT regulations, regulated financial companies are obliged to store the User's data for five years after the termination of the Client’s relationship with the User or the date of the occasional transaction. In some jurisdictions, there may be a longer mandatory data retention period.
+Please note that if you, as a User, would like to make a request to delete the personal data that you have provided for the purpose of a particular Client, please make that request directly to the Client that controls your verification process. For more information about how to do this, please see [Provision 11](https://sumsub.com/privacy-notice-service/#11).
+In general, Personal data, including biometric data, will be retained and stored by Sumsub and will be permanently destroyed based on a Client’s instructions when the Client’s initial purpose and/or retention period prescribed by applicable law expires, but no longer than for the period of contractual relationship with the Client.
+Where Sumsub independently defines the compatible purposes or is under a legal obligation, Personal data, including biometric data, will be destroyed after Sumsub’s purposes for collecting the biometric data have been satisfied (and one (1) year of the date the purpose for collecting the data expires for residents of Texas) or after five (5) years from the provision of data to the Sumsub system, whichever occurs first. For the residents of Illinois, the retention period of Personal data, including biometric data, will be three (3) years from the date of data provision to the Sumsub system.
+**Disposal and Destruction Policy**
+Any Personal data is deleted only after (a) obtaining an applicant's data deletion request in line with corresponding procedures by a Client or the Data Subject or (b) the satisfaction of the purpose for data processing, including the termination of the agreement with a Client or the expiration of retention period prescribed by applicable law.
+To delete data from the Sumsub Identity Verification System (Dashboard and storage space), we call a method that searches for a unique applicant identifier (Applicant ID) inside the database. The database contains references, or object IDs, connected to the applicant’s Personal data provided to the system. After seeking all these references, the Dashboard system automatically removes them one by one by calling the AWS S3 API Object Deletion method, providing Object IDs are placed in the S3 bucket. After all referenced objects are found and deleted from the S3 bucket, the original applicant's Personal data is also deleted from Sumsub’s internal database located on AWS Servers. Deletion of biometrics should render it non-recoverable, even using forensic information recovery techniques.
+To delete data from the equipment, we implement measures in accordance with the particular operational system of the equipment. If the information is intended to be rendered non-recoverable, the deletion must be executed by the person who owns it (typically, who has created it) by the ‘empty trash bucket’ mechanism. If any of the methods above is not secure enough considering the sensitivity of the information and such information may be recovered again, the equipment storage medium must be destroyed completely (e.g. shredded, disintegrated, pulverised, or incinerated by burning the device in a licensed incinerator, etc.) in the presence of the asset owner.
+To delete data from the files located in the removable media, we call the setting and tools designated to the relevant sanitisation method - clearing or purging. If the purging method is not secure enough considering the sensitivity of the information and such information may be recovered again, the removable media containing such information must be destroyed completely (e.g. shredded, crushed, disintegrated, pulverised, or incinerated by burning the device in a licensed incinerator, etc.).
+To delete data from mobile devices, we use the means of a particular device. If a certain mobile device is intended to be reused/recycled/donated or is no longer to be used by the Sumsub staff, this staff member must reset the device to the original settings. As a general rule, the procedure for Apple iPhone and iPad OS: Select 'Settings > General > Reset > Erase All Content and Settings menu. For Android OS devices: Select ‘Settings > Backup & Reset > Factory Data Reset > Reset Phone’.
+It’s forbidden to handle any sensitive data in any equipment, removable media or mobile devices.
+Any request to delete all or any Personal data related to a User is fulfilled within 30 days. This period is justified by the complexity of the systems and technologies Sumsub operates to process the data.
+When the processing purposes differ from those specified above, Sumsub maintains the following retention period considering the amount, nature and sensitivity of the Personal data and the purposes for which we’re permitted to process it.
+When we develop and improve identity verification services to prevent and detect fraud and other illicit activity, we will keep Personal data in a pseudonymised format for the period required to calibrate and select the perfect algorithm and model for detecting fraud and other illicit activity. We may also have to store some records that have been confirmed as relating to fraudulent applications or accounts or obtaining and maintaining records to prove our compliance with legal obligations in and outside the EU and the UK. For example, regarding consent activity log history, the retention period is defined by the criteria derived from requirements by law regarding limitation periods, other applicable regulatory requirements, contractual provisions and industry standards.
+When the purpose refers to the establishment, exercise or defence of legal claims (so-called ‘litigation hold’), the retention period is limited to the duration of such proceedings in a specific case or circumstance.
+In any case, we do not keep your data longer than we have a lawful basis for doing so.
+## 11. Data Subjects’ rights
+Upon written request from a Client, Sumsub assists the Client in exercising Data Subject’s rights. According to privacy laws, you have the right:
+  * **to obtain confirmation** as to whether or not your personal data are being processed;
+  * **to rectify personal data** , or, in other words, to correct the wrong information or complete it;
+  * **to erase personal data, or “right to be forgotten”**. Please note that this right is not absolute and applies only if (i) your Personal data is no longer necessary in relation to the purposes for which was collected or otherwise processed, (ii) you object to the processing, and there are no overriding legitimate grounds for the processing of Client; (iii) the Personal data have been unlawfully processed;
+  * **to restrict personal data processing** where (i) the accuracy of the Personal data is contested (during the period when the Client is able to verify its accuracy); (ii) the processing is unlawful, and you object to the erasure of the Personal data and request to restrict their use instead; (iii) the Client no longer needs the Personal data for the purposes of the processing, but they are required by you to establish, exercise or defend legal claims; (iv) you have objected to processing pending the verification whether Client’s legitimate grounds override those of yours;
+  * **to be informed** as to rectification or erasure of personal data or restriction of their processing;
+  * **to data portability** , or, in other words, to receive your personal data in an appropriate format to be able to provide it to another party or transfer your personal data from one controller to another;
+  * **to object to personal data processing** if the processing is justified by the ‘public interest’ or ‘legitimate interest’ legal grounds as set out in points (e) and (f) of Article 6(1) of the GDPR;
+  * **not to be subject to a decision based solely on automated processing** unless (i) such decision is necessary for entering into, or performance of, a contract between you and the Data Controller; (ii) such decision is authorised by the law to which the Data Controller is subject and which also lays down suitable measures to safeguard your rights and freedoms and legitimate interests or (iii) such decision is based on your explicit consent;
+  * **to lodge a complaint with the supervisory authority**. If you want to complain about the processing activities of our Clients (the service you were verified for), please refer to the methods specified in their privacy policies. When it relates to the processing activity of Sumsub (please check it [here](https://sumsub.com/privacy-notice-service/#otherPurposes)), you can use the following ways: If you're a resident of the UK, please follow this [link](https://ico.org.uk/make-a-complaint/data-protection-complaints/). If you're a resident of the EU, please follow this [link](https://www.dataprotection.gov.cy/dataprotection/dataprotection.nsf/page1i_en/page1i_en?opendocument).
+
+
+To ask Sumsub to execute the rights mentioned above or redirect the request to the Client, you should send a free-form email to privacy@sumsub.com or use this [form](https://support.sumsub.com). The information on actions taken in response to any request is provided to you within one month. That period may be extended by two further months where necessary, considering the complexity and number of the requests. In this case, we will inform you of any such extension within one month of receipt of the request, and the reasons for the delay.
+Please be kindly aware that when you ask us for the execution of the rights as stated above, we may have to take steps to verify that you are the legitimate data owner and/or authorised to make the request due to a Client's request or our own legal obligation.
+Sumsub guarantees that making a request for receiving Personal data is free unless a reasonable cost is to be charged where requests are unfounded, excessive, or repetitive in character.
+## 12. Withdrawing consent and objection to legitimate interest mechanism
+Sumsub assists Controllers (Clients) with the obligation of providing the mechanism for withdrawal of consent (Article 7 (3) EU GDPR and UK GDPR) and objection to processing based on legitimate interests (Article 21 (1) EU GDPR and UK GDPR).Depending on the legal basis of processing that a Client relies on (consent or legitimate interest), the right to withdraw consent or the right to the object of processing can be exercised.Sumsub does not make decisions regarding such requests on its own, as Sumsub acts in accordance with the written instructions of Clients, who exercises control over Personal data. Sumsub can only redirect a User’s request to the Client for whom the User was verified.To withdraw consent or object to processing by Sumsub, you can use [this](https://support.sumsub.com/) link to form your request. Please note that to object to data processing, there should be overriding grounds to those we have under the legitimate interest. We underline that due to the importance of identity verification and fraud prevention to the world's financial system - so-called public interest - for which the Personal data checks are carried out, it will be rare that we have no compelling, overriding grounds to continue using the Personal data following an objection. Generally, under the given circumstances, there are better options than to terminate the processing of Personal data under the objection request. For example, it would be unfair to hide the result of previous fraudulent patterns that could allow a person to steal money from the account by pretending to be another person.
+## 13. Responsibilities
+[a] Sumsub’s responsibilities, and the DPO
+Sumsub is responsible for establishing policies and procedures in order to comply with the EU GDPR and the UK GDPR. Our Data Protection Officer can be contacted via the following e-mail address: privacy@sumsub.com.
+[b] Sumsub DPO’s responsibilities
+Sumsub’s Data Protection Officer holds responsibility for
+  * drawing up guidance and promoting compliance with this Privacy Notice;
+  * appropriate compliance with the EU GDPR, UK GDPR and Data Protection Act 2018;
+  * ensuring that any Personal data breaches are resolved, catalogued and reported appropriately in a swift manner;
+  * investigating and responding to complaints regarding data protection, including Data Subject’s requests.
+
+
+[c] Sumsub’s personnel responsibilities
+Sumsub personnel involved in Personal data processing comply with the requirements of this Privacy Notice and other internal rules. This personnel ensures that:
+  * all personal data is kept securely;
+  * no Personal data is disclosed either verbally or in writing, accidentally or otherwise, to any unauthorised third party;
+  * any queries, requests and complaints regarding data protection are promptly directed to the Data Protection Officer;
+  * any data protection breaches are swiftly brought to the attention of the management and the Data Protection Officer;
+  * where there is uncertainty regarding a data protection matter, advice is sought from the Data Protection Officer.
+
+
+[d] Third-Party Processors acting on behalf of Sumsub
+Where third-party companies are engaged to process Personal data on behalf of Sumsub, responsibility for the security and appropriate use of the data remains with Sumsub.Before engaging a Third-­Party Processor, Sumsub ensures that it provides sufficient guarantees regarding Personal data security. In particular, a written contract establishing the types of Personal data to be processed and the purposes of such processing, as well as containing provisions on Personal data protection, are concluded between Sumsub and the Third-­Party Processor.
+## 14. Specific measures to ensure data protection
+Sumsub takes specific measures to ensure Personal data protection, including, but not limited to, the following:
+  * where applicable, all Personal data processing is conditioned on respective Agreements, non-disclosure agreements, and data processing agreements compliant with the EU GDPR and the UK GDPR;
+  * Sumsub’s specially designed API interface (iFrame) enables Data Subjects to submit Personal data directly to Sumsub’s secure servers;
+  * all personal data is always securely stored on the servers located in safe European data centres of a security level no lower than Tier 31;
+  * all Personal data is encrypted;
+  * personnel involved in Personal data processing is officially authorised and undergoes background checks, where it is obligatory, and regular training;
+  * Sumsub regularly carries out internal and external data protection and information security audits and vulnerability assessments. In particular, compliance with the EU GDPR and the UK GDPR requirements, ISO/IEC 27001, 27017 and 27018, SOC 2 Type 2, and PCI DSS has been demonstrated. Visit our [Security and Compliance section](https://sumsub.com/security-compliance/) for more information.);
+  * where the processing of certain Personal data (e.g., children’s Personal data or sensitive data under certain data protection laws) would be unlawful, Sumsub takes all possible measures to identify and delete or, where appropriate, encrypt such data immediately upon its submission;
+  * physical, software and network security guarantees as set out below are implemented.
+
+
+1 At present, all personal data is stored and processed on specially designated servers in Germany. When data localisation in a certain region is required by law, Sumsub provides such an opportunity, where possible, based on the contract/Client request (e.g., Personal data of Bahrain residents is stored in the Bahrain region).
+Suppose certain types of Personal data, such as the Dutch BSN, Korean RRN, Japanese My number card and related sensitive data, or Singaporean NRIC number, as well as other country-specific requirements, are under special protection regimes (if any). In those cases, Sumsub will take the necessary measures not to process such data, such as requesting a User to cover data with a sticker or processing restrictions using blurring technology, unless the respective Client has a legal basis for processing it freely.
+## 15. Personal data breaches
+Where a Personal data breach occurs or is suspected, it is reported immediately to the Data Protection Officer (DPO) or a director and, where applicable, to the data protection authority, the respective Client and, if applicable, to the individual affected by the breach. The report includes full and accurate details of the incident (including its reasons and magnitude) and outlines the planned measures to eliminate the breach.
+The report is provided directly to the concerned Client, and further breach mitigation is supported.
+## 16. Data disclosure
+[a] Third Parties
+If Clients agree, Sumsub may use third parties for data processing activities, which include the following categories:
+  * **Third-party processors** as reasonably necessary for the provision of a service under an Agreement with a respective Client engaging them to process certain data;
+  * **Data providers** when it is supposed to be used for the provision of Service under an Agreement with a respective Client; and
+  * **Sumsub Group of companies** for assistance in service delivery and **Sumsub EU representative** for granting the opportunity to Data Subjects and Supervisory authority to address Sumsub within EU borders for the purposes of Article 27 of the EU GDPR.
+
+
+Sumsub requires third parties to respect the security of Personal data and treat it according to the applicable law. In addition, third parties are mostly limited to only accessing or using Personal data to provide services to Sumsub and must provide reasonable assurances they will appropriately safeguard the data in line with [Provision 13[d]](https://sumsub.com/privacy-notice-service/#actingOnBehalf) of this Notice.
+Sometimes, certain third-party subprocessors engage particular data providers who can maintain and use the data for their own legitimate purposes.
+Third-parties special notifications
+Please note that in certain cases if required by our Clients:
+  * we may process your personal data with Enable Banking. In these cases, you acknowledge and agree to [the API Service Terms](https://tilisy.enablebanking.com/terms) as well as the processing of your personal data for up to 30 days for the provision of Bank Account Verification services, including account information, balance details, credit limit details, and transaction history;
+  * we may process your personal data with TransUnion of Canada Inc. and its affiliates (collectively called “TransUnion”). In these cases, you acknowledge and agree to the processing of your personal data, including credit information records held by TransUnion as provided by its data suppliers, or as obtained from other available sources.
+
+
+[b] Recipients
+Where it is required by law, Sumsub may have to provide Personal data to the recipients, which includes the following categories:
+  * **Governmental bodies and regulatory authorities, judicial bodies, investigation bodies, sworn bailiffs, and notaries** based on written and concrete requests or the duties binding upon Sumsub or its Clients stipulated by the legal enactments. Such sharing is conducted in line with strict compliance with derogations of the EU GDPR and the UK GDPR; and
+  * **Any other Clients** provided that there is a legitimate interest or any other legal reason for doing so, obtained consent or where Sumsub has been instructed to share the information on behalf of our Clients as specified above.
+
+
+For the purposes of the RTW and RTR checks Sumsub cooperates and shares data with Cifas, a company registered in England and Wales under company number 02584687 and with our registered office at 6th Floor Lynton House, 7-12 Tavistock Square, London WC1H 9LT (**Cifas**) by carrying out identity fraud checks against the databases operated by Cifas, including filing fraud reports. The Personal data we have collected from you can be shared with fraud prevention agencies who will use it to prevent fraud and money-laundering and to verify your identity. If fraud is detected, you could be refused certain services, finance, or employment. Further details of how your information will be used by us and these fraud prevention agencies, and your data protection rights, can be found at https://www.cifas.org.uk/fpn.
+## 17. Sumsub group of companies and the EU Representative
+Sumsub’s group of companies is established as a network of the following legal entities operating worldwide. The following entities constitute the Sumsub group of companies:
+  * UK: Sum and Substance Ltd (reg. 09688671); 
+  * Germany: Sumsub GmbH (reg. HRB 204951 B);
+  * Cyprus: Sumsub Tech Limited (reg. HE 424752), Sumsub Ltd (reg. HE 405087), Raritex Trade Ltd (reg. HE 369578);
+  * USA, Delaware: Sumsub Inc. (reg. 6366081);
+  * UAE: Sumsub Technology LLC (reg. 2014604);
+  * Singapore: Sumsub APAC Pte. Ltd. (red. 202345939C);
+  * Brazil: Sumsub Brazil LTDA (CNPJ 59.949.822/0001-66).
+
+
+Sumsub EU representative is Sumsub LTD - incorporated and registered in Cyprus with company number HE 405087.
+## 18. International data transfers
+Sumsub confirms that all Personal data is stored on Sumsub’s servers located in the EU and/or subject to any national localisation requirements in the respective countries, where such requirements exist. Clients may choose the location of Personal data processing (including storage) to comply with the applicable laws.
+Where it is necessary for Service provision or to ensure convenient and reliable communication with Data Subjects, Sumsub transfers Personal data outside of the EU/EEA the UK, or other jurisdictions (if applicable) to the third-parties and recipients indicated in [Provision 16](https://sumsub.com/privacy-notice-service/#16) of this Notice.
+Whenever a transfer of Personal data outside the EEA or the UK is carried out, Sumsub implements appropriate safeguards as set out in Chapter V of the EU GDPR or UK GDPR by transferring based on an EU Adequacy Decision (or UK Adequacy Regulations) or by concluding Standard Contractual Clauses. Third-Party Processors likewise rely on appropriate safeguards, which include binding corporate rules, Standard Contractual Clauses, or other lawful bases. Cross-border Personal data transfers from the UK to the EU/EEA countries are permitted by the UK Government. In cases of international data transfers from other jurisdictions (when we provide services on behalf of companies outside of Europe) we either transfer personal data to countries with adequate level of protection or using data transfer tools provided for in applicable laws such as appropriate contractual measures.
+To ensure transparency and compliance with applicable data protection legislation, Sumsub provides below the details of the countries outside the EU where personal data may be transferred and the corresponding safeguards applied.
+  * Country
+**International data transfer mechanism**
+  * United Kingdom
+[EU Adequacy Decision for the UK, Brussels, 28 June 2021](https://ec.europa.eu/commission/presscorner/detail/pt/ip_21_3183)
+  * Switzerland
+[EU Adequacy decision for Switzerland. Brussels, 26 July 2000](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32000D0518)
+  * United States of America
+Appropriate safeguards pursuant to article 46 of the EU GDPR and the UK GDPR: the Standard Contractual Clauses; or Adequate level of protection pursuant to article 45 of the EU GDPR: EU–US Data Privacy Framework.
+  * United Arab Emirates
+Appropriate safeguards pursuant to article 46 of the EU GDPR and the UK GDPR: the Standard Contractual Clauses.
+  * Singapore
+Appropriate safeguards pursuant to article 46 of the EU GDPR and the UK GDPR: the Standard Contractual Clauses.
+  * Brazil
+Appropriate safeguards pursuant to article 46 of the EU GDPR and the UK GDPR: the Standard Contractual Clauses.
+
+
+## 19. Sale of personal data and CCPA reference
+Sumsub does not sell Personal data and strictly complies with restrictions and prohibitions under CCPA and the EU or the UK GDPR.
+For more information on the CCPA application to Sumsub processing activities, please refer to the [CCPA Privacy Notification](https://sumsub.com/ccpa-privacy-notification/).
+## 20. Special notice to residents of the states of Illinois, Washington, or Texas (USA)
+Personal data processed by Sumsub may include certain ‘biometric identifiers’ (such as scans of facial geometry or voiceprints) and ‘biometric information’ (data extracted from and based on biometric identifiers), which are used to verify the identity of Users.Whenever such biometric identifiers and/or biometric information (collectively ‘biometric data’) are used as part of the Services rendered by Sumsub to any Client, such data shall be processed by Sumsub on behalf of such Client and permanently deleted as stated in [Provision 10](https://sumsub.com/privacy-notice-service/#10) of this Notice. In the latter case, Sumsub shall not perform any operations regarding such data other than its storage for the period required by the applicable law.In any event, biometric data shall only be collected and further processed by Sumsub after obtaining a written informed consent of the respective Data Subject to such collection and further processing. In case of any conflict or inconsistency between the other provisions of this Privacy Notice and the terms of this special notice, the latter shall prevail whenever the laws of the states of Illinois, Washington, or Texas (USA) apply to the legal relationship between Sumsub and any Data Subject.Clients are independently responsible for complying with the privacy regulations, including BIPA, providing all necessary disclosures and obtaining all required consents.
+## 21. Changes to this Notice
+This Privacy Notice is constantly reviewed and amended to comply with the relevant data protection laws.Sumsub reserves the right to amend this Notice at any time and for any reason. Any amendments will be effective immediately upon us posting the updated Privacy Notice on our Website. Our Website users waive the right to receive specific notice about such amendments. You are invited to review this Privacy Notice anytime to stay informed about updates.If you want to observe the previous version of this Privacy Notice, please contact us at privacy@sumsub.com or visit this [link](https://support.sumsub.com). Our technical and legal support teams work 24/7 and will answer you shortly.

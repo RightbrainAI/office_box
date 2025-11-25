@@ -1,0 +1,247 @@
+Version v1.3 – Effective from September 29th 2025 
+**Last updated: 29th September 2025**
+**If your Effective Date (as defined below) is:**
+**- on or after 29th September 2025 – this version applies to you fully starting from the Effective Date;** **- before 29th September 2025 – the previous version applies to you for 14 calendar days since the day you were notified of this version entering into force; afterwards, this version applies.**
+# Sumsub ID User Terms and Conditions
+These Sumsub ID User Terms and Conditions (“**T &C**”), as may be amended by us from time to time, form a legally binding agreement between:
+  * **you** , the individual intending to use Sumsub ID; and
+  * **us** , Raritex Trade Ltd, incorporated and registered in Cyprus with company number HE369578 and address at 153 Agiou Andreou, 3036, Limassol, Cyprus (“**Sumsub** ”).
+
+
+The date you express your consent to be bound by these T&C as described hereunder shall be the “**Effective Date** ”.
+**Please read these T &C carefully.** These T&C include provisions on how you and Sumsub resolve disputes hereunder, and the rules may be different depending on your location. **These T &C include an agreement to arbitrate.** It means that disputes, with limited exceptions, are resolved through binding arbitration by a neutral arbitrator. There is no judge or jury in arbitration, and court review of an arbitration award is limited. This arbitration is mandatory, which means that disputes _must_ go to arbitration and not to court. **These T &C also contain a class action waiver.** This means that any claims you have against Sumsub are resolved individually and cannot be a part of a class or collective action.
+  1. **What is Sumsub ID and how does it work?**
+
+
+Sumsub is a global provider of identity verification and fraud prevention SaaS solutions, used by multiple businesses to facilitate their Know-Your-Customer (“**KYC** ”) processes. For the convenience of those individuals who may need to undergo KYC for more than one company benefiting from our services, we have introduced “**Sumsub ID** ” – a feature allowing you to store your personal data previously verified by Sumsub or its affiliate in a dedicated account (“**Sumsub ID Account** ”) and re-use it for your future KYC attempts powered by Sumsub or its affiliate.
+**About your Sumsub ID Account** :
+  * The personal data displayed in your Sumsub ID Account (alongside any other personal data you provide to Sumsub with the sole purpose of creating a Sumsub ID Account or using your existing Sumsub ID Account for a Re-Verification as defined below) is kept in a storage space maintained and operated by Sumsub, allocated specifically for Sumsub ID purposes (“**Sumsub ID Data Pool** ”). The types of personal data eligible to be stored in a Sumsub ID Account (e.g., copies of identity documents) may change from time to time as determined by Sumsub in its discretion.
+  * You will be initially prompted to create a Sumsub ID Account while passing KYC for any company that has Sumsub ID integrated into its user experience as per authorization of Sumsub or its affiliate (“**Participant** ”). In this case, the data you submit to the respective Participant during the respective KYC attempt will be, in its entirety or in part (depending on the functionality of Sumsub ID at the time), copied to your Sumsub ID Account.
+  * Additionally, Sumsub may, in its discretion, provide an option to create a Sumsub ID Account directly at [https://id.sumsub.com](https://id.sumsub.com/) or via other means (e.g., partner platforms). In this case, (i) you may be requested to furnish us with an image of your identity document and perform checks aimed at verifying your identity (e.g., a biometric “liveness” check); and (ii) the data you submit to Sumsub will be, in its entirety or in part (depending on the functionality of Sumsub ID at the time), copied to the Sumsub ID Data Pool and your Sumsub ID Account.
+  * Before your Sumsub ID Account is created, you will need to confirm your email address by providing us with the verification code we will have sent you. You may then use that same email address to access your Sumsub ID Account at [https://id.sumsub.com](https://id.sumsub.com/). Sumsub may, in its discretion, opt to implement authentication and/or verification methods additional or alternative to email address confirmation.
+  * Notwithstanding your acceptance of these T&C, Sumsub may, in its discretion, deny creation of a Sumsub ID Account or its supplementation with new data. This may happen, for instance, when your KYC attempt with the respective Participant is not fully successful (which may depend, e.g., on the KYC settings and conditions selected by the Participant and is not entirely within Sumsub’s control); or when we reasonably believe you might be in breach of any obligations under these T&C or any applicable law or regulation; or when we reasonably believe the data you have submitted for Sumsub ID purposes might not be authentic, valid, or up-to-date; or when we are otherwise unable to verify your identity; or when we are legally barred from providing you with Sumsub ID, etc. – however, we reserve the right not to disclose the exact reason even in case of a direct inquiry.
+  * Your Sumsub ID Account may contain:
+    * logs of all substantial actions performed in respect of your Sumsub ID Account;
+    * copies of your identity documents (and other personal data, if any) that are stored in the Sumsub ID Data Pool at the relevant time and are available for Re-Verifications as defined below, which you can view and instruct us to delete;
+    * an option to permanently delete your Sumsub ID Account; and
+    * other relevant information.
+  * We may use the data contained in your Sumsub ID Account to identify potentially fraudulent usage thereof and to notify you of such suspected usage. This may include, without limitation, instances where personal data then-currently stored in your Sumsub ID Account were used during KYC performed for a Participant. Sumsub may also provide means of blocking potentially fraudulent KYC attempts involving your data via your Sumsub ID Account.
+
+
+**About re-using your data via Sumsub ID:**
+  * Once your Sumsub ID Account is created, you may instruct us to re-use the data contained therein for your subsequent KYC attempts with any Participants (“**Re-Verifications** ”). The types of personal data eligible for Re-Verifications (e.g., copies of identity documents) may change from time to time as determined by Sumsub in its discretion. A Re-Verification typically consists of the following steps:
+    * as you start passing KYC for any Participant, we will ask you to confirm your email address by providing us with the verification code we will have sent you and/or submit other data allowing Sumsub to reasonably establish your identity;
+    * subsequently, we will attempt to locate you in the Sumsub ID Data Pool. In case of success, we will, upon your confirmation, share with the respective Participant whichever of your data is (i) stored in your Sumsub ID Account at the relevant time and simultaneously (ii) required by the respective Participant as per its commercial agreement with Sumsub or (as the case may be) Sumsub’s affiliate or counterparty (“**Client Agreement** ”). Otherwise, you will be requested to complete KYC for the respective Participant without relying on your Sumsub ID Account.
+  * Re-Verifications may also be conducted in a simplified form where:
+    * you will be asked to pass a “liveness” check and/or provide other identity data (e.g., ID number, full name) as Sumsub may request;
+    * subsequently, we will confirm to the respective Participant whether (i) an individual with the same data attributes can be located in the Sumsub ID Data Pool (and/or other sources Sumsub may legally and contractually access for this purpose) and, (ii) optionally, whether that individual was approved or rejected during their KYC attempt(s), without sharing any other personal data then-currently stored in your Sumsub ID Account.
+Whether this type of Re-Verification is available to you depends, in each specific case, on the set of services the respective Participant has access to under its Client Agreement.
+  * Using Sumsub ID does not imply that you will be successfully onboarded by any Participant or that you will not have to undergo additional KYC procedures. This will be determined separately by each respective Participant in its sole discretion. Likewise, we cannot guarantee any specific number of Participants or that any of our counterparties will be (or remain) a Participant.
+
+
+  1. **How do I accept these T &C?**
+
+
+By (i) clicking the button “ _Create Sumsub ID account_ ” (or “ _Create an account_ ”) or assenting to similar language via similar action; or (ii) otherwise explicitly expressing your consent to be bound by these T&C; or (iii) effectively starting to use Sumsub ID, you confirm that:
+  * you have read and accepted these T&C. In case you do not fully understand or disagree with any provisions of these T&C, please do not use Sumsub ID;
+  * you are an individual of sufficient age and have full legal capacity as per the laws of the jurisdiction(s) where you reside and maintain citizenship to enter into these T&C personally;
+  * you are entering into these T&C on your own behalf and in your own name.
+
+
+  1. **How do I opt out of these T &C?**
+
+
+In case you want to stop using Sumsub ID for any reason, please inform us accordingly at sumsubid-privacy@sumsub.com or delete your Sumsub ID Account (if this functionality is available therein at the relevant time). Upon receipt of, respectively, your request or the notification of your Sumsub ID Account being deleted, we will consider these T&C terminated as between you and Sumsub with immediate effect and:
+  * unless you explicitly authorize us otherwise, stop using your data (as may be stored in your Sumsub ID Account and/or Sumsub ID Data Pool at the relevant time) for Re-Verifications; and
+  * delete your Sumsub ID Account (if still applicable) and all of your data from the Sumsub ID Data Pool; following that, we will not transfer any of your data to the Sumsub ID Data Pool unless you re-enter into these T&C. Please note this will not affect any data processing as may be carried out by Sumsub (i) when such processing is required under the applicable laws and regulations, (ii) for the purposes of product and service development, fraud detection and prevention (including profiling, statistical analysis, and analytics), or (iii) under any Client Agreement or any other binding agreement other than these T&C.
+
+
+In case we have reasonable doubts as to whether you are the actual sender of the request, we may postpone the deletion of your personal data as described above until we have (in our determination) confirmed your identity.
+  1. **Is Sumsub ID free of charge?**
+
+
+We do not charge you for your usage of Sumsub ID. Our primary goal in maintaining Sumsub ID is to improve the service quality enjoyed by Participants attributable to the enhanced user experience.
+However, we reserve our right to impose any fees associated with your usage of Sumsub ID (or any of its component features) in the future. We will notify you of our decision to do so: (i) in case the fees are payable for a component feature you were not using before they were imposed – before you have signed up for that feature; (ii) in all other cases – at least 1 calendar month before the fees become effective.
+  1. **Is Sumsub ID available at all times?**
+
+
+Sumsub ID is provided on an “as-is” basis; any express or implied warranties, guarantees, or representations are hereby disclaimed.
+We strive to ensure that you can access and use Sumsub ID without hindrance and at all times whenever you attempt to pass KYC for a Participant. However, Sumsub ID may be occasionally rendered unavailable for undefined periods of time due to scheduled or emergency maintenance, technical disruptions, information security reasons, or other circumstances, including those beyond our control. While we will make efforts to notify you of such unavailability as soon as possible once we become aware of it, we do not guarantee we will always be able to do so and we will not be liable for any consequences resulting from it. Likewise, we do not promise that Sumsub ID will always be free of errors, malfunctioning, or technical defects or that it will be suitable for your personal purposes or meet any specific descriptions or criteria.
+We may, at any time and without prior notice, issue updates, amendments, or modifications to Sumsub ID or any adjacent functionality (including the introduction or removal of certain features) without any ensuing liability.
+We reserve our right to stop providing Sumsub ID altogether (or any constituent parts thereof) for any reason, in which case we will notify you accordingly.
+  1. **What are my obligations in relation to my usage of Sumsub ID?**
+
+
+By acceding to these T&C, you agree not to (nor to attempt to):
+  * modify, translate, adapt, merge, make derivative works of, disassemble, decompile, reverse compile, or reverse engineer any part of Sumsub ID or any adjacent functionality;
+  * access or use Sumsub ID or any adjacent functionality to build similar or competitive technologies, products, or services;
+  * access or use Sumsub ID or any adjacent functionality for commercial and other non-personal purposes, as well as any purposes not authorized hereunder;
+  * license, lease, sell, redistribute, transfer, or otherwise make Sumsub ID (or any adjacent functionality) or your access thereto available to a third party;
+  * remove or conceal any copyright notices or trademarks displayed by Sumsub in connection with your usage of Sumsub ID or any adjacent functionality;
+  * access or use Sumsub ID or any adjacent functionality in a manner that (i) is non-compliant with any applicable laws or regulations; (ii) infringes Sumsub’s or any third party’s intellectual property rights; (iii) breaches any legal or contractual duty owed to a third party; (iv) constitutes impersonation of another individual or otherwise serves to conceal or disguise your identity; (v) is offensive, threatening, abusive, unethical, deceitful, or otherwise likely to cause harm to another person; (vi) interferes with or compromises its integrity, security, or operability; or (vii) could be reasonably expected to bring Sumsub, its affiliates, or their counterparties into disrepute;
+  * provide Sumsub with data that is incomplete, inaccurate, and/or not up-to-date – this, for the avoidance of doubt, shall include (without limitation) copies of documents that are not in your possession (e.g., lost or stolen) at the time of submission;
+  * willingly or negligently allow a third party to use or otherwise access Sumsub ID on your behalf or using your credentials;
+  * disclose to a third party any information received from Sumsub that was explicitly designated as “confidential” (or could be reasonably deemed confidential) at the time of receipt without Sumsub’s prior written consent (unless you are under a legal obligation to do so) – this, for the avoidance of doubt, shall include (without limitation) any Sumsub ID credentials; or
+  * assist or aid a third party in doing any of the above,
+
+
+while these T&C remain in effect between you and Sumsub and at any time thereafter.
+Additionally, you agree:
+  * to notify Sumsub immediately when you know or suspect that any data previously provided by you to Sumsub is rendered obsolete, outdated, incomplete, or incorrect (including where you lose possession of the original documents the copies of which are stored by Sumsub);
+  * to notify Sumsub immediately when you know or suspect that an unauthorized third party may have accessed Sumsub ID on your behalf or using your credentials; and
+  * to provide Sumsub with all information we may reasonably request to ensure our compliance with these T&C and the relevant laws and regulations,
+
+
+while these T&C remain in effect between you and Sumsub.
+  1. **When can my usage of Sumsub ID be suspended or terminated?**
+
+
+We reserve the right, in our sole determination, to suspend or terminate your access to and/or usage of Sumsub ID (which may include, without limitation, deletion or your Sumsub ID Account), with or without prior notice, indefinitely or for a limited period of time:
+  * with immediate effect – (i) when we know or reasonably believe that you are in breach of any provision of these T&C; or (ii) when you have objected to any changes to these T&C without opting out of them; or (iii) when the way you wish to exercise your data subject rights makes us unable to provide you with the full functionality of Sumsub ID as per these T&C or to fulfill our obligations under a Client Agreement; or (iv) when, in our reasonable opinion, it is necessary for the protection of the rights, legitimate interests, or business reputation of Sumsub or any third party or mitigation of any risks related to data privacy or information security; (v) when we need to temporarily disable Sumsub ID (e.g., to perform technical maintenance); or (vi) when we have decided to stop providing Sumsub ID; or (vi) when providing you with Sumsub ID would put Sumsub in breach of any sanctions or export controls or Sumsub’s internal anti-sanctions policies and procedures (in particular, this may apply where you are a citizen or a resident of Russia, Belarus, North Korea, Iran, Venezuela, Afghanistan (Taliban-controlled territory), occupied territories of Ukraine).
+  * with a prior notice of at least 30 calendar days – at any time and in our sole discretion.
+
+
+The foregoing does not limit any other rights or remedies we may be legally entitled to. In particular, in case we reasonably believe you are in breach of any applicable law or regulation, we may have to report this to the competent authority or take such other action as we in our discretion consider necessary.
+A delay in the exercise of any rights to suspend or terminate your access to or usage of Sumsub ID is not considered a waiver of this right. It is also not considered a choice of a different remedy to the exclusion of suspension or termination.
+  1. **How does Sumsub process and protect my personal data?**
+
+
+In relation to and for the purpose of providing you with Sumsub ID as described in these T&C, Sumsub processes your personal data as a data controller (as defined in the Regulation (EU) 2016/679, or the “**GDPR** ”). Sumsub ID allows you to:
+  * submit your personal data (including identity documents that contain your personal data) to be processed by Sumsub; and
+  * request Sumsub to share your personal data with Participants,
+
+
+as described in section 1 of these T&C.
+Participants receiving your personal data from Sumsub based on your instructions act as separate and independent data controllers. The processing of your personal data by Participants is not governed by these T&C, and we encourage you to refer to such Participants’ terms of use, privacy notices, and other relevant documentation for more information about how they process your personal data and what the purposes and lawful basis of such processing are.
+Sumsub may also process your personal data for the following purposes:
+(a) identifying and flagging potentially fraudulent patterns and other signs of suspicious behaviour that could lead to or signal any illicit activity, carrying out profiling and calculating risk scores based on the said factors, and notifying our counterparties in the framework of higher-risk applicant control and alert functionality. Such processing is required to prevent and detect fraud and other illicit activity as part of substantial public interest; it also allows us to safeguard your personal and financial information, ensure that transactions and interactions are legitimate and secure, detect unusual behaviour early, and provide an additional layer of security to our solution overall. Profiling may also be necessary for Participants’ identity verification and fraud prevention activities, so that Participants can comply with their anti-money laundering and other legal obligations;
+(b) developing and testing new and existing products and services of Sumsub to (i) improve their functionality as may be required for fraud detection and prevention, including by means of artificial intelligence (e.g. machine learning models), or to (ii) fulfil our commitments under these T&C;
+(c) producing anonymised and/or aggregated statistical reports and research; and
+(d) producing and storing audit log records and reports based on information security and personal data protection requirements applicable to Sumsub.
+By accepting these T&C, you instruct Sumsub:
+  * to create your Sumsub ID Account based on the personal data you submit for this purpose (including biometric data, if any); you will be asked to provide your consent to the processing of biometric data, which is necessary to create a Sumsub ID Account for you;
+  * to transfer your personal data (in line with the data portability principle) provided to Sumsub in the framework of Sumsub ID to a specific Participant with whom you want to use your Sumsub ID to be verified as a Participant’s customer.
+
+
+The categories of personal data to be processed by Sumsub under these T&C are based upon the data categories used by Participants for their KYC purposes and include at least the following data categories:
+  * **Personal data contained in ID documents** submitted by you, including (without limitation) the following data categories depending on the type of document: full name, gender, personal identification code or number, date of birth, legal capacity, nationality and citizenship, location (street, city, country, and postcode), document type, issuing country, document number, document expiry date, MRZ, information embedded into document barcodes (may vary depending on the document), security features;
+  * **Biometric data** : facial features and images of your face (such as selfie images or liveness detection results), photos or scans of your face on identification documents and videos when they are processed as biometry.
+
+
+The processing of all other personal data categories is optional and based upon your request and type of checks required by Participants according to their KYC procedures. All categories of personal data that can be processed by Sumsub can be found in the privacy notice available at: [https://sumsub.com/privacy-notice](https://sumsub.com/privacy-notice/).
+The lawful basis for processing of your personal data is specified in the table below:
+Purpose of processing | Personal data categories | Legal basis for processing  
+---|---|---  
+Provision of Sumsub ID under the T&C | All categories of your personal data that are not special categories of personal data (including without limitation personal data from ID documents and other personal data excluding biometric data) | Necessity for the performance of a contract with you (Article 6 para. 1 letter b) of the GDPR)  
+Provision of Sumsub ID under the T&C | Biometric data: facial features, including photos and videos of your face when they are processed as biometric data | Explicit consent (Article 9 para. 2 letter a) of the GDPR)  
+Product and service development | All the categories of your personal data which are not special categories of personal data | Sumsub’s legitimate interests (Article 6 para. 1 letter f) of the GDPR)  
+Product and service development | Biometric data: facial features, including photos and videos of your face when they are processed as biometric data | Substantial public interest (Article 9 para. 2 letter g) of the GDPR)  
+Fraud detection and prevention, including profiling, statistical analysis, and analytics | All the categories of your personal data which are not special categories of personal data (including without limitation personal data from ID documents and other personal data excluding biometric data) | Sumsub’s legitimate interests (Article 6 para. 1 letter f) of the GDPR)  
+Fraud detection and prevention, including profiling, statistical analysis, and analytics | Biometric data: facial features, including photos and videos of your face when they are processed as biometric data | Substantial public interest (Article 9 para. 2 letter g) of the GDPR)  
+_**Consent to the processing of biometric data**_
+Prior to us beginning the processing of your biometric data, you will be asked for your explicit consent to such processing. While the provision of consent is voluntary, Sumsub will not be able to provide you with Sumsub ID without your explicit consent as the nature of Sumsub ID functionality necessarily requires biometric data collection and further processing.
+You may withdraw your consent to the processing of biometric personal data by Sumsub at any time by sending a request to the following address: sumsubid-privacy@sumsub.com. The withdrawal of consent does not affect the lawfulness of processing based on consent before its withdrawal. Upon receiving the withdrawal of your consent to the processing of biometric personal data by Sumsub, we will consider these T&C terminated with immediate effect.
+_**Data sharing with Participants and other third parties**_
+Your personal data will be shared with Participants for Re-Verifications only upon your confirmation. Such confirmation is expressed by you selecting Sumsub ID as the verification option while passing KYC for a Participant and, where applicable, personal data to be shared during the KYC procedure with the respective Participant.
+Sumsub may engage third parties for data processing activities, which include the following categories:
+  * third-party processors as reasonably necessary for the provision of Sumsub ID; and;
+  * Sumsub’s affiliated companies for the assistance in providing Sumsub ID.
+
+
+Where it is required by law, Sumsub may also have to provide personal data to the following third parties:
+  * governmental bodies and regulatory authorities, judicial bodies, investigation bodies, sworn bailiffs, attorneys, and notaries based on written and concrete requests or the duties binding upon Sumsub.
+
+
+_**Data retention**_
+Your personal data will be processed by Sumsub for as long as these T&C are in effect between you and Sumsub. Upon termination of these T&C, Sumsub will delete your personal data that was processed solely for the purposes of providing Sumsub ID.
+You can also instruct us to delete the data stored, at the respective time, in your Sumsub ID Account and/or the Sumsub ID Data Pool without terminating the T&C (where it is possible as described hereunder).
+_**Data subject rights**_
+You have the following rights as a data subject:
+  * to obtain confirmation as to whether or not your personal data are being processed;
+  * to rectify personal data, or in other words, to correct wrong information or complete it;
+  * to erase personal data (“right to be forgotten”). Please note that, in case of your request for erasure of all personal data associated with your Sumsub ID Account or all biometric data separately from non-sensitive personal data, we will consider these T&C terminated with immediate effect;
+  * to restrict personal data processing where (i) the accuracy of the personal data is contested (during the period while Sumsub is able to verify its accuracy); (ii) the processing is unlawful, and you objected to the erasure of the personal data and requested to restrict their use instead; (iii) Sumsub no longer needs the personal data for the purposes of the processing, but is required by you to establish, exercise or defend legal claims; (iv) you have objected to processing pending the verification whether Sumsub’s legitimate interest in such processing overrides your interests;
+  * to be informed as to rectification or erasure of personal data or restriction of their processing;
+  * to data portability, or, in other words, to receive your personal data in an appropriate format to be able to provide it to another party or transfer your personal data from one controller to another;
+  * to object to personal data processing if the processing is justified by the ‘public interest’ or ‘legitimate interest’ legal grounds as set out in points (e) and (f) of Article 6(1) of the GDPR;
+  * not to be subject to a decision based solely on automated processing unless (i) such decision is necessary for entering into, or performance of, a contract between you and the Sumsub; (ii) such decision is authorised by the law to which Sumsub is subject and which also lays down suitable measures to safeguard your rights and freedoms and legitimate interests or (iii) such decision is based on your explicit consent;
+  * to lodge a complaint with the supervisory authority.
+
+
+To ask Sumsub to execute the rights mentioned above, you should send a free-form email to **sumsubid-privacy@sumsub.com****.** The information on actions taken in response to any request is provided to you within one month following its receipt. That period may be extended by two further months where necessary, considering the complexity and number of the requests. In this case, we will inform you of any such extension and the underlying reasons within one month of receipt of the request.
+Please be kindly aware that when you ask us for the execution of the rights as stated above, we may have to take steps to verify that you are the legitimate data owner and/or authorised to make the request.
+Sumsub guarantees that making a request for receiving personal data is free unless a reasonable cost is to be charged where requests are unfounded, excessive, or repetitive in character.
+Sumsub reserves the right to refuse to act on your inquiry where it is manifestly unfounded or excessive. This includes cases where we reasonably believe you to have engaged in fraudulent or otherwise illicit activity in connection with these T&C.
+_**Processing after termination of T &C**_
+Termination of these T&C will not affect any data processing as may be carried out by the Participants with which your personal data had already been shared by Sumsub upon your request or by Sumsub for the purposes indicated in this section 8 or section 3 of these T&C.
+Where we reasonably believe that, while providing us with personal data, you were in breach of these T&C, we reserve the right to retain such personal data for up to 1 calendar year following the termination of these T&C (but no longer than permitted under the applicable law) in order to detect and mitigate threats to the integrity and security of Sumsub ID or any related functionality. Other instances of Sumsub continuing to process your personal data as a data controller following the termination of these T&C shall be governed by Sumsub’s Privacy Notice, available at [https://sumsub.com/privacy-notice](https://sumsub.com/privacy-notice/).
+  1. **When can Sumsub be responsible (liable) to me?**
+
+
+Nothing in these T&C excludes or limits our liability for: (i) our fraud or fraudulent misrepresentation (meaning we have knowingly made a false statement without belief in its truth or recklessly as to its truth); or (ii) any other matter for which the applicable law explicitly prohibits exclusion or limitation of liability.
+Other than that, our total aggregate liability to you under these T&C and any collateral contract (regardless of the number of claims or causes of action) shall not exceed 50 EUR. In addition, Sumsub will not, under any circumstances, be liable for:
+  * any consequential, indirect, incidental, special or punitive damages, however caused, including, without limitation, loss of income, profit, goodwill, reputation, or anticipated savings; loss or corruption of data; loss of business; or loss of business opportunity;
+  * any actions of third parties (including, without limitation, Participants) not directly engaged by Sumsub to perform any of its obligations under these T&C;
+  * any losses or damages that could not be reasonably foreseen by Sumsub as of the Effective Date;
+  * any losses or damages not directly caused by a breach of these T&C by Sumsub.
+
+
+Please note that you are solely responsible for:
+  * your usage of Sumsub ID and any ensuing consequences;
+  * making informed decisions about entering into a binding arrangement and/or sharing any information with any third party (including, without limitation, any Participant). Please note Sumsub has no control or oversight over such third parties (in particular, the way they handle your personal data or provide you with their products or services, the content of their websites or other resources, etc.), and therefore disclaims all responsibility and liability for their performance and actions in general;
+  * ensuring that any data you provide to Sumsub or any third party (including, without limitation, any Participant) is accurate, authentic, and up-to-date.
+
+
+  1. **Can Sumsub change these T &C?**
+
+
+While we may change these T&C (as well as any materials referenced herein) from time to time in our sole discretion, we will notify you at least 10 calendar days before the changes are intended to take effect (unless a shorter notice period is prescribed elsewhere in these T&C for any specific purpose). The notification may be delivered to the email address you used to create your Sumsub ID Account or posted in your Sumsub ID Account.
+In case you object to any changes, please opt out of these T&C as described in section 3 above before the changes become effective; otherwise, we will assume you have accepted them.
+  1. **How can I and Sumsub contact each other?**
+
+
+If you have an inquiry or would otherwise like to contact us in relation to Sumsub ID (including any matter concerning these T&C), please email us at sumsubid-privacy@sumsub.com, unless a different email or postal address is designated elsewhere in these T&C for any specific purpose. In case we have reasonable doubts as to whether you are the actual sender, we may postpone our response until we have (in our determination) confirmed your identity.
+Any notices or other messages sent by Sumsub to the email address you used to create your Sumsub ID Account shall be regarded as properly delivered under these T&C.
+  1. **What interpretation rules apply to these T &C?**
+
+
+Should any provision of these T&C be held invalid or unenforceable for any reason or to any extent, the remaining provisions of these T&C will not be affected, and the application of that provision will be enforced to the extent permitted by law.
+Unless otherwise explicitly stated herein, these T&C do not create rights or obligations for any person or entity besides you and Sumsub.
+These T&C do not create a relationship of partnership, employment, agency, or joint venture between you and Sumsub.
+None of your rights or obligations under these T&C may be assigned to another person or entity.
+Where any right under these T&C is not exercised or is exercised with a delay, it should not be considered waived (i.e., that the party entitled to exercise it voluntarily gave it up) unless the non-exercising party confirms the waiver in writing.
+These T&C constitute the entire agreement between you and Sumsub on all matters concerning Sumsub ID.
+  1. **What if there is a dispute between me and Sumsub?**
+
+
+**13.1. Governing Law**
+Unless the local laws of your jurisdiction explicitly prescribe otherwise (to the extent such prescription would override this section 13), the laws of England and Wales govern these T&C and apply to any dispute or claim arising from these T&C or your use of Sumsub ID.
+**13.2. Class Action Waiver**
+Where and to the maximum extent permitted under the applicable law, **you and Sumsub agree that each may bring claims against the other or its affiliates only in your or its individual capacity and not as a plaintiff or class member in any purported class or representative action**. A judge or an arbitrator may not consolidate more than one person’s claims or otherwise preside over any form of representative or class action.
+The foregoing does not preclude application of the mass arbitration rules described below.
+**13.3. Arbitration**
+**If you are resident in the United States:**
+You and Sumsub agree that any dispute or controversy arising out of or in connection with these T&C including, but not limited to, legal and equitable claims, federal and state statutory claims, common law claims, and those based in contract, tort, fraud, misrepresentation or any other legal theory, shall be resolved through binding arbitration on an individual basis (except as specifically noted below). This includes any disputes you may have with Sumsub’s affiliates.
+The arbitration shall be conducted in accordance with the rules of the American Arbitration Association (“**AAA** ”), Consumer Arbitration Rules, in effect on the date of the T&C you are currently bound by. Costs of arbitration, including AAA administrative fees, shall be apportioned between you and Sumsub in accordance with the AAA Consumer Arbitration Rules, except where a party brings a claim determined by the arbitrator to be frivolous, in which case the losing party shall pay the costs of arbitration to the successful party.
+In agreeing to this binding commitment to arbitrate their claims, **you and Sumsub agree to waive any right to proceed in a court of law or to have their claims heard by a jury, except that where your claim is within the jurisdiction of a small claims court, you make file the claim in small claims court.**
+The arbitration shall be conducted by a single, neutral arbitrator in the English language.
+To minimize your costs of having to travel for arbitration proceedings, any arbitration hearing shall be held virtually and not in person for all proceedings related to the arbitration, except by mutual agreement of all parties or if the arbitrator orders an in-person hearing. If we agree or the arbitrator orders to hold the proceedings in-person, they should be conducted at a location which is reasonably convenient to both parties with due consideration of their ability to travel and other pertinent circumstances.
+In cases where neither party’s claim(s) or counterclaim(s) exceed $25,000, both parties agree to waive an arbitration hearing and resolve the dispute solely through submissions of documents to the arbitrator, unless the arbitrator orders an arbitration hearing to uphold fairness to both parties.
+The AAA Consumer Arbitration Rules, as well as instructions on how to file an arbitration proceeding with the AAA, can be found at the AAA’s website (adr.org). At the time of preparing these Terms, the AAA Consumer Arbitration Rules can be found at <https://www.adr.org/sites/default/files/Consumer-Rules-Web_0.pdf>. You may also ask Sumsub for a copy of the current AAA Consumer Arbitration Rules.
+If you wish to initiate arbitration, Sumsub will accept delivery of the Demand for Arbitration by email at disputes@sumsub.com. If Sumsub does not have a physical address on file for you, it will send a Demand for Arbitration by email.
+**Confidentiality.** During the arbitration, the amount of any settlement offer made by you or Sumsub shall not be disclosed to the arbitrator until after the arbitrator makes a final decision and award, if any. All documents and information disclosed in the course of the arbitration shall be kept strictly confidential by the recipient and shall not be used by the recipient for any purpose other than for purposes of the arbitration or the enforcement of the arbitrator’s decision and award and shall not be disclosed except in confidence to persons who have a need to know for such purposes or as required by applicable law.
+**Delegation.** Any dispute between Sumsub and you regarding the construction, interpretation, or application of this arbitration provision, including the enforceability, severability, revocability, scope, or validity of this arbitration provision, shall be decided by an arbitrator and not by a court or judge.
+**Filing false information or frivolous claims.** By presenting to the arbitrator a pleading, written motion, or other paper (whether by signing, filing, submitting or later advocating it) an attorney or a non-attorney representative certifies that to the best of that person’s knowledge, information, and belief, formed after an inquiry reasonable under the circumstances: (1) it is not being presented for any improper purpose, such as to harass, cause unnecessary delay, or needlessly increase the cost of dispute resolution; (2) the claims, defenses or other legal contentions are warranted by existing law; (3) the factual contentions have evidentiary support or, if specifically so identified, will likely have evidentiary support after a reasonable opportunity for further investigation or discovery; and (4) the denials of factual contentions are warranted on the evidence or, if specifically so identified, are reasonably based on belief or a lack of information. If, after notice and a reasonable opportunity to respond, the arbitrator determines that the above rule has been violated, the arbitrator may impose an appropriate sanction on any attorney, law firm or a non-attorney representative that violated the rule or is responsible for the violation. Absent exceptional circumstances, a law firm must be held jointly responsible for a violation committed by its partner, associate or employee. “Appropriate sanction” includes but is not limited to monetary penalties or the payment of the innocent party’s attorney’s fees and other expenses resulting from the violation.
+**Mass arbitration.** If 20 or more Demands for Arbitration are filed, by a single claimant, attorney(s), law firm(s) or otherwise coordinated claimants or counsel, against Sumsub or its affiliates within a six-month period or otherwise close in time, the AAA Mass Arbitration Supplementary Rules apply to those claims. The AAA Mass Arbitration Supplementary Rules also apply in circumstances provided for in the AAA Mass Arbitration Supplementary Rules.
+These T&C evidence a transaction in interstate commerce, and thus the Federal Arbitration Act (“FAA”), 9 U.S.C. §§ 1–16, governs the interpretation and enforcement of this section 13 relating to arbitration. Any original action to compel arbitration under Section 4 of the FAA (or analogous state law) must be brought in a state or federal court located in New York City, unless mandated by law to be filed in another state or federal court. If the FAA is found to not apply to any issue regarding the interpretation or enforcement of the parties’ agreement to arbitrate, then that issue shall be determined by the laws of the State of New York.
+Except for disputes governed by the FAA under section 13, these T&C are governed by, and construed in accordance with, the laws of the State of New York, without regard to its conflict of law provisions.
+**Survival.** Even if these T&C are terminated, section 13 shall survive the termination of these T&C, meaning that any disputes arising out of or in connection with these T&C or your use of Sumsub ID shall still be governed by this section 13.
+**If you are resident anywhere EXCEPT the United States:**
+Any dispute, controversy or claim arising out of or relating to this contract, including any question regarding its existence, validity or termination and any non-contractual claims, shall be referred to and finally resolved by arbitration in accordance with the UNCITRAL Expedited Arbitration Rules, for the time being in force, which Rules are deemed to be incorporated by reference into this clause.
+The arbitration shall be administered by Cyprus Arbitration and Mediation Centre (“**CAMC** ”). The seat, or legal place of arbitration shall be London, England. The appointing authority shall be the Board of Directors of CAMC. The number of arbitrators shall be one. The language to be used in the arbitral proceedings shall be English.
+The law governing this arbitration agreement is English law.
+For the purposes of arbitration, Sumsub will accept documents by email at disputes@sumsub.com.
+[See translation](https://id.sumsub.com/terms-bahasa) to Bahasa Indonesia as required by Sumsub's registered ESO status
+## We use cookies
+This website uses essential cookies to ensure its proper operation and tracking cookies to understand how you interact with it. The latter will be set only after consent.
+Accept allManage Individual preferences

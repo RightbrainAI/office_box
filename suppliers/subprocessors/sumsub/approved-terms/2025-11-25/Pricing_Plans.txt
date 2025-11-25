@@ -1,0 +1,151 @@
+Original Source URL: https://github.com/RightbrainAI/office_box/blob/main/_vendor_analysis_source/issue-5-Copy_Applicant_Service_Documentation.txt
+Approved on: 2025-11-25
+--------------------
+
+Cookie Break Time
+We use cookies to enhance the functionality of our website and its subdomains, and to personalize content and ads, **always prioritizing your privacy and data security**. You have the control to enable or disable optional cookies as you wish. For a deeper dive into our cookie usage, do check out our [Cookie Policy](https://sumsub.com/cookie-policy/).
+Manage cookiesAccept all cookies
+Skip to content
+# Pricing & Plans
+## Let’s start with a few questions—we’ll find the right plan for you.
+  * What are you interested in?
+User VerificationBusiness VerificationTransaction MonitoringFraud Prevention
+What is your volume of checks?
+0
+5000+
+Do you require any extra features?
+  * ### Basic
+Recommended
+$1.35
+per verification
+Perfect for non-regulated businesses looking to deter fraudsters and maximize pass rates in any country.
+Sign up for free
+$149 min. monthly commitment
+The minimum amount that you pay each month. Once you exceed this amount, you will be charged for all additional checks.
+    * ID Verification
+    * Liveness & Face Match 
+    * Email/Phone verification
+    * Sumsub ID
+    * Reusable KYC
+All features
+User Verification Features
+ID Verification
+Sumsub ID
+Reusable KYC
+Liveness & Face match
+Email Verification
++ $0.03 per applicant
+Phone Verification
++ $0.03 per successful verification, plus "SMS notification service" fees
+SMS notification service
++ $0.08 per SMS when using Sumsub account in Twilio
+Questionnaire
++ $100/month
+Document attachment to questionnaire
+$0.11 per document
+Business Verification Features
+Fraud Prevention features
+Transaction and Event monitoring features
+Dashboard & SDK Features
+Product integration
+  * ### Compliance
+$1.85
+per verification
+Ideal for regulated businesses conducting verification at a smaller scale. Includes AML and PoA checks.
+Sign up for free
+$299 min. monthly commitment
+The minimum amount that you pay each month. Once you exceed this amount, you will be charged for all additional checks.
+    * AML Screening
+    * Ongoing AML Monitoring
+    * Proof of Address check
+    * Everything in Basic
+All features
+User Verification Features
+ID Verification
+Sumsub ID
+Reusable KYC
+Liveness & Face match
+AML screening
+Ongoing AML Monitoring (KYC)
+$0.07 (per initial check and, subsequently, per each checked match)
+Email Verification
++ $0.03 per applicant
+Phone Verification
++ $0.03 per successful verification, plus "SMS notification service" fees
+SMS notification service
++ $0.08 per SMS when using Sumsub account in Twilio
+Proof of Address check
++ $1.35 per check
+Automated data extraction (additional fields)
++$0.05 per additional field
+Ongoing ID monitoring
++$0.02 per document
+Questionnaire
++ $100/month
+Document attachment to questionnaire
+$0.11 per document
+Face authentication
++ $0.35 per session
+Business Verification Features
+Fraud Prevention features
+Transaction and Event monitoring features
+Dashboard & SDK Features
+Product integration
+  * ### Enterprise
+Let’s talk!
+per verification
+Everything Sumsub has to offer to keep your business safe, no matter the volume, jurisdiction, or language.
+Sign up for free
+    * Identity Verification
+    * Non-Doc Verification
+    * Database Validation
+    * Business Verification
+    * Fraud Detection & Prevention Solution
+    * Ongoing monitoring (Financial & Non-financial)
+    * Travel Rule
+    * Everything in Compliance
+All features
+User Verification Features
+ID Verification
+Sumsub ID
+Reusable KYC
+Liveness & Face match
+AML screening
+Ongoing AML Monitoring (KYC)
+Email Verification
+Phone Verification
+SMS notification service
+Proof of Address check
+Automated data extraction (additional fields)
+Ongoing ID monitoring
+Questionnaire
+Document attachment to questionnaire
+Face authentication
+Non-Doc Verification
+Database Validation
+Business Verification Features
+Fraud Prevention features
+Transaction and Event monitoring features
+Dashboard & SDK Features
+Product integration
+
+
+*For Basic and Compliance Pricing Plans, “user verification” means a combination of features marked with “✔️” in the “Detailed Features” section, applied to a single applicant (end-user) – provided that whether Sumsub ID will be applied depends on the applicant's (end-user's) decisions. If the Customer elects not to use all of these features, the user verification will still be charged at full cost.
+## Trusted by 4000+ clients
+## FAQ
+  * ### Do you offer a free trial?
+Yes, we offer a 14-day free trial with 50 free checks available.
+  * ### Will I be charged if an applicant doesn't complete the verification?
+No, you will be charged for successful verifications only.
+  * ### Is it possible to upgrade or downgrade the plan later?
+Yes, you can change the plan at any moment. Contact our customer support to get help with choosing the plan that best fits your needs.
+  * ### What payment types do you accept?
+We accept credit cards for all plans.
+  * ### How does the commitment work?
+The commitment is a minimum amount that you pay each month. Once you exceed this amount, you will be charged a prorated amount for all additional checks.
+  * ### Are there any extra costs I should know about?
+No, if you go with the Growing Plans, you will be charged a monthly commitment and a prorated amount for all additional checks. For the Enterprise Plan, a custom rate will be offered
+
+
+Select pricing version
+Select pricing version
