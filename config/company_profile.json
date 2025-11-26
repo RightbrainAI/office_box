@@ -15,8 +15,9 @@
   ],
   "risk_tolerance": {
     "privacy_and_security": "Zero. We pitch a 'new internet' that respects privacy. A leak destroys our core value proposition.",
-    "legal_liability": "Very Low. We are constantly under threat of litigation from Hooli. We cannot accept IP indemnities that are weak.",
-    "operational_uptime": "Critical. Our Weissman Score depends on low latency. We cannot tolerate slow vendors."
+    "legal_liability": "High (Strategic). Hooli will sue us regardless of what our contracts say. We treat legal defense as a distraction. We prefer to move fast and break things rather than die waiting for perfect indemnities.",
+    "operational_uptime": "Critical. Our Weissman Score depends on low latency. We cannot tolerate slow vendors.",
+    "reputational": "Very High. Our entire moat is the trust of the Open Source developer community. We cannot be associated with 'surveillance capitalism' vendors or data brokers."
   },
   "hard_requirements": [
     "MUST NOT be a subsidiary of Hooli or Endframe.",
@@ -24,9 +25,9 @@
     "MUST NOT track user data for advertising purposes."
   ],
   "risk_strategy_context": {
-    "legal_bandwidth": "Low. Our CFO/COO (Jared) handles all legal reviews manually. We need simple, standard contracts.",
-    "engineering_bandwidth": "Very High. We prefer to build custom encryption wrappers (Gilfoyle's standard) rather than trust vendor security.",
-    "financial_budget": "Volatile. We are cash-poor but engineering-rich. We prefer Open Source or self-hosted solutions over expensive Enterprise SaaS.",
+    "legal_bandwidth": "None. Jared is doing everything. If a contract requires redlining, we probably just won't sign it.",
+    "engineering_bandwidth": "Infinite (Gilfoyle). We prefer to just hack around vendor limitations or encrypt data before sending it to them.",
+    "financial_budget": "Volatile. We are cash-poor. We prefer Open Source or self-hosted solutions.",
     "preferred_resolution_hierarchy": [
       "1. Technical Control (encrypt it ourselves)",
       "2. Build it internal (Dinesh/Gilfoyle build)",
