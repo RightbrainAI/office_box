@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import re
 import requests
 from typing import Dict, Optional, List
 from pathlib import Path
@@ -140,3 +141,91 @@ def post_failure_and_exit(repo: str, issue_number: str, original_body: str, fail
         log("error", "CRITICAL: Failed to post failure comment to GitHub", details=str(e))
         
     sys.exit(1) # Exit with a non-zero status code
+
+# --- GitHub Issue / Markdown Parsing Helpers ---
+
+def parse_form_field(body: str, field_name: str) -> str:
+    """Parses a form field value from markdown content (e.g., GitHub issue body)."""
+    pattern = re.compile(rf'### {re.escape(field_name)}\s*\n\s*(.*?)(?=\n### |\Z)', re.IGNORECASE | re.DOTALL)
+    match = pattern.search(body)
+    if match:
+        value = match.group(1).strip()
+        # Remove HTML tags if present
+        value = re.sub(r'<[^>]+>', '', value)
+        return value
+    return "N/A"
+
+def extract_vendor_usage_details(markdown_content: str) -> str:
+    """Builds the vendor-specific {vendor_usage_details} context block from markdown content."""
+    log("info", "Parsing vendor usage details from markdown content...")
+    context_parts = [
+        f"**Service Name:** {parse_form_field(markdown_content, 'Supplier Name')}",
+        f"**Service Description:** {parse_form_field(markdown_content, 'Summary of Proposed Usage')}",
+        f"**Vendor/Service Usage Context:** {parse_form_field(markdown_content, 'Summary of Proposed Usage')}", 
+        f"**Data Types Involved:** {parse_form_field(markdown_content, 'Data Types Involved')}",
+        f"**Term Length:** {parse_form_field(markdown_content, 'Minimum Term Length')}",
+    ]
+    return "\n".join(context_parts)
+
+def create_github_issue(repo: str, title: str, body: str, labels: Optional[List[str]] = None) -> Dict:
+    """Creates a new GitHub issue."""
+    url = f"https://api.github.com/repos/{repo}/issues"
+    headers = get_github_headers()
+    payload = {
+        "title": title,
+        "body": body
+    }
+    if labels:
+        payload["labels"] = labels
+    
+    try:
+        response = requests.post(url, headers=headers, json=payload)
+        response.raise_for_status()
+        log("success", f"Successfully created issue: {title}")
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        error_details = str(e)
+        if e.response is not None:
+            error_details += f"\nResponse Status: {e.response.status_code}\nResponse Body: {e.response.text}"
+        log("error", "Failed to create GitHub issue", details=error_details)
+        raise RuntimeError(f"Failed to create GitHub issue: {e}")
+
+def get_vendor_type(issue_body: str) -> str:
+    """Determines vendor type from issue body (processor or general)."""
+    data_processor_value = parse_form_field(issue_body, "Data Processor")
+    return "processor" if data_processor_value.lower() == "yes" else "general"
+
+def get_vendor_type_from_path(file_path_str: str) -> str:
+    """Determines vendor type based on file path."""
+    return "processor" if "subprocessors" in file_path_str else "general"
+
+def get_sanitized_vendor_name(summary_data: Dict) -> str:
+    """Creates a filesystem-safe vendor name from summary data."""
+    processor_name = summary_data.get("processor_name", "vendor")
+    sanitized = re.sub(r"[^a-z0-9-]+", "-", processor_name.lower()).strip("-")
+    return sanitized
+
+def load_company_profile() -> str:
+    """Loads the company profile and formats it as a string for the {company_profile} block."""
+    log("info", "Loading company profile...")
+    project_root = Path(__file__).resolve().parent.parent
+    profile_path = project_root / "config" / "company_profile.json"
+    if not profile_path.exists():
+        log("error", f"Company profile not found at '{profile_path}'")
+        sys.exit(1)
+    
+    try:
+        with open(profile_path, 'r') as f:
+            data = json.load(f)
+        
+        # Format as markdown string, as expected by the tasks
+        profile_parts = [
+            f"**Company Name:** {data.get('name')}",
+            f"**Industry:** {data.get('industry')}",
+            f"**Services:** {data.get('services')}",
+            f"**Applicable Regulations:** {', '.join(data.get('regulations', []))}"
+        ]
+        return "\n".join(profile_parts)
+    except Exception as e:
+        log("error", f"Error reading company profile: {e}")
+        sys.exit(1)

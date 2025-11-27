@@ -71,7 +71,7 @@ _token_cache: Optional[tuple[str, float]] = None
 
 def get_rb_token() -> str:
     """
-    Authenticates using credentials from ENV and URLs from config file.
+    Authenticates using credentials from ENV and URLs from env vars (primary) or config file (fallback).
     """
     global _token_cache
     
@@ -82,7 +82,7 @@ def get_rb_token() -> str:
             log("success", "Reusing cached Rightbrain token.")
             return cached_token
 
-    # Load Configuration
+    # Load Configuration for fallback
     config = load_rb_config()
     
     # Credentials still come from secrets (Env vars)
@@ -93,13 +93,20 @@ def get_rb_token() -> str:
         log("error", "Missing RB_CLIENT_ID or RB_CLIENT_SECRET env vars.")
         sys.exit(1)
 
-    # Construct URL from Config (with fallbacks)
-    base = config.get("oauth_url") or os.environ.get("RB_OAUTH2_URL") or "https://oauth.rightbrain.ai"
-    path = config.get("auth_path") or os.environ.get("RB_OAUTH2_TOKEN_PATH") or "/oauth2/token"
-    
-    base = base.rstrip('/')
-    path = path.lstrip('/')
-    token_url = f"{base}/{path}"
+    # Get TOKEN_URI from env var first, then fallback to constructing from config
+    token_url = os.environ.get("TOKEN_URI")
+    if token_url:
+        log("debug", f"Using TOKEN_URI from environment variable: {token_url}")
+    else:
+        # Fallback: construct from config file
+        log("warning", "TOKEN_URI environment variable not found, falling back to config file")
+        log("debug", f"Available env vars starting with 'TOKEN' or 'RB_OAUTH': {[k for k in os.environ.keys() if 'TOKEN' in k or 'OAUTH' in k]}")
+        base = config.get("oauth_url") or "https://oauth.rightbrain.ai"
+        path = config.get("auth_path") or "/oauth2/token"
+        base = base.rstrip('/')
+        path = path.lstrip('/')
+        token_url = f"{base}/{path}"
+        log("debug", f"Constructed TOKEN_URI from config file: {token_url}")
 
     log("debug", f"Requesting token from: {token_url}")
 
@@ -140,11 +147,24 @@ def _get_api_headers(rb_token: str) -> Dict[str, str]:
     return {"Authorization": f"Bearer {rb_token}", "Content-Type": "application/json"}
 
 def _get_base_url() -> str:
-    """Gets API base URL from config."""
+    """Gets API root URL from env var (primary) or config (fallback)."""
+    # Use API_ROOT from env var first (includes /api/v1)
+    api_root = os.environ.get("API_ROOT")
+    if api_root:
+        log("debug", f"Using API_ROOT from environment variable: {api_root}")
+        return api_root.rstrip('/')
+    
+    # Fallback: construct from config file
+    log("warning", "API_ROOT environment variable not found, falling back to config file")
+    log("debug", f"Available env vars starting with 'API' or 'RB_API': {[k for k in os.environ.keys() if 'API' in k and ('ROOT' in k or 'RB_API' in k)]}")
     config = load_rb_config()
-    # Fallback to env var or default
-    url = config.get("api_url") or os.environ.get("RB_API_URL") or "https://app.rightbrain.ai"
-    return url.rstrip('/')
+    api_url = config.get("api_url") or "https://app.rightbrain.ai"
+    api_url = api_url.rstrip('/')
+    # If config doesn't include /api/v1, add it
+    if not api_url.endswith('/api/v1'):
+        api_url = f"{api_url}/api/v1"
+    log("debug", f"Constructed API_ROOT from config file: {api_url}")
+    return api_url
 
 def _get_project_path() -> str:
     org_id = os.environ.get("RB_ORG_ID")
