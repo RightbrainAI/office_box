@@ -14,7 +14,7 @@ if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
 try:
-    from utils.github_api import post_github_comment
+    from utils.github_api import post_github_comment, load_company_profile, extract_vendor_usage_details, parse_form_field
     from utils.rightbrain_api import get_rb_token, run_rb_task, log
 except ImportError as e:
     print(f"❌ Error importing 'utils' modules: {e}", file=sys.stderr)
@@ -40,58 +40,16 @@ def load_task_manifest() -> Dict[str, str]:
 
 # --- Core Logic: Text Compilation & Context ---
 
-def parse_form_field(body: str, label: str) -> str:
-    """Extracts a single field's value from the issue form body."""
-    # Matches "### Label" followed by text until the next "###" or end of string
-    pattern = re.compile(f"### {re.escape(label)}\\s*\\n\\s*([\\s\\S]*?)(?=\\n### |\\Z)", re.IGNORECASE)
-    match = pattern.search(body)
-    if match:
-        return match.group(1).strip()
-    return "N/A"
+# parse_form_field is now imported from utils.rightbrain_api
 
-def extract_vendor_usage_details(issue_body: str) -> str:
-    """Builds the vendor-specific {vendor_usage_details} context block (the 'Subject')."""
-    log("info", "Parsing vendor usage details from issue body...")
-    # Per Stage 2 spec, {vendor_usage_details} includes Usage Context, Data Types,
-    # and Service Name/Description (for the reporter task).
-    #
-    # Phase 1.1 Update: Also include Term Length for full context.
-    # PII UPDATE: 'Internal Contact' removed from here to prevent sending PII to AI.
-    context_parts = [
-        f"**Service Name:** {parse_form_field(issue_body, 'Supplier Name')}",
-        f"**Service Description:** {parse_form_field(issue_body, 'Service Description')}",
-        f"**Vendor/Service Usage Context:** {parse_form_field(issue_body, 'Vendor/Service Usage Context')}", 
-        f"**Data Types Involved:** {parse_form_field(issue_body, 'Data Types Involved')}",
-        f"**Term Length:** {parse_form_field(issue_body, 'Minimum Term Length')}",
-    ]
-    return "\n".join(context_parts)
+# extract_vendor_usage_details is now imported from utils.rightbrain_api
 
 def parse_data_processor_field(issue_body: str) -> str:
     """Parses the 'Data Processor' field from the issue body."""
     log("info", "Parsing data processor status from issue body...")
     return parse_form_field(issue_body, 'Data Processor')
 
-def load_company_profile() -> str:
-    """Loads the company profile and formats it as a string for the {company_profile} block (the 'Lens')."""
-    log("info", "Loading company profile...")
-    profile_path = CONFIG_DIR / "company_profile.json"
-    if not profile_path.exists():
-        sys.exit(f"❌ Error: Company profile not found at '{profile_path}'")
-    
-    try:
-        with open(profile_path, 'r') as f:
-            data = json.load(f)
-        
-        # Format as markdown string, as expected by the tasks
-        profile_parts = [
-            f"**Company Name:** {data.get('name')}",
-            f"**Industry:** {data.get('industry')}",
-            f"**Services:** {data.get('services')}",
-            f"**Applicable Regulations:** {', '.join(data.get('regulations', []))}"
-        ]
-        return "\n".join(profile_parts)
-    except Exception as e:
-        sys.exit(f"❌ Error reading company profile: {e}")
+# load_company_profile is now imported from utils.rightbrain_api
 
 def parse_approved_documents(issue_body: str) -> Dict[str, Set[str]]:
     """

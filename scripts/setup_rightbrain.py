@@ -31,12 +31,13 @@ except ImportError as e:
 TASK_TEMPLATE_DIR = project_root / "tasks"
 TASK_MANIFEST_PATH = project_root / "tasks/task_manifest.json"
 
-def create_rb_task(rb_token: str, api_url_base: str, org_id: str, project_id: str, task_body: Dict[str, Any]) -> str:
+def create_rb_task(rb_token: str, api_root: str, org_id: str, project_id: str, task_body: Dict[str, Any]) -> str:
     """Creates a single Rightbrain task and returns its new ID."""
     task_name = task_body.get("name", "Unnamed Task")
     
-    base = api_url_base.rstrip('/')
-    create_url = f"{base}/api/v1/org/{org_id}/project/{project_id}/task"
+    # API_ROOT already includes /api/v1, so just append the path
+    base = api_root.rstrip('/')
+    create_url = f"{base}/org/{org_id}/project/{project_id}/task"
 
     headers = {
         "Authorization": f"Bearer {rb_token}", 
@@ -68,12 +69,19 @@ def main():
     log("info", "Loading configuration...")
     try:
         config = load_rb_config()
-        # Fallback to env vars if config file is missing/partial (backward compatibility)
-        rb_api_url = config.get("api_url") or os.environ.get("RB_API_URL") or "https://app.rightbrain.ai"
-        rb_oauth_url = config.get("oauth_url") or os.environ.get("RB_OAUTH2_URL") or "https://oauth.rightbrain.ai"
+        # Use API_ROOT from env var first, then fallback to constructing from config
+        rb_api_root = os.environ.get("API_ROOT")
+        if not rb_api_root:
+            # Fallback: construct from config file
+            api_url = config.get("api_url") or "https://app.rightbrain.ai"
+            api_url = api_url.rstrip('/')
+            # If config doesn't include /api/v1, add it
+            if not api_url.endswith('/api/v1'):
+                rb_api_root = f"{api_url}/api/v1"
+            else:
+                rb_api_root = api_url
         
-        log("debug", f"Using API URL: {rb_api_url}")
-        log("debug", f"Using OAuth URL: {rb_oauth_url}")
+        log("debug", f"Using API_ROOT: {rb_api_root}")
     except Exception as e:
         log("error", f"Configuration Error: {e}")
         sys.exit(1)
@@ -120,7 +128,7 @@ def main():
             log("warning", f"Could not parse '{task_file_path}'. Skipping.")
             continue
             
-        task_id = create_rb_task(rb_token, rb_api_url, rb_org_id, rb_project_id, task_body)
+        task_id = create_rb_task(rb_token, rb_api_root, rb_org_id, rb_project_id, task_body)
         
         if task_id:
             task_manifest[task_file_path.name] = task_id

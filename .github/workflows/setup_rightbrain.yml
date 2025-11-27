@@ -37,10 +37,9 @@ jobs:
           RB_PROJECT_ID: ${{ secrets.RB_PROJECT_ID }}
           RB_CLIENT_ID: ${{ secrets.RB_CLIENT_ID }}
           RB_CLIENT_SECRET: ${{ secrets.RB_CLIENT_SECRET }}
-          RB_OAUTH2_URL: ${{ secrets.RB_OAUTH2_URL }}
-          RB_API_URL: ${{ secrets.RB_API_URL }}
-          # ADD THIS LINE so the python script can see the path variable
-          RB_OAUTH2_TOKEN_PATH: ${{ secrets.RB_OAUTH2_TOKEN_PATH }}
+          # Use Rightbrain's standard environment variable names
+          TOKEN_URI: ${{ secrets.TOKEN_URI }}
+          API_ROOT: ${{ secrets.API_ROOT }}
 
       - name: "Create Pull Request for new manifest"
         uses: peter-evans/create-pull-request@v6

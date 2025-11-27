@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      issues: write # Required to create issues
       pull-requests: write # Required to create a pull request
 
     steps:
@@ -36,7 +37,9 @@ jobs:
           RB_CLIENT_SECRET: ${{ secrets.RB_CLIENT_SECRET }}
           RB_API_URL: ${{ secrets.RB_API_URL }}
           RB_OAUTH2_URL: ${{ secrets.RB_OAUTH2_URL }}
-          # Pass the manual input to the script
+          # Pass GitHub context and manual input to the script
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_NAME: ${{ github.repository }}
           VENDOR_FILE_PATH: ${{ github.event.inputs.vendor_file }}
         run: python scripts/update_existing_vendor.py
 
