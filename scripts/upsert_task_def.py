@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 
 # Add parent directory to path to import shared utilities
 sys.path.append(str(Path(__file__).parent.parent))
-from utils.rightbrain_api import get_rb_token, log
+from utils.rightbrain_api import get_rb_token, log, detect_environment, _get_base_url, get_model_id_by_name
 
 # --- Manifest Helper Functions ---
 
@@ -37,15 +37,30 @@ def load_task_manifest(manifest_path: Path) -> Dict[str, Any]:
         except json.JSONDecodeError:
             sys.exit(f"❌ Error: Manifest file at {manifest_path} is corrupted.")
 
-def update_task_manifest(manifest_path: Path, manifest_data: Dict, task_filename: str, task_id: str):
-    """Saves the new task_id to the manifest file."""
-    # Update the manifest data
-    manifest_data[task_filename] = task_id
+def update_task_manifest(manifest_path: Path, manifest_data: Dict, task_filename: str, task_id: str, task_name: str, environment: str):
+    """Saves the new task_id to the manifest file for the specified environment."""
+    # Initialize manifest structure if needed
+    if not isinstance(manifest_data, dict) or 'production' not in manifest_data:
+        manifest_data = {
+            "production": manifest_data if manifest_data and not any(k in manifest_data for k in ['production', 'staging']) else {},
+            "staging": {}
+        }
+    if 'staging' not in manifest_data:
+        manifest_data['staging'] = {}
+    
+    # Update the manifest data for this environment
+    if environment not in manifest_data:
+        manifest_data[environment] = {}
+    
+    manifest_data[environment][task_filename] = {
+        "name": task_name,
+        "id": task_id
+    }
     
     try:
         with open(manifest_path, 'w') as f:
             json.dump(manifest_data, f, indent=2)
-        log("success", f"Successfully updated manifest: '{task_filename}' -> '{task_id}'")
+        log("success", f"Successfully updated manifest: '{task_filename}' -> '{task_id}' for {environment} environment")
     except IOError as e:
         log("error", f"Failed to write to manifest file {manifest_path}", details=str(e))
 
@@ -80,21 +95,63 @@ def main():
     if not rb_api_url or not rb_oauth2_url:
         sys.exit("❌ Error: Missing RB_API_URL or RB_OAUTH2_URL environment variable.")
     
-    # Use the OAuth2 URL directly (should be the full endpoint URL)
-    rb_token_url = rb_oauth2_url
+    # Determine environment
+    rb_api_root = rb_api_url.rstrip('/')
+    if not rb_api_root.endswith('/api/v1'):
+        rb_api_root = f"{rb_api_root}/api/v1"
+    
+    original_api_root = os.environ.get("API_ROOT")
+    os.environ["API_ROOT"] = rb_api_root
+    environment = detect_environment()
+    if original_api_root:
+        os.environ["API_ROOT"] = original_api_root
+    elif "API_ROOT" in os.environ:
+        del os.environ["API_ROOT"]
+    
+    log("info", f"Detected environment: {environment}")
 
     # --- 2. Load Task Def and Manifest ---
     manifest_path = get_manifest_path()
     manifest_data = load_task_manifest(manifest_path)
+    
+    # Initialize manifest structure if needed
+    if not isinstance(manifest_data, dict) or 'production' not in manifest_data:
+        manifest_data = {
+            "production": manifest_data if manifest_data and not any(k in manifest_data for k in ['production', 'staging']) else {},
+            "staging": {}
+        }
+    if 'staging' not in manifest_data:
+        manifest_data['staging'] = {}
     
     with open(task_def_path, 'r') as f:
         try:
             task_payload = json.load(f)
         except json.JSONDecodeError:
             sys.exit(f"❌ Error: Task definition file {task_filename} is not valid JSON.")
+    
+    # Resolve model name to model ID if needed
+    if "llm_model_name" in task_payload:
+        model_name = task_payload.get("llm_model_name")
+        model_id = get_model_id_by_name(model_name, environment)
+        if model_id:
+            # Replace llm_model_name with llm_model_id for API
+            task_payload["llm_model_id"] = model_id
+            del task_payload["llm_model_name"]
+            log("info", f"Resolved model '{model_name}' to ID '{model_id}' for environment '{environment}'")
+        else:
+            log("error", f"Could not find model ID for '{model_name}' in {environment} environment. Task will be updated without model.")
+            # Remove llm_model_name so API doesn't get confused
+            del task_payload["llm_model_name"]
+    elif "llm_model_id" in task_payload:
+        # Already has ID, keep it as is
+        log("debug", f"Task already has llm_model_id, using as-is")
+    
+    task_name = task_payload.get("name", "Unnamed Task")
             
-    # Check manifest for existing ID for this filename
-    existing_task_id = manifest_data.get(task_filename)
+    # Check manifest for existing ID for this filename in this environment
+    env_section = manifest_data.get(environment, {})
+    existing_task_data = env_section.get(task_filename)
+    existing_task_id = existing_task_data.get("id") if isinstance(existing_task_data, dict) else (existing_task_data if isinstance(existing_task_data, str) else None)
     
     # --- 3. Get Auth Token ---
     rb_token = get_rb_token()
@@ -164,7 +221,7 @@ def main():
         
     if new_task_id != existing_task_id:
         print(f"Task ID retrieved: {new_task_id}")
-        update_task_manifest(manifest_path, manifest_data, task_filename, new_task_id)
+        update_task_manifest(manifest_path, manifest_data, task_filename, new_task_id, task_name, environment)
     else:
         print("Task ID is unchanged. Manifest is already up-to-date.")
 

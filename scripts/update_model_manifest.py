@@ -14,7 +14,7 @@ if str(project_root) not in sys.path:
 
 try:
     # Import shared utilities
-    from utils.rightbrain_api import get_rb_token, log, load_rb_config
+    from utils.rightbrain_api import get_rb_token, log, load_rb_config, detect_environment, _get_base_url
 except ImportError as e:
     print(f"❌ Error importing 'utils.rightbrain_api': {e}", file=sys.stderr)
     sys.exit(1)
@@ -44,19 +44,41 @@ def get_available_models(token, api_url, org_id, project_id):
             details=f"{e}\nResponse: {e.response.text if e.response else 'N/A'}")
         sys.exit(1)
 
-def update_manifest(manifest_path, models_list):
+def update_manifest(manifest_path, models_list, environment):
     """
-    Reads the existing manifest, adds the model map, and writes it back.
+    Reads the existing manifest, adds the model map for the specified environment, and writes it back.
     """
     if manifest_path.exists():
         log("info", f"Loading existing manifest from {manifest_path}...")
-        with open(manifest_path, 'r') as f:
-            manifest_data = json.load(f)
+        try:
+            with open(manifest_path, 'r') as f:
+                manifest_data = json.load(f)
+        except json.JSONDecodeError:
+            log("warning", "Existing manifest is invalid JSON. Creating new one.")
+            manifest_data = {}
     else:
         log("warning", f"No manifest found at {manifest_path}. Creating a new one.")
         manifest_data = {}
 
-    # Create the alias -> id mapping
+    # Initialize manifest structure if needed
+    if not isinstance(manifest_data, dict) or 'production' not in manifest_data:
+        # Check if it's old format
+        if 'models' in manifest_data:
+            # Migrate old format to new format
+            old_models = manifest_data.get('models', {})
+            manifest_data = {
+                "production": old_models if old_models else {},
+                "staging": {}
+            }
+        else:
+            manifest_data = {
+                "production": {},
+                "staging": {}
+            }
+    if 'staging' not in manifest_data:
+        manifest_data['staging'] = {}
+
+    # Create the alias -> id mapping for this environment
     # We filter for active models (not retired) if possible, or just map all
     model_mapping = {}
     for model in models_list:
@@ -70,8 +92,8 @@ def update_manifest(manifest_path, models_list):
             log("warning", f"Skipping model with missing info: {model.get('name', 'Unknown')}")
             continue
             
-    # Update the manifest data
-    manifest_data["models"] = model_mapping
+    # Update the manifest data for this environment
+    manifest_data[environment] = model_mapping
     
     try:
         # Ensure directory exists
@@ -80,7 +102,7 @@ def update_manifest(manifest_path, models_list):
         with open(manifest_path, 'w') as manifest_file:
             json.dump(manifest_data, manifest_file, indent=2)
         
-        log("success", f"Successfully updated {manifest_path} with {len(model_mapping)} models.")
+        log("success", f"Successfully updated {manifest_path} with {len(model_mapping)} models for {environment} environment.")
         return True
         
     except IOError as e:
@@ -98,11 +120,27 @@ def main():
         log("info", f"Loading environment from {env_path}")
         load_dotenv(env_path)
 
-    # Load config for URLs
+    # Load config for URLs and determine environment
     try:
         config = load_rb_config()
         # Fallback logic consistent with other scripts
         rb_api_url = config.get("api_url") or os.environ.get("RB_API_URL") or "https://app.rightbrain.ai"
+        
+        # Determine environment from API URL
+        # Temporarily set API_ROOT for detect_environment
+        rb_api_root = rb_api_url.rstrip('/')
+        if not rb_api_root.endswith('/api/v1'):
+            rb_api_root = f"{rb_api_root}/api/v1"
+        
+        original_api_root = os.environ.get("API_ROOT")
+        os.environ["API_ROOT"] = rb_api_root
+        environment = detect_environment()
+        if original_api_root:
+            os.environ["API_ROOT"] = original_api_root
+        elif "API_ROOT" in os.environ:
+            del os.environ["API_ROOT"]
+        
+        log("info", f"Detected environment: {environment}")
     except Exception as e:
         log("error", f"Configuration Error: {e}")
         sys.exit(1)
@@ -130,7 +168,7 @@ def main():
     models = get_available_models(token, rb_api_url, rb_org_id, rb_project_id)
     
     if models:
-        update_manifest(manifest_path, models)
+        update_manifest(manifest_path, models, environment)
     else:
         log("warning", "No models returned from API. Manifest not updated.")
 

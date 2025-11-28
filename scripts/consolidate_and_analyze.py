@@ -15,7 +15,7 @@ if str(project_root) not in sys.path:
 
 try:
     from utils.github_api import post_github_comment, load_company_profile, extract_vendor_usage_details, parse_form_field
-    from utils.rightbrain_api import get_rb_token, run_rb_task, log
+    from utils.rightbrain_api import get_rb_token, run_rb_task, log, get_task_id_by_name
 except ImportError as e:
     print(f"❌ Error importing 'utils' modules: {e}", file=sys.stderr)
     sys.exit(1)
@@ -24,19 +24,6 @@ except ImportError as e:
 # --- Constants ---
 SOURCE_DIR = Path("_vendor_analysis_source")
 CONFIG_DIR = Path("config")
-TASK_MANIFEST_PATH = Path("tasks/task_manifest.json")
-
-# --- Helper: GitHub & Manifest ---
-
-def load_task_manifest() -> Dict[str, str]:
-    """Loads the task_manifest.json file."""
-    if not TASK_MANIFEST_PATH.exists():
-        sys.exit(f"❌ Error: Task manifest not found at '{TASK_MANIFEST_PATH}'.")
-    try:
-        with open(TASK_MANIFEST_PATH, 'r') as f:
-            return json.load(f)
-    except json.JSONDecodeError:
-        sys.exit(f"❌ Error: Could not parse '{TASK_MANIFEST_PATH}'.")
 
 # --- Core Logic: Text Compilation & Context ---
 
@@ -219,10 +206,10 @@ def main():
 
     print(f"🚀 Starting analysis for issue #{issue_number} in repo {repo_name}...")
 
-    manifest = load_task_manifest()
-    security_task_id = manifest.get("security_posture_analyzer.json")
-    legal_task_id = manifest.get("sub_processor_terms_analyzer.json")
-    reporter_task_id = manifest.get("vendor_risk_reporter.json")
+    # Look up task IDs by name
+    security_task_id = get_task_id_by_name("Vendor Security Posture Analyzer")
+    legal_task_id = get_task_id_by_name("Sub-Processor Terms Analyzer")
+    reporter_task_id = get_task_id_by_name("Vendor Risk Reporter")
 
     if not all([security_task_id, legal_task_id, reporter_task_id]):
         sys.exit("❌ Error: Could not find all required task IDs in manifest (security, legal, reporter).")

@@ -4,7 +4,7 @@
   "enabled": true,
   "system_prompt": "You are a paralegal assistant. Your job is to classify a legal document based on its content by assigning it one or more categories.\n\n- 'legal': Use for T&Cs, Privacy Policies, DPAs, SLAs, or any page discussing liability, data handling, or governing law.\n- 'security': Use for pages *specifically* discussing technical controls, audits, certifications (SOC2, ISO), encryption, or vulnerability management. A DPA or Security Addendum is often *both* 'legal' and 'security'.\n- 'none': Use for all other pages (Careers, Blog, 'About Us').\n\nReturn a list of all categories that apply.",
   "user_prompt": "The content of the webpage at {document_url} has been provided. Please analyze its text and return a JSON list of all its relevant categories.",
-  "llm_model_id": "01983687-fb2d-4224-3d0c-8029d0293f12",
+  "llm_model_name": "Gemini 2.5 Flash Lite",
   "llm_config": {
     "temperature": 0.0
   },

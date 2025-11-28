@@ -16,7 +16,7 @@ if str(project_root) not in sys.path:
 
 try:
     from utils.github_api import update_issue_body, post_failure_and_exit
-    from utils.rightbrain_api import get_rb_token, run_rb_task, log
+    from utils.rightbrain_api import get_rb_token, run_rb_task, log, get_task_id_by_name
 except ImportError as e:
     print(f"❌ Error importing 'utils' modules: {e}", file=sys.stderr)
     sys.exit(1)
@@ -59,15 +59,7 @@ def parse_text_from_issue_form(issue_body: str, label: str) -> str:
     return match.group(1).strip()
 
 
-def load_task_manifest() -> Dict[str, str]:
-    """Loads the task_manifest.json file."""
-    script_dir = Path(__file__).parent
-    project_root = script_dir.parent
-    manifest_path = project_root / "tasks" / "task_manifest.json"
-    if not manifest_path.exists():
-        sys.exit(f"❌ Error: Task manifest not found at '{manifest_path}'.")
-    with open(manifest_path, 'r') as f:
-        return json.load(f)
+# load_task_manifest function removed - now using get_task_id_by_name from utils
 
 # --- Helper: Text Compilation & Git ---
 
@@ -292,13 +284,12 @@ def main():
     # Use the OAuth2 URL directly (should be the full endpoint URL)
     rb_token_url = rb_oauth2_url
 
-    manifest = load_task_manifest()
-    # Use task filenames as keys in the manifest
-    discovery_task_id = manifest.get("discovery_task.json")
-    classifier_task_id = manifest.get("document_classifier.json")
+    # Look up task IDs by name
+    discovery_task_id = get_task_id_by_name("Document Discovery Task")
+    classifier_task_id = get_task_id_by_name("Document Classifier Task")
 
     if not discovery_task_id or not classifier_task_id:
-        sys.exit("❌ Could not find 'discovery_task.json' or 'document_classifier.json' in task_manifest.json")
+        sys.exit("❌ Could not find 'Document Discovery Task' or 'Document Classifier Task' in task_manifest.json")
 
     # --- 2. Initialize ---
     rb_token = get_rb_token()

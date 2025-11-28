@@ -22,7 +22,7 @@ if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
 try:
-    from utils.rightbrain_api import get_rb_token, load_rb_config, log
+    from utils.rightbrain_api import get_rb_token, load_rb_config, log, detect_environment, _get_base_url, get_model_id_by_name
 except ImportError as e:
     print(f"❌ Error importing 'utils.rightbrain_api': {e}", file=sys.stderr)
     sys.exit(1)
@@ -65,7 +65,7 @@ def main():
     log("info", "Starting Rightbrain Task Setup Script...")
     log("debug", f"Project Root detected as: {project_root}")
 
-    # 1. Load configuration
+    # 1. Load configuration and determine environment
     log("info", "Loading configuration...")
     try:
         config = load_rb_config()
@@ -82,6 +82,17 @@ def main():
                 rb_api_root = api_url
         
         log("debug", f"Using API_ROOT: {rb_api_root}")
+        
+        # Temporarily set API_ROOT in environment for detect_environment to work
+        original_api_root = os.environ.get("API_ROOT")
+        os.environ["API_ROOT"] = rb_api_root
+        environment = detect_environment()
+        if original_api_root:
+            os.environ["API_ROOT"] = original_api_root
+        elif "API_ROOT" in os.environ:
+            del os.environ["API_ROOT"]
+        
+        log("info", f"Detected environment: {environment}")
     except Exception as e:
         log("error", f"Configuration Error: {e}")
         sys.exit(1)
@@ -116,9 +127,29 @@ def main():
         
     log("info", f"Found {len(task_files)} task templates.")
     
-    # 5. Create tasks
-    task_manifest = {}
-    log("info", "Creating tasks in Rightbrain project...")
+    # 5. Load existing manifest (if it exists) to preserve other environment
+    existing_manifest = {}
+    if TASK_MANIFEST_PATH.exists():
+        try:
+            with open(TASK_MANIFEST_PATH, 'r') as f:
+                existing_manifest = json.load(f)
+            log("info", f"Loaded existing task manifest with {len(existing_manifest.get('production', {})) + len(existing_manifest.get('staging', {}))} tasks")
+        except json.JSONDecodeError:
+            log("warning", "Existing manifest is invalid JSON. Will create new one.")
+            existing_manifest = {}
+    
+    # Initialize manifest structure if needed
+    if not isinstance(existing_manifest, dict) or 'production' not in existing_manifest:
+        existing_manifest = {
+            "production": existing_manifest if existing_manifest and not any(k in existing_manifest for k in ['production', 'staging']) else {},
+            "staging": {}
+        }
+    if 'staging' not in existing_manifest:
+        existing_manifest['staging'] = {}
+    
+    # 6. Create tasks
+    env_task_manifest = {}
+    log("info", f"Creating tasks in Rightbrain {environment} environment...")
     
     for task_file_path in task_files:
         try:
@@ -127,23 +158,48 @@ def main():
         except json.JSONDecodeError:
             log("warning", f"Could not parse '{task_file_path}'. Skipping.")
             continue
+        
+        # Resolve model name to model ID if needed
+        if "llm_model_name" in task_body:
+            model_name = task_body.get("llm_model_name")
+            model_id = get_model_id_by_name(model_name, environment)
+            if model_id:
+                # Replace llm_model_name with llm_model_id for API
+                task_body["llm_model_id"] = model_id
+                del task_body["llm_model_name"]
+                log("info", f"Resolved model '{model_name}' to ID '{model_id}' for environment '{environment}'")
+            else:
+                log("error", f"Could not find model ID for '{model_name}' in {environment} environment. Task will be created without model.")
+                # Remove llm_model_name so API doesn't get confused
+                del task_body["llm_model_name"]
+        elif "llm_model_id" in task_body:
+            # Already has ID, keep it as is
+            log("debug", f"Task already has llm_model_id, using as-is")
             
         task_id = create_rb_task(rb_token, rb_api_root, rb_org_id, rb_project_id, task_body)
+        task_name = task_body.get("name", "Unnamed Task")
         
         if task_id:
-            task_manifest[task_file_path.name] = task_id
+            env_task_manifest[task_file_path.name] = {
+                "name": task_name,
+                "id": task_id
+            }
 
-    if not task_manifest:
+    if not env_task_manifest:
         log("error", "No tasks were successfully created. Aborting.")
         sys.exit(1)
 
-    # 6. Write manifest
-    log("info", f"Writing new task manifest to '{TASK_MANIFEST_PATH}'...")
+    # 7. Update manifest with new tasks for this environment
+    existing_manifest[environment] = env_task_manifest
+    log("info", f"Updated {environment} section with {len(env_task_manifest)} tasks")
+
+    # 8. Write manifest
+    log("info", f"Writing task manifest to '{TASK_MANIFEST_PATH}'...")
     try:
         TASK_MANIFEST_PATH.parent.mkdir(parents=True, exist_ok=True)
         with open(TASK_MANIFEST_PATH, 'w') as f:
-            json.dump(task_manifest, f, indent=2)
-        log("success", "Task manifest created successfully.")
+            json.dump(existing_manifest, f, indent=2)
+        log("success", f"Task manifest updated successfully for {environment} environment.")
     except IOError as e:
         log("error", f"Error writing manifest file: {e}")
         sys.exit(1)

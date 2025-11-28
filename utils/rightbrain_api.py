@@ -93,20 +93,36 @@ def get_rb_token() -> str:
         log("error", "Missing RB_CLIENT_ID or RB_CLIENT_SECRET env vars.")
         sys.exit(1)
 
-    # Get TOKEN_URI from env var first, then fallback to constructing from config
+    # Get TOKEN_URI from env var first, then try RB_OAUTH2_URL + RB_OAUTH2_TOKEN_PATH, then fallback to config
     token_url = os.environ.get("TOKEN_URI")
     if token_url:
         log("debug", f"Using TOKEN_URI from environment variable: {token_url}")
     else:
-        # Fallback: construct from config file
-        log("warning", "TOKEN_URI environment variable not found, falling back to config file")
-        log("debug", f"Available env vars starting with 'TOKEN' or 'RB_OAUTH': {[k for k in os.environ.keys() if 'TOKEN' in k or 'OAUTH' in k]}")
-        base = config.get("oauth_url") or "https://oauth.rightbrain.ai"
-        path = config.get("auth_path") or "/oauth2/token"
-        base = base.rstrip('/')
-        path = path.lstrip('/')
-        token_url = f"{base}/{path}"
-        log("debug", f"Constructed TOKEN_URI from config file: {token_url}")
+        # Try constructing from RB_OAUTH2_URL and RB_OAUTH2_TOKEN_PATH
+        oauth2_url = os.environ.get("RB_OAUTH2_URL")
+        oauth2_token_path = os.environ.get("RB_OAUTH2_TOKEN_PATH") or os.environ.get("RB_OAUTH2_AUTH_PATH")
+        
+        if oauth2_url:
+            if oauth2_token_path:
+                base = oauth2_url.rstrip('/')
+                path = oauth2_token_path.lstrip('/')
+                token_url = f"{base}/{path}"
+                log("debug", f"Constructed TOKEN_URI from RB_OAUTH2_URL and RB_OAUTH2_TOKEN_PATH: {token_url}")
+            else:
+                # If RB_OAUTH2_URL is set but no path, assume /oauth2/token
+                base = oauth2_url.rstrip('/')
+                token_url = f"{base}/oauth2/token"
+                log("debug", f"Constructed TOKEN_URI from RB_OAUTH2_URL (default path): {token_url}")
+        else:
+            # Fallback: construct from config file
+            log("warning", "TOKEN_URI and RB_OAUTH2_URL not found, falling back to config file")
+            log("debug", f"Available env vars starting with 'TOKEN' or 'RB_OAUTH': {[k for k in os.environ.keys() if 'TOKEN' in k or 'OAUTH' in k]}")
+            base = config.get("oauth_url") or "https://oauth.rightbrain.ai"
+            path = config.get("auth_path") or "/oauth2/token"
+            base = base.rstrip('/')
+            path = path.lstrip('/')
+            token_url = f"{base}/{path}"
+            log("debug", f"Constructed TOKEN_URI from config file: {token_url}")
 
     log("debug", f"Requesting token from: {token_url}")
 
@@ -173,6 +189,157 @@ def _get_project_path() -> str:
         log("error", "Missing RB_ORG_ID or RB_PROJECT_ID.")
         sys.exit(1)
     return f"/api/v1/org/{org_id}/project/{project_id}"
+
+def detect_environment(api_url: Optional[str] = None) -> str:
+    """
+    Detects the environment (staging or production) based on API URL.
+    If api_url is not provided, uses _get_base_url().
+    Returns 'staging' or 'production'.
+    """
+    if api_url is None:
+        api_root = _get_base_url()
+    else:
+        api_root = api_url.rstrip('/')
+        if not api_root.endswith('/api/v1'):
+            api_root = f"{api_root}/api/v1"
+    
+    # Check if it's staging (common patterns: staging, dev, test)
+    if any(keyword in api_root.lower() for keyword in ['staging', 'dev', 'test', 'sandbox']):
+        return 'staging'
+    return 'production'
+
+def get_task_id_by_name(task_name: str, environment: Optional[str] = None) -> Optional[str]:
+    """
+    Looks up a task ID by task name from the task manifest.
+    If environment is not provided, detects it automatically.
+    Returns None if not found.
+    """
+    if environment is None:
+        environment = detect_environment()
+    
+    project_root = Path(__file__).resolve().parent.parent
+    manifest_path = project_root / "tasks" / "task_manifest.json"
+    
+    if not manifest_path.exists():
+        log("error", f"Task manifest not found at {manifest_path}")
+        return None
+    
+    try:
+        with open(manifest_path, 'r') as f:
+            manifest = json.load(f)
+        
+        # Check if manifest has new structure with environments
+        if isinstance(manifest, dict) and (environment in manifest or 'staging' in manifest or 'production' in manifest):
+            env_section = manifest.get(environment, {})
+            # Try to find by task name
+            for filename, task_data in env_section.items():
+                if isinstance(task_data, dict):
+                    # New structure: {filename: {name: "...", id: "..."}}
+                    if task_data.get('name') == task_name:
+                        task_id = task_data.get('id')
+                        if task_id:
+                            return task_id
+                elif isinstance(task_data, str):
+                    # Direct ID mapping, need to check task file for name
+                    task_file = project_root / "tasks" / filename
+                    if task_file.exists() and filename.endswith('.json'):
+                        try:
+                            with open(task_file, 'r') as tf:
+                                task_def = json.load(tf)
+                                if task_def.get('name') == task_name:
+                                    return task_data
+                        except:
+                            pass
+        else:
+            # Old flat structure - try to match by loading task files
+            for filename, task_id in manifest.items():
+                if isinstance(task_id, str) and filename.endswith('.json'):
+                    task_file = project_root / "tasks" / filename
+                    if task_file.exists():
+                        try:
+                            with open(task_file, 'r') as tf:
+                                task_def = json.load(tf)
+                                if task_def.get('name') == task_name:
+                                    return task_id
+                        except:
+                            pass
+        
+        log("warning", f"Task '{task_name}' not found in manifest for environment '{environment}'")
+        return None
+    except Exception as e:
+        log("error", f"Error reading task manifest: {e}")
+        return None
+
+def get_task_id_by_filename(task_filename: str, environment: Optional[str] = None) -> Optional[str]:
+    """
+    Looks up a task ID by task filename (e.g., 'discovery_task.json') from the task manifest.
+    If environment is not provided, detects it automatically.
+    Returns None if not found.
+    """
+    if environment is None:
+        environment = detect_environment()
+    
+    project_root = Path(__file__).resolve().parent.parent
+    manifest_path = project_root / "tasks" / "task_manifest.json"
+    
+    if not manifest_path.exists():
+        log("error", f"Task manifest not found at {manifest_path}")
+        return None
+    
+    try:
+        with open(manifest_path, 'r') as f:
+            manifest = json.load(f)
+        
+        # Check if manifest has new structure with environments
+        if isinstance(manifest, dict) and (environment in manifest or 'staging' in manifest or 'production' in manifest):
+            env_section = manifest.get(environment, {})
+            task_data = env_section.get(task_filename)
+            if isinstance(task_data, dict):
+                return task_data.get('id')
+            elif isinstance(task_data, str):
+                return task_data
+        else:
+            # Old flat structure
+            return manifest.get(task_filename)
+        
+        return None
+    except Exception as e:
+        log("error", f"Error reading task manifest: {e}")
+        return None
+
+def get_model_id_by_name(model_name: str, environment: Optional[str] = None) -> Optional[str]:
+    """
+    Looks up a model ID by model name from the model manifest.
+    If environment is not provided, detects it automatically.
+    Returns None if not found.
+    """
+    if environment is None:
+        environment = detect_environment()
+    
+    project_root = Path(__file__).resolve().parent.parent
+    manifest_path = project_root / "config" / "model_manifest.json"
+    
+    if not manifest_path.exists():
+        log("error", f"Model manifest not found at {manifest_path}")
+        return None
+    
+    try:
+        with open(manifest_path, 'r') as f:
+            manifest = json.load(f)
+        
+        # Check if manifest has new structure with environments
+        if isinstance(manifest, dict) and (environment in manifest or 'staging' in manifest or 'production' in manifest):
+            env_section = manifest.get(environment, {})
+            return env_section.get(model_name)
+        else:
+            # Old flat structure
+            models = manifest.get('models', {})
+            if isinstance(models, dict):
+                return models.get(model_name)
+            return None
+    except Exception as e:
+        log("error", f"Error reading model manifest: {e}")
+        return None
 
 def get_task(rb_token: str, task_id: str) -> Dict[str, Any]:
     url = f"{_get_base_url()}{_get_project_path()}/task/{task_id}"
