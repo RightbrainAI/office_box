@@ -35,8 +35,8 @@ jobs:
           RB_PROJECT_ID: ${{ secrets.RB_PROJECT_ID }}
           RB_CLIENT_ID: ${{ secrets.RB_CLIENT_ID }}
           RB_CLIENT_SECRET: ${{ secrets.RB_CLIENT_SECRET }}
-          RB_API_URL: ${{ secrets.API_ROOT }}
-          RB_OAUTH2_URL: ${{ secrets.TOKEN_URI }}
+          API_ROOT: ${{ secrets.API_ROOT }}
+          TOKEN_URI: ${{ secrets.TOKEN_URI }}
           # Pass GitHub context and manual input to the script
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO_NAME: ${{ github.repository }}
