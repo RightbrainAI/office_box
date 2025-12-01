@@ -1,0 +1,128 @@
+My IBM Log in
+The Eligible Public Cloud Bring Your Own Software License (BYOSL) policy allows you to deploy any IBM software licensed to you directly or through an authorized IBM reseller under the terms and conditions described here.
+  * [Eligible IBM Software](https://www.ibm.com/software/passportadvantage/eligible_public_cloud_BYOSL_policy.html#2283606)
+  * [Eligible Public Clouds](https://www.ibm.com/software/passportadvantage/eligible_public_cloud_BYOSL_policy.html#2284688)
+  * [Licensing requirements and conditions](https://www.ibm.com/software/passportadvantage/eligible_public_cloud_BYOSL_policy.html#2284848)
+
+
+### Eligible IBM Software
+The Eligible Public Cloud Bring Your Own Software License (BYOSL) policy allows you to deploy and execute on an Eligible Public Cloud (EPC) any IBM software licensed to you directly or through an authorized IBM reseller under IBM license terms, subject to the use authorizations and restrictions stated in the applicable governing license agreements and transaction documents for such software including the IBM International Passport Advantage (IPAA) and IBM International Program License Agreement (IPLA) and the License Information documents applicable to the software.
+This policy does not apply to IBM z/OS software or to any IBM software sublicensed to you by a third party. This policy also does not apply if you are an IBM Business Partner authorized to deploy your solution on a hosted environment – such situations are handled under a separate arrangement.
+[Back to top](https://www.ibm.com/software/passportadvantage/eligible_public_cloud_BYOSL_policy.html#ibm-top)
+### Eligible Public Clouds
+The approved listing of Eligible Public Clouds (EPCs) where you may deploy licensed IBM software are defined by provider below. The "Required IBM Licensing Tools" are mandatory only when deploying capacity-based products (i.e., those licensed using Processor Value Unit (PVU) or Virtual Processor Core (VPC) metrics). For other products, you are responsible for using any other tools made available by the EPC to provide compliance reporting per the IPAA.
+If you have IBM software that is deployed via a Cloud provider that is not listed below, please send an email to 'talk2sam@us.ibm.com'. Be sure to include BYOSL in Subject line.
+Provider | Offering | Licensing Footnotes | For more detailsgo to: | Required IBM Licensing Tools  
+---|---|---|---|---  
+IBM | IBM Cloud Virtual Servers (Inc., IBM z/LinuxONE) | See Note 1 below | <https://www.ibm.com/cloud> |  Traditional Deployments: [IBM License Metric Tool](https://www.ibm.com/software/passportadvantage/ibmlicensemetrictool.html) Red Hat OpenShift Deployments: [IBM License Service](https://www.ibm.com/software/passportadvantage/containerlicenses.html)  
+IBM Cloud Containers | See Note 1 below | <https://www.ibm.com/cloud>  
+IBM Power Virtual Server | See Considerations for IBM Power Systems Virtual Servers in the note sections below. | <https://www.ibm.com/cloud/power-virtual-server>  
+IBM Cloud Bare Metal Servers | See Note 2 below |  [www.softlayer.com](http://www.softlayer.com/) <https://www.ibm.com/cloud>  
+IBM Kubernetes Service (IKS) | See Note 1 below | [www.ibm.com/cloud/container-service/](https://www.ibm.com/cloud/container-service/)  
+Red Hat OpenShift on IBM Cloud4 | See Note 1 below | <https://www.ibm.com/cloud/openshift>  
+TABLE END
+## [Alibaba](javascript:void\(\);)
+Provider | Offering | Licensing Footnotes | For more detailsgo to: | Required IBM Licensing Tools  
+---|---|---|---|---  
+Alibaba | Alibaba Cloud (Elastic Compute Service) | See Note 1 below | <https://www.alibabacloud.com/> |  Traditional Deployments: [IBM License Metric Tool](https://www.ibm.com/software/passportadvantage/ibmlicensemetrictool.html) Red Hat OpenShift Deployments: [IBM License Service](https://www.ibm.com/software/passportadvantage/containerlicenses.html)  
+TABLE END
+Provider | Offering | Licensing Footnotes | For more detailsgo to: | Required IBM Licensing Tools  
+---|---|---|---|---  
+Amazon | AWS ECS Fargate | See Considerations for AWS ECS Fargate in the notes section below. | [aws.amazon.com/fargate/](https://aws.amazon.com/fargate/) | [IBM License Service Amended PA terms for Container Licensing (via Addendum)](https://www.ibm.com/software/passportadvantage/containerlicenses.html)  
+Amazon RDS for Db2 | See note 9 below | [aws.amazon.com/rds/db2/](https://aws.amazon.com/rds/db2/) | [AWS License Manager](https://aws.amazon.com/license-manager/)  
+EC2 Instances & Dedicated Instances (Inc., AWS Outpost instances) | See Note 1 below | [aws.amazon.com/ec2/instance-types](http://aws.amazon.com/ec2/instance-types) |  Traditional Deployments: [IBM License Metric Tool](https://www.ibm.com/software/passportadvantage/ibmlicensemetrictool.html) Red Hat OpenShift Deployments: [IBM License Service](https://www.ibm.com/software/passportadvantage/containerlicenses.html)  
+Elastic Kubernetes Service (EKS) | See Note 1 below | [aws.amazon.com/eks/](https://aws.amazon.com/eks/)  
+Red Hat OpenShift Service on AWS (ROSA)4 | See Note 1 below | <https://aws.amazon.com/rosa/>  
+VMware Cloud on AWS | See Note 2 below | <https://aws.amazon.com/vmware/> | Traditional Deployments: [IBM License Metric Tool](https://www.ibm.com/software/passportadvantage/ibmlicensemetrictool.html)  
+TABLE END
+## [Fujitsu](javascript:void\(\);)
+Provider | Offering | Licensing Footnotes | For more detailsgo to: | Required IBM Licensing Tools  
+---|---|---|---|---  
+Fujitsu | Fujitsu Cloud IaaS Instance (FJcloud-V) | See Note 1 below | <https://jp.fujitsu.com/solutions/cloud/fjcloud/-v/> |  Traditional Deployments: [IBM License Metric Tool](https://www.ibm.com/software/passportadvantage/ibmlicensemetrictool.html) Red Hat OpenShift Deployments: [IBM License Service](https://www.ibm.com/software/passportadvantage/containerlicenses.html)  
+Fujitsu Cloud IaaS Instance (FJcloud-O) | See Note 1 below | <https://jp.fujitsu.com/solutions/cloud/fjcloud/-o/>  
+NIFCLOUD | See Note 1 below | https://pfs.nifcloud.com  
+TABLE END
+Provider | Offering | Licensing Footnotes | For more detailsgo to: | Required IBM Licensing Tools  
+---|---|---|---|---  
+Google | Google Compute Engine | See Note 1 below | [cloud.google.com/compute/docs/machine-types](http://cloud.google.com/compute/docs/machine-types) |  Traditional Deployments: [IBM License Metric Tool](https://www.ibm.com/software/passportadvantage/ibmlicensemetrictool.html) Red Hat OpenShift Deployments: [IBM License Service](https://www.ibm.com/software/passportadvantage/containerlicenses.html)  
+Google Kubernetes Engine (GKE) | See Note 1 below | [cloud.google.com/kubernetes-engine/](https://cloud.google.com/kubernetes-engine/)  
+Red Hat OpenShift Container Platform4 | See Note 1 below | <https://cloud.google.com/architecture/partners/openshift-on-gcp>  
+TABLE END
+Provider | Offering | Licensing Footnotes | For more detailsgo to: | Required IBM Licensing Tools  
+---|---|---|---|---  
+KDDI | KDDI Cloud platform service | See Note 1 below for Virtual Server. See Note 5 below for Bare metal server. | [biz.kddi.com/service/cloud-platform/](https://biz.kddi.com/service/cloud-platform/) |  Traditional Deployments: [IBM License Metric Tool](https://www.ibm.com/software/passportadvantage/ibmlicensemetrictool.html) Red Hat OpenShift Deployments: [IBM License Service](https://www.ibm.com/software/passportadvantage/containerlicenses.html) [Amended PA terms for Container Licensing (via Addendum)](https://www.ibm.com/software/passportadvantage/containerlicenses.html)  
+TABLE END
+## [Microsoft](javascript:void\(\);)
+Provider | Offering | Licensing Footnotes | For more detailsgo to: | Required IBM Licensing Tools  
+---|---|---|---|---  
+Microsoft | Azure HCI | See Note 1 below | <https://azure.microsoft.com/en-us/products/azure-stack/hci> | Traditional Deployments: [IBM License Metric Tool](https://www.ibm.com/software/passportadvantage/ibmlicensemetrictool.html)  
+Azure Virtual Machines | See Note 1 below |  [azure.microsoft.com/en-us/pricing/details/virtual-machines/linux/](https://azure.microsoft.com/en-us/pricing/details/virtual-machines/linux/) [azure.microsoft.com/en-us/pricing/details/virtual-machines/windows/](https://azure.microsoft.com/en-us/pricing/details/virtual-machines/windows/) |  Traditional Deployments: [IBM License Metric Tool](https://www.ibm.com/software/passportadvantage/ibmlicensemetrictool.html) Red Hat OpenShift Deployments: [IBM License Service](https://www.ibm.com/software/passportadvantage/containerlicenses.html) [Amended PA terms for Container Licensing (via Addendum)](https://www.ibm.com/software/passportadvantage/containerlicenses.html)  
+Azure VMware Solution | See Note 2 below | [azure.microsoft.com/en-us/services/azure-vmware/](https://azure.microsoft.com/en-us/services/azure-vmware/) | Traditional Deployments: [IBM License Metric Tool](https://www.ibm.com/software/passportadvantage/ibmlicensemetrictool.html)  
+Azure Kubernetes | See Note 1 below | [azure.microsoft.com/en-us/services/kubernetes-service/](https://azure.microsoft.com/en-us/services/kubernetes-service/)  
+Azure Red Hat OpenShift (ARO)4 | See Note 1 below | <https://azure.microsoft.com/en-us/services/openshift/>  
+TABLE END
+Provider | Offering | Licensing Footnotes | For more detailsgo to: | Required IBM Licensing Tools  
+---|---|---|---|---  
+NEC | Cloud Infrastructure Service (NEC Cloud IaaS) | See Note 1 below | <https://www.nec.com/en/global/solutions/cloud/index.html> |  Traditional Deployments: [IBM License Metric Tool](https://www.ibm.com/software/passportadvantage/ibmlicensemetrictool.html) Red Hat OpenShift Deployments: [IBM License Service](https://www.ibm.com/software/passportadvantage/containerlicenses.html)  
+TABLE END
+Provider | Offering | Licensing Footnotes | For more detailsgo to: | Required IBM Licensing Tools  
+---|---|---|---|---  
+NTT Cloud Services Division | Multicloud Services (VMs only) | See Note 1 below | <https://services.global.ntt/en-us/services-and-products/cloud/multicloud-services> |  Traditional Deployments: [IBM License Metric Tool](https://www.ibm.com/software/passportadvantage/ibmlicensemetrictool.html) Red Hat OpenShift Deployments: [IBM License Service](https://www.ibm.com/software/passportadvantage/containerlicenses.html)  
+NTT Communications | ECL 1.0 | See Note 1 below | [https://ecl.ntt.com](http://ecl.ntt.com/) |  Traditional Deployments: [IBM License Metric Tool](https://www.ibm.com/software/passportadvantage/ibmlicensemetrictool.html) Red Hat OpenShift Deployments: [IBM License Service](https://www.ibm.com/software/passportadvantage/containerlicenses.html)  
+Smart Data Platform Cloud / Server (ECL 2.0) | See Note 1 below | <https://sdpf.ntt.com/>  
+IPV (IaaS Powered by VMware) | See Note 1 below | <https://sdpf.ntt.com/services/vmware-platform/>  
+NTT Data | NTT Data OpenCanvas | See Note 1 below | <https://portal.opencanvas.ne.jp/cloud/> |  Traditional Deployments: [IBM License Metric Tool](https://www.ibm.com/software/passportadvantage/ibmlicensemetrictool.html) Red Hat OpenShift Deployments: [IBM License Service](https://www.ibm.com/software/passportadvantage/containerlicenses.html)  
+TABLE END
+Provider | Offering | Licensing Footnotes | For more detailsgo to: | Required IBM Licensing Tools  
+---|---|---|---|---  
+Oracle | Cloud Compute Instances | See Note 3 below | <https://www.oracle.com/cloud/compute> |  Traditional Deployments: [IBM License Metric Tool](https://www.ibm.com/software/passportadvantage/ibmlicensemetrictool.html) Red Hat OpenShift Deployments: [IBM License Service](https://www.ibm.com/software/passportadvantage/containerlicenses.html)  
+Oracle Kubernetes Engine | See Note 3 below | <https://www.oracle.com/cloud/cloud-native/container-engine-kubernetes/>  
+Oracle Cloud VMWare Solution (OCVS) | See Note 2 below | [https://www.oracle.com/cloud/compute/vmware/](https://www.oracle.com/cloud/compute/vmware/) | Traditional Deployments: [IBM License Metric Tool](https://www.ibm.com/software/passportadvantage/ibmlicensemetrictool.html)  
+TABLE END
+## [Tencent](javascript:void\(\);)
+Provider | Offering | Licensing Footnotes | For more detailsgo to: | Required IBM Licensing Tools  
+---|---|---|---|---  
+Tencent | Tencent Cloud Server Instance | See Note 1 below | <https://intl.cloud.tencent.com/product/cvm> |  Traditional Deployments: [IBM License Metric Tool](https://www.ibm.com/software/passportadvantage/ibmlicensemetrictool.html) Red Hat OpenShift Deployments: [IBM License Service](https://www.ibm.com/software/passportadvantage/containerlicenses.html)  
+TABLE END
+**Note: The Licensing Footnotes below apply only where specifically noted within the Cloud provider sections above. They do not apply universally to all offerings.**
+  1. In all instances: 1 vCPU = 1 Core = 1 VPC = 70 PVUs
+     * For containers with Hyperthreading enabled: 2 vCPUs = 1 Core = 1 VPC = 70 PVUs (See [Container Licensing](https://www.ibm.com/software/passportadvantage/containerlicenses.html) page for more information).
+  2. See the [Processor Value Unit tables](https://www.ibm.com/software/passportadvantage/pvu_licensing_for_customers.html) for requirements based on system configuration. Client must use the full ILMT configuration.
+  3. An Oracle Compute Unit (OCPU) corresponds to two hardware execution threads, known as vCPUs. PVU licensing requires 1 OCPU = 2 vCPU = 140 PVU
+  4. Metering and reporting requirements are to be managed by client in Managed Kubernetes environments (such as OpenShift managed by Red Hat).
+  5. Physical Server or Bare Metal Clients may deploy software on physical server or bare metal public cloud offerings provided by EPCs (see above). These deployments must follow the guidance (including use of Licensing Tools) as defined in the [sub-capacity](https://www.ibm.com/software/passportadvantage/subcaplicensing.html) and [container licensing](https://www.ibm.com/software/passportadvantage/containerlicenses.html) policies. For PVU deployments, see the [Processor Value Unit](https://www.ibm.com/software/passportadvantage/pvu_licensing_for_customers.html) tables for requirements based on system configuration.
+  6. On-premise deployments of public cloud services (e.g., Oracle Cloud@Customer, AWS Outpost) are supported and must follow sub-capacity and container licensing policies, including use of IBM Licensing Tools.For PVU licensing, deployments using eligible services are licensed at 70 PVUs per vCPU/Core, similar to if they were deployed in the public cloud. If IBM Licensing Tools are not used, full capacity licensing applies, as per International Passport Advantage Agreement terms.
+  7. For all above: Solaris x86 is not supported and therefore ineligible for use.
+  8. With the release of IBM Passport Advantage Agreement v11 (Release: February 2023), the Container Licensing addendum is no longer required. See the [Container Licensing](https://www.ibm.com/software/passportadvantage/containerlicenses.html) webpage for more information.
+  9. For deployments of Db2 Software on the Managed Services via the bring-your-own-license option, to count VPCs when deploying the full vCPU capacity of the instance, IBM will consider 1 VPC = 1 physical core = 2 vCPUs for all EC2 instances that have published their physical core counts on the EC2 “Physical Cores by Amazon EC2 Instance Type” page, where the vCPU count is twice the physical cores (meaning hyperthreading/simultaneous multi-threading (SMT) degree is set to (2). Only Db2 Standard Edition, Db2 Advanced Edition, Db2  Add-on, and Db2 [_AESE_](https://www.ibm.com/support/customer/csol/terms/?id=L-WRPK-QH7S79&lc=en) Add-on licenses are eligible. See [CPU cores and threads per CPU core per instance type](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/cpu-options-supported-instances-values.html).
+
+
+## [Considerations for AWS ECS Fargate](javascript:void\(\);)
+For AWS ECS Fargate, IBM License Service is represented as License Service [AWS S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html) bucket. This functionality is available on a product-by-product basis. Please check with your Product Documentation or IBM Representative for more information. Note: For examples of the procedure and how to deploy, see the [WebSphere Application Server Liberty documentation](https://www.ibm.com/docs/en/was-liberty/base?topic=container-tracking-liberty-license-usage-aws-ecs-fargate).
+## [Considerations for IBM Power System Virtual Servers](javascript:void\(\);)
+The provisions in this section below apply solely to VPC-based or PVU-based Programs deployed on IBM Power Systems Virtual Servers. For sub-capacity licensing, cores may be allocated in a minimum of 0.25 core increments for shared processors (i.e. physical processors whose processing capacity is shared among multiple logical partitions) and 1.0 core for dedicated processors (i.e. whole physical processors that are assigned to a single logical partition). Fractional cores will be aggregated and rounded to the next full integer, it being clarified that all logical partitions running on the same machine type are counted as a single pool rather than by server. For purposes of illustration and not limitation, see the following examples:
+  * 3 logical partitions are deployed on separate S922 servers @ 0.25 cores each. The calculation will be as follows: 0.25 x 3 = 0.75 cores, which is rounded up to 1.0 cores.
+  * 3 logical partitions are deployed on 2 S922 servers and 1 E980 server @ 0.25 cores each. The calculation will be as follows: (0.25 x 2 = 0.5, which is rounded up to 1.0 cores) + (0.25 x 1 = 0.25, which is rounded up to 1.0 cores) = 2.0 cores.
+
+
+Client is required to install and configure ILMT v9.2.22 or later and comply with the Sub-Capacity Licensing and reporting requirements in accordance with Sections 1.13 and 1.14 of the IPAA.
+In accordance with the reporting terms outlined in IPAA Section 1.14, clients will collect deployment data and complete the manual calculation of virtualization capacity report once per quarter for the IBM Software using the command-line interface (CLI) (see link) to determine core usage. For Google Cloud, pcloud CLI commands are to be used. Such core usage shall be in accordance with the IBM Eligible Public Cloud BYOSL policy.
+PVU per Core values are determined based on the Power System in use as outlined on the PVU Table per Core (section 1 of 2 - RISC and System z) table on the [Processor Value Unit](https://www.ibm.com/software/passportadvantage/pvu_licensing_for_customers.html) webpage
+[Back to top](https://www.ibm.com/software/passportadvantage/eligible_public_cloud_BYOSL_policy.html#ibm-top)
+### Licensing requirements and conditions
+The Eligible Public Cloud BYOSL policy does not modify or supersede any obligations in the applicable governing license agreements, including requirements for licensed software use in a virtualized environment as defined in the [sub-capacity](https://www.ibm.com/software/passportadvantage/subcaplicensing.html) and [container licensing](https://www.ibm.com/software/passportadvantage/containerlicenses.html) policies.
+The verification terms in such license agreements apply to you when you upload, install, or use eligible IBM software in an EPC and you agree to collect any required usage data for your licensed software in that EPC. You will not provide the cloud provider with any unauthorized use or access to the eligible IBM software.
+You must use install and configure reporting tools designated by IBM (as noted above) for reporting usage and provide such reports to IBM upon request in accordance with IBM’s guidelines.
+When you use a license entitlement according to this policy, you may not use such entitlements for any other purpose or in any other place at the same time.
+Unless it is noted above, the Eligible Public Cloud BYOSL policy DOES NOT apply to engagements with vendors where those vendors are accessing the software and/or running or managing some or all of your computing environment under the control of their own employees, either on your premises or on theirs (e.g. Strategic Outsourcing, Web Hosting, managed service providers, etc.) –such engagements require separate arrangements. If your software is deployed in any of these manners, please send an email to 'talk2sam@us.ibm.com'. Be sure to include BYOSL in Subject line.
+[Back to top](https://www.ibm.com/software/passportadvantage/eligible_public_cloud_BYOSL_policy.html#ibm-top)
+### Change Log
+## [March 2024 Change Log](javascript:void\(\);)
+  * Clarified zSeries software exception to z/OS only (i.e., zLinux is eligible)
+  * Clarified reporting requirements for non-capacity-based products
+  * Clarified EPC list as being the only approved listing of Providers
+  * Added contact information for ensuring compliance
+
+
+[Back to top](https://www.ibm.com/software/passportadvantage/eligible_public_cloud_BYOSL_policy.html#ibm-top)
+Overview Annual report Corporate social responsibility Financing Investor Newsroom Security, privacy & trust Senior leadership Careers with IBM Website Blog Publications Automotive Banking Consumer Goods Energy Government Healthcare Insurance Life Sciences Manufacturing Retail Telecommunications Travel Our strategic partners Find a partner Become a partner - Partner Plus Partner Plus log in IBM TechXChange Community LinkedIn X Instagram YouTube Subscription Center Participate in user experience research Podcasts Contact IBM Privacy Terms of use Accessibility United States — English [Questions?](https://www.ibm.com/software/passportadvantage/eligible_public_cloud_BYOSL_policy.html)
