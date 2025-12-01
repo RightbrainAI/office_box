@@ -23,7 +23,8 @@ if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
 try:
-    from utils.github_api import update_issue_body, post_failure_and_exit, fetch_issue_comments
+    # Added parse_form_field to imports
+    from utils.github_api import update_issue_body, post_failure_and_exit, fetch_issue_comments, parse_form_field
     from utils.rightbrain_api import get_rb_token, run_rb_task, log, get_task_id_by_name, get_api_root, get_rb_config
 except ImportError as e:
     print(f"❌ Error importing 'utils' modules: {e}", file=sys.stderr)
@@ -33,14 +34,27 @@ except ImportError as e:
 # 1. HELPER FUNCTIONS
 # ==========================================
 
-def create_safe_filename(name: str, issue_number: str, extension: str = ".txt") -> str:
-    """Creates a safe filename for saving document text."""
-    safe_name = re.sub(r'[<>:"/\\|?*\s]+', '_', name)
-    safe_name = safe_name.strip('._ ')
-    if not safe_name: safe_name = "unnamed_document"
-    safe_name = safe_name[:100]
-    if not safe_name.endswith(extension): safe_name += extension
-    return f"issue-{issue_number}-{safe_name}"
+def create_safe_filename(doc_name: str, supplier_name: str, issue_number: str, extension: str = ".txt") -> str:
+    """
+    Creates a standardized filename: {Supplier}-{IssueID}-{DocName}.txt
+    """
+    # Sanitize Supplier Name
+    safe_supplier = re.sub(r'[<>:"/\\|?*\s]+', '_', supplier_name).strip('._ ')
+    if not safe_supplier: safe_supplier = "Vendor"
+    
+    # Sanitize Doc Name
+    safe_doc = re.sub(r'[<>:"/\\|?*\s]+', '_', doc_name).strip('._ ')
+    if not safe_doc: safe_doc = "doc"
+    
+    # Truncate components to avoid filesystem limits
+    safe_supplier = safe_supplier[:30]
+    safe_doc = safe_doc[:50]
+    
+    # Ensure extension
+    if not safe_doc.endswith(extension):
+        safe_doc += extension
+        
+    return f"{safe_supplier}-issue-{issue_number}-{safe_doc}"
 
 def parse_multiline_urls(issue_body: str, label: str) -> List[str]:
     """Parses multiple URLs from a GitHub issue form block."""
@@ -126,7 +140,9 @@ def save_and_commit_source_text(text: str, repo_name: str, issue_number: str, fi
         
         status = subprocess.run(["git", "status", "--porcelain", str(file_path)], capture_output=True, text=True)
         if file_path.name in status.stdout:
-            msg = f"docs(vendor): Add source '{filename}' (#{issue_number})"
+            # We assume filename structure is Vendor-issue-ID-DocName
+            clean_name = filename.replace(f"issue-{issue_number}-", "")
+            msg = f"docs(vendor): Add source '{clean_name}' (#{issue_number})"
             subprocess.run(["git", "commit", "-m", msg], capture_output=True)
             subprocess.run(["git", "pull", "--rebase"], capture_output=True)
             subprocess.run(["git", "push"], check=True, capture_output=True)
@@ -138,7 +154,7 @@ def extract_text_from_run_data(full_task_run: Dict[str, Any]) -> str:
     try: return full_task_run.get("run_data", {}).get("submitted", {}).get("document_url", "") or ""
     except Exception: return ""
 
-def format_documents_as_checklist(all_docs: List[Dict[str, Any]], repo_name: str, issue_number: str) -> str:
+def format_documents_as_checklist(all_docs: List[Dict[str, Any]], repo_name: str, issue_number: str, supplier_name: str) -> str:
     """Builds Markdown checklist."""
     online, manual = [], []
     base_url = f"https://github.com/{repo_name}/blob/main/"
@@ -146,10 +162,12 @@ def format_documents_as_checklist(all_docs: List[Dict[str, Any]], repo_name: str
     for doc in all_docs:
         name = doc.get("name", "Unknown")
         original_url = doc.get("url", "")
-        safe_name = create_safe_filename(name, issue_number)
-        gh_url = base_url + url_quote(f"_vendor_analysis_source/{safe_name}")
         
-        # Check if relevant OR manual
+        # Use the same filename generator logic
+        safe_filename = create_safe_filename(name, supplier_name, issue_number)
+        
+        gh_url = base_url + url_quote(f"_vendor_analysis_source/{safe_filename}")
+        
         checked = "x" if (doc.get("relevance") == "relevant" or doc.get("source_type") != "fetched") else " "
         
         cats = doc.get("categories", [])
@@ -200,18 +218,26 @@ def main():
     rb_token = get_rb_token()
     
     # ---------------------------------------------------------
+    # STAGE 0: CONTEXT
+    # ---------------------------------------------------------
+    # Parse Supplier Name for better filenames
+    supplier_name = parse_form_field(issue_body, "Supplier Name")
+    if not supplier_name: supplier_name = "UnknownVendor"
+    
+    print(f"🚀 Starting Discovery for: {supplier_name} (Issue #{issue_number})")
+
+    # ---------------------------------------------------------
     # STAGE 1: HARVEST SEEDS
     # ---------------------------------------------------------
     legal_seeds = parse_multiline_urls(issue_body, "Legal URLs") or parse_multiline_urls(issue_body, "T&Cs")
     security_seeds = parse_multiline_urls(issue_body, "Security URLs")
     manual_inputs = scan_comments_for_inputs(repo_name, issue_number, gh_token)
 
-    urls_to_process = [] # Will hold dictionaries: {"url": str, "context": str}
+    urls_to_process = [] 
 
     # ---------------------------------------------------------
-    # STAGE 2: SPIDER / DISCOVERY (Restored!)
+    # STAGE 2: SPIDER / DISCOVERY
     # ---------------------------------------------------------
-    # We define a search context for the AI
     discovery_prompts = [
         {"seeds": legal_seeds, "prompt": "Find legally binding documents (Terms, DPA, Privacy Policy)."},
         {"seeds": security_seeds, "prompt": "Find security evidence (SOC2, ISO27001, Whitepapers)."}
@@ -219,7 +245,6 @@ def main():
 
     print(f"\n--- STAGE 2: Running Discovery (Spidering) ---")
     
-    # Add Seeds to final list first (always try to fetch the seeds themselves)
     for u in legal_seeds: urls_to_process.append({"url": u, "origin": "seed"})
     for u in security_seeds: urls_to_process.append({"url": u, "origin": "seed"})
 
@@ -227,13 +252,10 @@ def main():
         for seed_url in group["seeds"]:
             print(f"🕷️ Spidering: {seed_url}")
             
-            # Idempotency: If we already have a file for the Seed URL, we might still want to spider it
-            # to find *links*, even if we have the text.
-            
             discovery_input = {
-                "document_text": seed_url, # URL Fetcher intercepts this
+                "document_text": seed_url,
                 "original_url": seed_url,
-                "usage_context": "Vendor Review",
+                "usage_context": f"Vendor Review for {supplier_name}",
                 "search_context": group["prompt"]
             }
             
@@ -242,9 +264,7 @@ def main():
             if run and not run.get("is_error"):
                 found_docs = run.get("response", {}).get("discovered_documents", [])
                 print(f"   -> Found {len(found_docs)} links.")
-                
                 for doc_item in found_docs:
-                    # Parse the structure: {"document": {"absolute_url": "...", ...}}
                     doc_data = doc_item.get("document", {})
                     found_url = doc_data.get("absolute_url")
                     if found_url:
@@ -253,11 +273,9 @@ def main():
                 log("warning", f"Discovery failed for {seed_url}. Proceeding with seed only.")
 
     # ---------------------------------------------------------
-    # STAGE 3: FETCH & CLASSIFY (With Idempotency)
+    # STAGE 3: FETCH & CLASSIFY
     # ---------------------------------------------------------
-    # Deduplicate URLs by string
     unique_urls = {item['url']: item for item in urls_to_process}.values()
-    
     all_final_docs = []
 
     print(f"\n--- STAGE 3: Fetching {len(unique_urls)} Unique URLs ---")
@@ -265,12 +283,13 @@ def main():
     for item in unique_urls:
         url = item['url']
         doc_name = url.split('/')[-1] or "webpage"
-        safe_filename = create_safe_filename(doc_name, issue_number)
         
-        # IDEMPOTENCY CHECK
+        # Updated filename generation with Supplier Name
+        safe_filename = create_safe_filename(doc_name, supplier_name, issue_number)
+        
         local_path = Path("_vendor_analysis_source") / safe_filename
         if local_path.exists():
-            print(f"⏩ Skipping {url} - Exists locally.")
+            print(f"⏩ Skipping {url} - Exists: {safe_filename}")
             all_final_docs.append({
                 "name": doc_name, "url": url, "source_type": "fetched",
                 "relevance": "relevant", "categories": ["existing_file"]
@@ -306,7 +325,9 @@ def main():
     # ---------------------------------------------------------
     print(f"\n--- STAGE 4: Processing Manual Inputs ---")
     for inp in manual_inputs:
-        safe_filename = create_safe_filename(inp['name'], issue_number)
+        # Updated filename generation with Supplier Name
+        safe_filename = create_safe_filename(inp['name'], supplier_name, issue_number)
+        
         save_and_commit_source_text(inp['text'], repo_name, issue_number, safe_filename)
         all_final_docs.append({
             "name": inp['name'], "url": inp['url'], "source_type": inp['type'],
@@ -317,7 +338,9 @@ def main():
     # STAGE 5: UPDATE ISSUE
     # ---------------------------------------------------------
     print("\n--- STAGE 5: Updating Checklist ---")
-    checklist_md = format_documents_as_checklist(all_final_docs, repo_name, issue_number)
+    
+    # Pass supplier_name to checklist formatter
+    checklist_md = format_documents_as_checklist(all_final_docs, repo_name, issue_number, supplier_name)
     
     CHECKLIST_MARKER = ""
     comment_body = (
