@@ -23,6 +23,7 @@ if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
 try:
+    # We strictly use the centralized utils now
     from utils.github_api import update_issue_body, post_failure_and_exit, fetch_issue_comments, parse_form_field
     from utils.rightbrain_api import get_rb_token, run_rb_task, log, get_task_id_by_name, get_api_root, get_rb_config
 except ImportError as e:
@@ -34,16 +35,20 @@ except ImportError as e:
 # ==========================================
 
 def create_safe_filename(doc_name: str, supplier_name: str, issue_number: str, extension: str = ".txt") -> str:
-    """Creates a standardized filename: {Supplier}-{IssueID}-{DocName}.txt"""
+    """
+    Creates a standardized filename: issue-{IssueID}-{Supplier}-{DocName}.txt
+    """
     safe_supplier = re.sub(r'[<>:"/\\|?*\s]+', '_', supplier_name).strip('._ ') or "Vendor"
     safe_doc = re.sub(r'[<>:"/\\|?*\s]+', '_', doc_name).strip('._ ') or "doc"
     
-    # Truncate to avoid filesystem limits
+    # Truncate components to avoid filesystem limits
     safe_supplier = safe_supplier[:30]
     safe_doc = safe_doc[:50]
     
-    if not safe_doc.endswith(extension): safe_doc += extension
-    return f"{safe_supplier}-issue-{issue_number}-{safe_doc}"
+    if not safe_doc.endswith(extension):
+        safe_doc += extension
+        
+    return f"issue-{issue_number}-{safe_supplier}-{safe_doc}"
 
 def parse_multiline_urls(issue_body: str, label: str) -> List[str]:
     pattern = re.compile(f"### {re.escape(label)}\s*(.*?)(?=\\n###|\\Z)", re.DOTALL | re.IGNORECASE)
@@ -128,6 +133,8 @@ def save_and_commit_source_text(text: str, repo_name: str, issue_number: str, fi
         
         status = subprocess.run(["git", "status", "--porcelain", str(file_path)], capture_output=True, text=True)
         if file_path.name in status.stdout:
+            # We assume filename structure is issue-{id}-{Supplier}-{DocName}
+            # Clean up message for readability
             clean_name = filename.replace(f"issue-{issue_number}-", "")
             msg = f"docs(vendor): Add source '{clean_name}' (#{issue_number})"
             subprocess.run(["git", "commit", "-m", msg], capture_output=True)
@@ -145,37 +152,25 @@ def extract_previous_categories(issue_body: str) -> Dict[str, List[str]]:
     """
     Parses the EXISTING checklist in the issue body to remember which files 
     were categorized as Legal or Security.
-    Returns: {"filename.txt": ["Legal", "Security"], ...}
     """
-    # Regex to find: - [x] **Categories**: ... (.../filename.txt)
-    # Matches both standard links and raw paths
     regex = r"-\s*\[(?:x| )\]\s*\*\*(.*?)\*\*:.*?(?:_vendor_analysis_source/)(.*?)\)"
-    
     mapping = {}
     matches = re.findall(regex, issue_body, re.IGNORECASE)
     
     for cats_str, filename in matches:
-        # Clean up categories string "Legal, Security" -> ["legal", "security"]
         cats = [c.strip().lower() for c in cats_str.split(',')]
-        # Clean up filename (remove closing paren if greedy match caught it)
         filename = filename.split(')')[0].strip()
         mapping[filename] = cats
         
     return mapping
 
 def guess_categories_from_name(filename: str) -> List[str]:
-    """Fallback: guesses category if we lost the metadata."""
     name = filename.lower()
     cats = []
-    
-    # Legal Keywords
     if any(x in name for x in ['term', 'privacy', 'dpa', 'agreement', 'addendum', 'legal', 'service']):
         cats.append("legal")
-        
-    # Security Keywords
     if any(x in name for x in ['security', 'soc', 'iso', 'pen', 'audit', 'cert', 'whitepaper']):
         cats.append("security")
-        
     return cats if cats else ["unclassified"]
 
 def format_documents_as_checklist(all_docs: List[Dict[str, Any]], repo_name: str, issue_number: str, supplier_name: str) -> str:
@@ -183,13 +178,14 @@ def format_documents_as_checklist(all_docs: List[Dict[str, Any]], repo_name: str
     online, manual, existing = [], [], []
     base_url = f"https://github.com/{repo_name}/blob/main/"
 
-    # Sort docs by name for consistent list order
     all_docs.sort(key=lambda x: x.get("name", "").lower())
 
     for doc in all_docs:
         name = doc.get("name", "Unknown")
         original_url = doc.get("url", "")
-        safe_filename = doc.get("filename") 
+        
+        # Use existing filename if present (reconciliation), else generate
+        safe_filename = doc.get("filename")
         if not safe_filename:
             safe_filename = create_safe_filename(name, supplier_name, issue_number)
             
@@ -212,8 +208,6 @@ def format_documents_as_checklist(all_docs: List[Dict[str, Any]], repo_name: str
             if "fetch_failed" in cats: note = "⚠️ **FETCH FAILED** (Attach manually)"
             online.append(f"- [{checked}] **{tag}**: [`{name}`]({gh_url}) {note}")
         elif doc.get("source_type") == "existing":
-            # Note: We group these with Online/Manual based on categories or keep separate
-            # For clarity, let's put them in their own list but formatted similarly
             existing.append(f"- [{checked}] **{tag}**: [`{name}`]({gh_url}) (Restored)")
         else:
             type_note = "Attachment" if doc.get("source_type") == "attachment" else "Paste"
@@ -221,8 +215,6 @@ def format_documents_as_checklist(all_docs: List[Dict[str, Any]], repo_name: str
 
     output = ""
     if online: output += "### 🌐 Scraped Documents\n" + "\n".join(online) + "\n\n"
-    # Merge existing into relevant sections or keep separate? 
-    # Providing a clean combined view is usually better, but let's keep separate to show 'state'
     if existing: output += "### 🗄️ Existing / Restored Files\n" + "\n".join(existing) + "\n\n"
     if manual: output += "### 📎 Manual Uploads\n" + "\n".join(manual) + "\n\n"
     return output
@@ -263,7 +255,6 @@ def main():
     print(f"🚀 Starting Discovery for: {supplier_name} (Issue #{issue_number})")
     
     # --- MEMORY RECOVERY ---
-    # Parse the previous checklist to remember file categories
     previous_file_categories = extract_previous_categories(issue_body)
     print(f"🧠 Recovered categories for {len(previous_file_categories)} existing files.")
 
@@ -328,7 +319,6 @@ def main():
         
         if local_path.exists():
             print(f"⏩ Skipping {url} - Exists: {safe_filename}")
-            # Try to recover category from previous run, else use "Existing"
             recovered_cats = previous_file_categories.get(safe_filename, ["existing_file"])
             all_final_docs.append({
                 "name": doc_name, "url": url, "source_type": "fetched", 
@@ -366,15 +356,11 @@ def main():
     print(f"\n--- STAGE 4.5: Reconciling with Local Files ---")
     source_dir = Path("_vendor_analysis_source")
     if source_dir.exists():
-        for file_path in source_dir.glob(f"*issue-{issue_number}-*"):
+        for file_path in source_dir.glob(f"issue-{issue_number}-*"): # Match new filename pattern
             if file_path.name not in processed_filenames:
                 print(f"  🗄️  Found orphaned file: {file_path.name}")
                 
-                # --- MEMORY RESTORATION ---
-                # 1. Try to find categories from the previous checklist
                 recovered_cats = previous_file_categories.get(file_path.name)
-                
-                # 2. If not found, try to guess based on filename
                 if not recovered_cats:
                     print(f"    ⚠️ No memory of this file. Guessing categories...")
                     recovered_cats = guess_categories_from_name(file_path.name)
@@ -394,7 +380,7 @@ def main():
     print("\n--- STAGE 5: Updating Checklist ---")
     checklist_md = format_documents_as_checklist(all_final_docs, repo_name, issue_number, supplier_name)
     
-    CHECKLIST_MARKER = ""
+    CHECKLIST_MARKER = "<!--CHECKLIST_MARKER-->"
     new_section = (
         f"{CHECKLIST_MARKER}\n"
         "## Documents for Analysis\n\n"
@@ -409,6 +395,7 @@ def main():
     ).strip()
 
     try:
+        # We now rely exclusively on the utils library function
         update_issue_body(repo_name, issue_number, issue_body, new_section)
     except Exception as e:
         post_failure_and_exit(repo_name, issue_number, issue_body, f"Failed to post checklist: {e}")
