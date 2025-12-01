@@ -220,7 +220,6 @@ def main():
     # ---------------------------------------------------------
     # STAGE 0: CONTEXT
     # ---------------------------------------------------------
-    # Parse Supplier Name for better filenames
     supplier_name = parse_form_field(issue_body, "Supplier Name")
     if not supplier_name: supplier_name = "UnknownVendor"
     
@@ -284,7 +283,6 @@ def main():
         url = item['url']
         doc_name = url.split('/')[-1] or "webpage"
         
-        # Updated filename generation with Supplier Name
         safe_filename = create_safe_filename(doc_name, supplier_name, issue_number)
         
         local_path = Path("_vendor_analysis_source") / safe_filename
@@ -325,9 +323,7 @@ def main():
     # ---------------------------------------------------------
     print(f"\n--- STAGE 4: Processing Manual Inputs ---")
     for inp in manual_inputs:
-        # Updated filename generation with Supplier Name
         safe_filename = create_safe_filename(inp['name'], supplier_name, issue_number)
-        
         save_and_commit_source_text(inp['text'], repo_name, issue_number, safe_filename)
         all_final_docs.append({
             "name": inp['name'], "url": inp['url'], "source_type": inp['type'],
@@ -339,7 +335,6 @@ def main():
     # ---------------------------------------------------------
     print("\n--- STAGE 5: Updating Checklist ---")
     
-    # Pass supplier_name to checklist formatter
     checklist_md = format_documents_as_checklist(all_final_docs, repo_name, issue_number, supplier_name)
     
     CHECKLIST_MARKER = ""
@@ -351,7 +346,8 @@ def main():
         f"- Processed {len(all_final_docs)} total documents.\n\n"
         "**Missing something?**\n"
         "1. **Drag & Drop** a PDF into a comment below.\n"
-        "2. Add the label `refresh-documents` to retry.\n\n"
+        "2. **Or Paste Text** in a comment with the header: `### Manual Document: [Doc Name]`\n"
+        "3. Add the label `refresh-documents` to retry.\n\n"
         f"{checklist_md}"
     ).strip()
 
