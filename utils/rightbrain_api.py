@@ -62,8 +62,11 @@ def get_rb_token() -> str:
     if _token_cache is not None:
         cached_token, expiry_time = _token_cache
         if time.time() < (expiry_time - 60):
+            log("debug", f"Using cached token (expires in {int(expiry_time - time.time())}s)")
+            log("debug", f"Token preview: {cached_token[:20]}...{cached_token[-10:] if len(cached_token) > 30 else ''}")
             return cached_token
 
+    log("debug", "Fetching new authentication token...")
     config = load_rb_config()
     client_id = os.environ.get("RB_CLIENT_ID")
     client_secret = os.environ.get("RB_CLIENT_SECRET")
@@ -71,6 +74,9 @@ def get_rb_token() -> str:
     if not all([client_id, client_secret]):
         log("error", "Missing RB_CLIENT_ID or RB_CLIENT_SECRET env vars.")
         sys.exit(1)
+
+    log("debug", f"Client ID: {client_id[:8]}...{client_id[-4:] if len(client_id) > 12 else ''} (length: {len(client_id)})")
+    log("debug", f"Client Secret: {'*' * min(20, len(client_secret))} (length: {len(client_secret)})")
 
     token_url = os.environ.get("TOKEN_URI")
     if not token_url:
@@ -86,13 +92,18 @@ def get_rb_token() -> str:
             path = config.get("auth_path") or "/oauth2/token"
             token_url = f"{base.rstrip('/')}/{path.lstrip('/')}"
 
+    log("debug", f"Token URL: {token_url}")
+
     try:
+        log("debug", "Sending token request...")
         response = requests.post(
             token_url,
             auth=(client_id, client_secret),
             data={"grant_type": "client_credentials", "scope": "offline_access"},
             headers={"Content-Type": "application/x-www-form-urlencoded"}
         )
+        log("debug", f"Token response status: {response.status_code}")
+        
         if not response.ok:
             log("error", f"Auth failed ({response.status_code})", details=response.text[:200])
             sys.exit(1)
@@ -100,10 +111,14 @@ def get_rb_token() -> str:
         response_data = response.json()
         token = response_data.get("access_token")
         if not token:
+            log("error", "No access_token in response", details=str(response_data)[:200])
             sys.exit(1)
         
         expires_in = response_data.get("expires_in", 3600)
         _token_cache = (token, time.time() + expires_in)
+        log("success", f"Token obtained successfully (expires in {expires_in}s)")
+        log("debug", f"Token preview: {token[:20]}...{token[-10:] if len(token) > 30 else ''}")
+        log("debug", f"Token length: {len(token)} characters")
         return token
     except Exception as e:
         log("error", f"Auth connection error: {e}")
@@ -129,6 +144,11 @@ def get_rb_config() -> Dict[str, str]:
     client_id = os.environ.get("RB_CLIENT_ID")
     client_secret = os.environ.get("RB_CLIENT_SECRET")
     
+    log("debug", f"Config check - Org ID: {org_id[:8] if org_id and len(org_id) > 8 else org_id}...")
+    log("debug", f"Config check - Project ID: {project_id[:8] if project_id and len(project_id) > 8 else project_id}...")
+    log("debug", f"Config check - Client ID: {'present' if client_id else 'missing'}")
+    log("debug", f"Config check - Client Secret: {'present' if client_secret else 'missing'}")
+    
     if not all([org_id, project_id, client_id, client_secret]):
         log("error", "Missing required secrets (RB_ORG_ID, RB_PROJECT_ID, RB_CLIENT_ID, RB_CLIENT_SECRET).")
         sys.exit(1)
@@ -142,12 +162,17 @@ def detect_environment() -> str:
     # Priority 1: Explicit Env Var
     explicit = os.environ.get("RIGHTBRAIN_ENVIRONMENT") or os.environ.get("RB_ENVIRONMENT")
     if explicit:
-        return explicit.lower().strip()
+        env = explicit.lower().strip()
+        log("debug", f"Environment detected from env var: {env}")
+        return env
     
     # Priority 2: API URL Inspection
     api_root = get_api_root().lower()
+    log("debug", f"Detecting environment from API root: {api_root}")
     if any(k in api_root for k in ['staging', 'dev', 'test', 'sandbox', 'stag']):
+        log("debug", "Environment detected as: staging (from API URL)")
         return 'staging'
+    log("debug", "Environment detected as: production (default)")
     return 'production'
 
 # --- DYNAMIC TASK RESOLUTION ---
@@ -236,7 +261,18 @@ def run_rb_task(rb_token: str, task_id: str, task_input_payload: Dict[str, Any],
         log("error", f"Cannot run {task_name}: No Task ID provided.")
         return {"error": "Missing Task ID", "is_error": True}
 
+    if not rb_token:
+        log("error", f"Cannot run {task_name}: No token provided.")
+        return {"error": "Missing token", "is_error": True}
+
     run_url = f"{get_api_root()}{get_project_path()}/task/{task_id}/run"
+    
+    # Debug logging
+    log("debug", f"API Root: {get_api_root()}")
+    log("debug", f"Project Path: {get_project_path()}")
+    log("debug", f"Full Run URL: {run_url}")
+    log("debug", f"Token preview: {rb_token[:20]}...{rb_token[-10:] if len(rb_token) > 30 else ''}")
+    log("debug", f"Token length: {len(rb_token)} characters")
     
     # Redact sensitive data for logging
     logged_input = task_input_payload.copy()
@@ -246,20 +282,45 @@ def run_rb_task(rb_token: str, task_id: str, task_input_payload: Dict[str, Any],
     log("info", f"Running {task_name} (ID: {task_id})", details=f"Input keys: {list(logged_input.keys())}")
     
     try:
+        headers = _get_api_headers(rb_token)
+        log("debug", f"Request headers: Authorization=Bearer ***, Content-Type={headers.get('Content-Type')}")
+        
         response = requests.post(
             run_url, 
-            headers=_get_api_headers(rb_token), 
+            headers=headers, 
             json={"task_input": task_input_payload}, 
             timeout=600
         )
+        
+        log("debug", f"Response status: {response.status_code}")
+        log("debug", f"Response headers: {dict(response.headers)}")
+        
         if response.status_code == 404:
              # This catches the exact error you are seeing
              log("error", f"404 Not Found: The Task ID {task_id} does not exist in this environment.")
+             log("debug", f"Response body: {response.text[:500]}")
              return {"error": "Task ID not found in environment", "is_error": True}
+        
+        if response.status_code == 403:
+            log("error", f"403 Forbidden: Access denied for Task ID {task_id}")
+            log("error", f"This usually means:")
+            log("error", f"  1. Token is invalid or expired")
+            log("error", f"  2. Token doesn't have permissions for this project/task")
+            log("error", f"  3. Token is for a different environment than the API endpoint")
+            log("error", f"  4. Task ID belongs to a different project/org")
+            log("debug", f"Response body: {response.text[:500]}")
+            log("debug", f"API Root: {get_api_root()}")
+            log("debug", f"Environment detected: {detect_environment()}")
+            return {"error": "403 Forbidden - Access denied", "is_error": True, "response": response.text[:200]}
              
         response.raise_for_status()
         log("success", f"{task_name} complete.")
         return response.json()
+    except requests.exceptions.HTTPError as e:
+        log("error", f"{task_name} failed with HTTP error", details=str(e))
+        if hasattr(e.response, 'text'):
+            log("error", f"Response body: {e.response.text[:500]}")
+        return {"error": str(e), "is_error": True}
     except Exception as e:
         log("error", f"{task_name} failed", details=str(e))
         return {"error": str(e), "is_error": True}
