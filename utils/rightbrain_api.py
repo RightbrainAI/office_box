@@ -162,7 +162,7 @@ def get_rb_token() -> str:
 def _get_api_headers(rb_token: str) -> Dict[str, str]:
     return {"Authorization": f"Bearer {rb_token}", "Content-Type": "application/json"}
 
-def _get_base_url() -> str:
+def get_api_root() -> str:
     """Gets API root URL from env var (primary) or config (fallback)."""
     # Use API_ROOT from env var first (includes /api/v1)
     api_root = os.environ.get("API_ROOT")
@@ -182,13 +182,30 @@ def _get_base_url() -> str:
     log("debug", f"Constructed API_ROOT from config file: {api_url}")
     return api_url
 
-def _get_project_path() -> str:
+def get_rb_config() -> Dict[str, str]:
+    """
+    Retrieves Rightbrain configuration (Org ID, Project ID, Client ID, Client Secret)
+    from environment variables. Exits if any are missing.
+    """
     org_id = os.environ.get("RB_ORG_ID")
     project_id = os.environ.get("RB_PROJECT_ID")
-    if not all([org_id, project_id]):
-        log("error", "Missing RB_ORG_ID or RB_PROJECT_ID.")
+    client_id = os.environ.get("RB_CLIENT_ID")
+    client_secret = os.environ.get("RB_CLIENT_SECRET")
+
+    if not all([org_id, project_id, client_id, client_secret]):
+        log("error", "Missing required secrets.", details="Requires: RB_ORG_ID, RB_PROJECT_ID, RB_CLIENT_ID, RB_CLIENT_SECRET")
         sys.exit(1)
-    return f"/api/v1/org/{org_id}/project/{project_id}"
+        
+    return {
+        "org_id": org_id,
+        "project_id": project_id,
+        "client_id": client_id,
+        "client_secret": client_secret
+    }
+
+def get_project_path() -> str:
+    config = get_rb_config()
+    return f"/api/v1/org/{config['org_id']}/project/{config['project_id']}"
 
 def detect_environment(api_url: Optional[str] = None) -> str:
     """
@@ -197,7 +214,7 @@ def detect_environment(api_url: Optional[str] = None) -> str:
     Returns 'staging' or 'production'.
     """
     if api_url is None:
-        api_root = _get_base_url()
+        api_root = get_api_root()
     else:
         api_root = api_url.rstrip('/')
         if not api_root.endswith('/api/v1'):
@@ -342,7 +359,7 @@ def get_model_id_by_name(model_name: str, environment: Optional[str] = None) -> 
         return None
 
 def get_task(rb_token: str, task_id: str) -> Dict[str, Any]:
-    url = f"{_get_base_url()}{_get_project_path()}/task/{task_id}"
+    url = f"{get_api_root()}{get_project_path()}/task/{task_id}"
     try:
         response = requests.get(url, headers=_get_api_headers(rb_token))
         if response.status_code == 404:
@@ -353,7 +370,7 @@ def get_task(rb_token: str, task_id: str) -> Dict[str, Any]:
         return {"error": "API Error", "details": str(e), "is_error": True}
 
 def update_task(rb_token: str, task_id: str, update_payload: Dict[str, Any]) -> Dict[str, Any]:
-    url = f"{_get_base_url()}{_get_project_path()}/task/{task_id}"
+    url = f"{get_api_root()}{get_project_path()}/task/{task_id}"
     try:
         response = requests.post(url, headers=_get_api_headers(rb_token), json=update_payload)
         response.raise_for_status()
@@ -362,7 +379,7 @@ def update_task(rb_token: str, task_id: str, update_payload: Dict[str, Any]) -> 
         return {"error": "API Error", "details": str(e), "is_error": True}
 
 def create_task(rb_token: str, task_body: Dict[str, Any]) -> Optional[str]:
-    url = f"{_get_base_url()}{_get_project_path()}/task"
+    url = f"{get_api_root()}{get_project_path()}/task"
     try:
         response = requests.post(url, headers=_get_api_headers(rb_token), json=task_body)
         response.raise_for_status()
@@ -372,14 +389,14 @@ def create_task(rb_token: str, task_body: Dict[str, Any]) -> Optional[str]:
         return None
 
 def run_rb_task(rb_token: str, task_id: str, task_input_payload: Dict[str, Any], task_name: str) -> Dict[str, Any]:
-    org_id = os.environ.get("RB_ORG_ID")
-    project_id = os.environ.get("RB_PROJECT_ID")
+    # Ensure config is loaded/valid
+    get_rb_config()
     
-    if not all([org_id, project_id, task_id]):
+    if not task_id:
         log("error", f"Missing configuration for {task_name}")
         return {"error": "Missing configuration", "is_error": True}
 
-    run_url = f"{_get_base_url()}{_get_project_path()}/task/{task_id}/run"
+    run_url = f"{get_api_root()}{get_project_path()}/task/{task_id}/run"
     
     # Redact sensitive data for logging
     logged_input = task_input_payload.copy()

@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 # Add parent directory to path to import shared utilities
 sys.path.append(str(Path(__file__).parent.parent))
-from utils.rightbrain_api import get_rb_token, log
+from utils.rightbrain_api import get_rb_token, get_api_root, get_rb_config, log
 
 # --- Helper Functions ---
 
@@ -111,20 +111,11 @@ def main():
     load_dotenv(dotenv_path=project_root / ".env")
 
     # --- Configuration ---
-    required_vars = [
-        "RB_ORG_ID", "RB_PROJECT_ID", "RB_CLIENT_ID",
-        "RB_CLIENT_SECRET", "RB_API_URL", "RB_OAUTH2_URL"
-    ]
-    config = {}
-    for var in required_vars:
-        value = os.getenv(var)
-        if not value:
-            log("error", f"Environment variable '{var}' is not set. Please add it to your .env file in the project root.")
-            sys.exit(1)
-        config[var] = value
+    # Validate Rightbrain config via centralized util
+    rb_config = get_rb_config()
     
-    # Use the OAuth2 URL directly (should be the full endpoint URL)
-    config["rb_token_url"] = config["RB_OAUTH2_URL"]
+    # Get API root via centralized util
+    rb_api_root = get_api_root()
     
     # --- Script Logic ---
     task_id = input("➡️ Please enter the Rightbrain Task ID to fetch: ")
@@ -136,9 +127,9 @@ def main():
 
     full_task_definition = fetch_task_definition(
         rb_token,
-        config["RB_API_URL"],
-        config["RB_ORG_ID"],
-        config["RB_PROJECT_ID"],
+        rb_api_root,
+        rb_config["org_id"],
+        rb_config["project_id"],
         task_id.strip()
     )
 

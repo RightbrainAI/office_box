@@ -22,7 +22,7 @@ if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
 try:
-    from utils.rightbrain_api import get_rb_token, load_rb_config, log, detect_environment, _get_base_url, get_model_id_by_name
+    from utils.rightbrain_api import get_rb_token, load_rb_config, log, detect_environment, get_api_root, get_model_id_by_name, get_rb_config
 except ImportError as e:
     print(f"❌ Error importing 'utils.rightbrain_api': {e}", file=sys.stderr)
     sys.exit(1)
@@ -69,17 +69,8 @@ def main():
     log("info", "Loading configuration...")
     try:
         config = load_rb_config()
-        # Use API_ROOT from env var first, then fallback to constructing from config
-        rb_api_root = os.environ.get("API_ROOT")
-        if not rb_api_root:
-            # Fallback: construct from config file
-            api_url = config.get("api_url") or "https://app.rightbrain.ai"
-            api_url = api_url.rstrip('/')
-            # If config doesn't include /api/v1, add it
-            if not api_url.endswith('/api/v1'):
-                rb_api_root = f"{api_url}/api/v1"
-            else:
-                rb_api_root = api_url
+        # Use centralized util to get API root
+        rb_api_root = get_api_root()
         
         log("debug", f"Using API_ROOT: {rb_api_root}")
         
@@ -97,15 +88,10 @@ def main():
         log("error", f"Configuration Error: {e}")
         sys.exit(1)
 
-    # 2. Load Secrets
-    rb_org_id = os.environ.get("RB_ORG_ID")
-    rb_project_id = os.environ.get("RB_PROJECT_ID")
-    rb_client_id = os.environ.get("RB_CLIENT_ID")
-    rb_client_secret = os.environ.get("RB_CLIENT_SECRET")
-
-    if not all([rb_org_id, rb_project_id, rb_client_id, rb_client_secret]):
-        log("error", "Missing required secrets.", details="Requires: RB_ORG_ID, RB_PROJECT_ID, RB_CLIENT_ID, RB_CLIENT_SECRET")
-        sys.exit(1)
+    # 2. Load Secrets via centralized util
+    rb_config = get_rb_config()
+    rb_org_id = rb_config["org_id"]
+    rb_project_id = rb_config["project_id"]
 
     # 3. Authenticate
     try:

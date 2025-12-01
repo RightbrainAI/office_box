@@ -15,7 +15,7 @@ if str(project_root) not in sys.path:
 
 try:
     from utils.github_api import post_github_comment, load_company_profile, extract_vendor_usage_details, parse_form_field
-    from utils.rightbrain_api import get_rb_token, run_rb_task, log, get_task_id_by_name
+    from utils.rightbrain_api import get_rb_token, run_rb_task, log, get_task_id_by_name, get_api_root, get_rb_config
 except ImportError as e:
     print(f"❌ Error importing 'utils' modules: {e}", file=sys.stderr)
     sys.exit(1)
@@ -187,23 +187,15 @@ def main():
     issue_body = os.environ.get("ISSUE_BODY")
     issue_number = os.environ.get("ISSUE_NUMBER")
     repo_name = os.environ.get("REPO_NAME")
-    rb_org_id = os.environ.get("RB_ORG_ID")
-    rb_project_id = os.environ.get("RB_PROJECT_ID")
-    rb_client_id = os.environ.get("RB_CLIENT_ID")
-    rb_client_secret = os.environ.get("RB_CLIENT_SECRET")
-    rb_api_url = os.environ.get("API_ROOT")
     
-    if not rb_api_url:
-        sys.exit("❌ Error: Missing API_ROOT environment variable.")
+    # Validate Rightbrain config via centralized util
+    get_rb_config()
+    
+    # Get API root via centralized util
+    rb_api_root = get_api_root()
 
-    if not all([gh_token, issue_body, issue_number, repo_name, rb_org_id, rb_project_id, 
-                rb_client_id, rb_client_secret, rb_api_url]):
+    if not all([gh_token, issue_body, issue_number, repo_name]):
         sys.exit("❌ Error: Missing one or more required environment variables.")
-
-    # Construct API root (ensure it includes /api/v1)
-    rb_api_root = rb_api_url.rstrip('/')
-    if not rb_api_root.endswith('/api/v1'):
-        rb_api_root = f"{rb_api_root}/api/v1"
     
     # Temporarily set API_ROOT for detect_environment to work
     original_api_root = os.environ.get("API_ROOT")

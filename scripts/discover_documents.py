@@ -16,7 +16,7 @@ if str(project_root) not in sys.path:
 
 try:
     from utils.github_api import update_issue_body, post_failure_and_exit
-    from utils.rightbrain_api import get_rb_token, run_rb_task, log, get_task_id_by_name
+    from utils.rightbrain_api import get_rb_token, run_rb_task, log, get_task_id_by_name, get_api_root, get_rb_config
 except ImportError as e:
     print(f"❌ Error importing 'utils' modules: {e}", file=sys.stderr)
     sys.exit(1)
@@ -271,20 +271,12 @@ def main():
     issue_body = os.environ["ISSUE_BODY"]
     issue_number = os.environ["ISSUE_NUMBER"]
     repo_name = os.environ["REPO_NAME"] # e.g., "your-org/your-repo"
-    rb_org_id = os.environ["RB_ORG_ID"]
-    rb_project_id = os.environ["RB_PROJECT_ID"]
-    rb_client_id = os.environ["RB_CLIENT_ID"]
-    rb_client_secret = os.environ["RB_CLIENT_SECRET"]
     
-    # Get API URL and construct API root for environment detection
-    rb_api_url = os.environ.get("API_ROOT")
-    if not rb_api_url:
-        sys.exit("❌ Error: Missing API_ROOT environment variable.")
+    # Validate Rightbrain config via centralized util
+    get_rb_config()
     
-    # Construct API root (ensure it includes /api/v1)
-    rb_api_root = rb_api_url.rstrip('/')
-    if not rb_api_root.endswith('/api/v1'):
-        rb_api_root = f"{rb_api_root}/api/v1"
+    # Get API root via centralized util
+    rb_api_root = get_api_root()
     
     # Temporarily set API_ROOT for detect_environment to work
     original_api_root = os.environ.get("API_ROOT")

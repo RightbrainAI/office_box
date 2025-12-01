@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 
 # Add parent directory to path to import shared utilities
 sys.path.append(str(Path(__file__).parent.parent))
-from utils.rightbrain_api import get_rb_token, log, detect_environment, _get_base_url, get_model_id_by_name
+from utils.rightbrain_api import get_rb_token, log, detect_environment, get_api_root, get_model_id_by_name, get_rb_config
 
 # --- Manifest Helper Functions ---
 
@@ -84,30 +84,16 @@ def main():
     if not task_def_path.exists():
         sys.exit(f"❌ Error: Task definition file not found at {task_def_path}")
 
-    # Load RB environment variables
-    rb_org_id = os.environ["RB_ORG_ID"]
-    rb_project_id = os.environ["RB_PROJECT_ID"]
-    rb_client_id = os.environ["RB_CLIENT_ID"]
-    rb_client_secret = os.environ["RB_CLIENT_SECRET"] 
-    rb_api_url = os.environ.get("RB_API_URL") # This should already include /api/v1
-    rb_oauth2_url = os.environ.get("RB_OAUTH2_URL")
+    # Load RB environment variables via centralized util
+    rb_config = get_rb_config()
+    rb_org_id = rb_config["org_id"]
+    rb_project_id = rb_config["project_id"]
     
-    if not rb_api_url or not rb_oauth2_url:
-        sys.exit("❌ Error: Missing RB_API_URL or RB_OAUTH2_URL environment variable.")
+    # Get API root via centralized util
+    rb_api_root = get_api_root()
     
     # Determine environment
-    rb_api_root = rb_api_url.rstrip('/')
-    if not rb_api_root.endswith('/api/v1'):
-        rb_api_root = f"{rb_api_root}/api/v1"
-    
-    original_api_root = os.environ.get("API_ROOT")
-    os.environ["API_ROOT"] = rb_api_root
     environment = detect_environment()
-    if original_api_root:
-        os.environ["API_ROOT"] = original_api_root
-    elif "API_ROOT" in os.environ:
-        del os.environ["API_ROOT"]
-    
     log("info", f"Detected environment: {environment}")
 
     # --- 2. Load Task Def and Manifest ---
@@ -167,7 +153,7 @@ def main():
             # --- STEP 1: Create the new revision ---
             # Per API docs, Update Task uses a POST request
             # API URL should already include /api/v1
-            url = f"{rb_api_url.rstrip('/')}/org/{rb_org_id}/project/{rb_project_id}/task/{existing_task_id}"
+            url = f"{rb_api_root}/org/{rb_org_id}/project/{rb_project_id}/task/{existing_task_id}"
             response = requests.post(url, headers=headers, json=task_payload, timeout=30)
             response.raise_for_status()
             response_data = response.json()
@@ -200,7 +186,7 @@ def main():
             print(f"No existing ID found for '{task_filename}'. Attempting to CREATE task...")
             # Per API docs, Create Task uses a POST request
             # API URL should already include /api/v1
-            url = f"{rb_api_url.rstrip('/')}/org/{rb_org_id}/project/{rb_project_id}/task"
+            url = f"{rb_api_root}/org/{rb_org_id}/project/{rb_project_id}/task"
             response = requests.post(url, headers=headers, json=task_payload, timeout=30)
             response.raise_for_status()
             response_data = response.json()
