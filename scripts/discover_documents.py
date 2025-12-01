@@ -7,7 +7,7 @@ import subprocess
 import io
 from dotenv import load_dotenv
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Set
 from urllib.parse import quote as url_quote
 
 # --- Import pypdf ---
@@ -141,6 +141,43 @@ def extract_text_from_run_data(full_task_run: Dict[str, Any]) -> str:
     try: return full_task_run.get("run_data", {}).get("submitted", {}).get("document_url", "") or ""
     except Exception: return ""
 
+def extract_previous_categories(issue_body: str) -> Dict[str, List[str]]:
+    """
+    Parses the EXISTING checklist in the issue body to remember which files 
+    were categorized as Legal or Security.
+    Returns: {"filename.txt": ["Legal", "Security"], ...}
+    """
+    # Regex to find: - [x] **Categories**: ... (.../filename.txt)
+    # Matches both standard links and raw paths
+    regex = r"-\s*\[(?:x| )\]\s*\*\*(.*?)\*\*:.*?(?:_vendor_analysis_source/)(.*?)\)"
+    
+    mapping = {}
+    matches = re.findall(regex, issue_body, re.IGNORECASE)
+    
+    for cats_str, filename in matches:
+        # Clean up categories string "Legal, Security" -> ["legal", "security"]
+        cats = [c.strip().lower() for c in cats_str.split(',')]
+        # Clean up filename (remove closing paren if greedy match caught it)
+        filename = filename.split(')')[0].strip()
+        mapping[filename] = cats
+        
+    return mapping
+
+def guess_categories_from_name(filename: str) -> List[str]:
+    """Fallback: guesses category if we lost the metadata."""
+    name = filename.lower()
+    cats = []
+    
+    # Legal Keywords
+    if any(x in name for x in ['term', 'privacy', 'dpa', 'agreement', 'addendum', 'legal', 'service']):
+        cats.append("legal")
+        
+    # Security Keywords
+    if any(x in name for x in ['security', 'soc', 'iso', 'pen', 'audit', 'cert', 'whitepaper']):
+        cats.append("security")
+        
+    return cats if cats else ["unclassified"]
+
 def format_documents_as_checklist(all_docs: List[Dict[str, Any]], repo_name: str, issue_number: str, supplier_name: str) -> str:
     """Builds Markdown checklist."""
     online, manual, existing = [], [], []
@@ -152,7 +189,6 @@ def format_documents_as_checklist(all_docs: List[Dict[str, Any]], repo_name: str
     for doc in all_docs:
         name = doc.get("name", "Unknown")
         original_url = doc.get("url", "")
-        # Use filename if explicitly provided (for reconciliation), else generate
         safe_filename = doc.get("filename") 
         if not safe_filename:
             safe_filename = create_safe_filename(name, supplier_name, issue_number)
@@ -170,21 +206,24 @@ def format_documents_as_checklist(all_docs: List[Dict[str, Any]], repo_name: str
         if doc.get("source_type") in ["attachment", "paste", "existing"]:
             checked = "x"
 
-        # Formatting based on source
+        # Formatting
         if doc.get("source_type") == "fetched":
             note = f"(Source: `{original_url}`)"
             if "fetch_failed" in cats: note = "⚠️ **FETCH FAILED** (Attach manually)"
             online.append(f"- [{checked}] **{tag}**: [`{name}`]({gh_url}) {note}")
         elif doc.get("source_type") == "existing":
-            # Just display the name for recovered files
-            existing.append(f"- [{checked}] **{tag}**: [`{name}`]({gh_url}) (Previously Discovered)")
+            # Note: We group these with Online/Manual based on categories or keep separate
+            # For clarity, let's put them in their own list but formatted similarly
+            existing.append(f"- [{checked}] **{tag}**: [`{name}`]({gh_url}) (Restored)")
         else:
             type_note = "Attachment" if doc.get("source_type") == "attachment" else "Paste"
             manual.append(f"- [{checked}] **{tag}** ({type_note}): [`{name}`]({gh_url})")
 
     output = ""
     if online: output += "### 🌐 Scraped Documents\n" + "\n".join(online) + "\n\n"
-    if existing: output += "### 🗄️ Existing / Previously Discovered\n" + "\n".join(existing) + "\n\n"
+    # Merge existing into relevant sections or keep separate? 
+    # Providing a clean combined view is usually better, but let's keep separate to show 'state'
+    if existing: output += "### 🗄️ Existing / Restored Files\n" + "\n".join(existing) + "\n\n"
     if manual: output += "### 📎 Manual Uploads\n" + "\n".join(manual) + "\n\n"
     return output
 
@@ -222,6 +261,11 @@ def main():
     supplier_name = parse_form_field(issue_body, "Supplier Name")
     if not supplier_name: supplier_name = "UnknownVendor"
     print(f"🚀 Starting Discovery for: {supplier_name} (Issue #{issue_number})")
+    
+    # --- MEMORY RECOVERY ---
+    # Parse the previous checklist to remember file categories
+    previous_file_categories = extract_previous_categories(issue_body)
+    print(f"🧠 Recovered categories for {len(previous_file_categories)} existing files.")
 
     # STAGE 1: HARVEST
     legal_seeds = parse_multiline_urls(issue_body, "Legal URLs") or parse_multiline_urls(issue_body, "T&Cs")
@@ -241,7 +285,6 @@ def main():
 
     for group in discovery_prompts:
         for seed_url in group["seeds"]:
-            # IDEMPOTENCY CHECK
             doc_name = seed_url.split('/')[-1] or "webpage"
             safe_filename = create_safe_filename(doc_name, supplier_name, issue_number)
             local_path = Path("_vendor_analysis_source") / safe_filename
@@ -271,8 +314,6 @@ def main():
     # STAGE 3: FETCH & CLASSIFY
     unique_urls = {item['url']: item for item in urls_to_process}.values()
     all_final_docs = []
-    
-    # Track which files we have "touched" in this run to identify orphans later
     processed_filenames = set()
 
     print(f"\n--- STAGE 3: Fetching {len(unique_urls)} Unique URLs ---")
@@ -282,14 +323,17 @@ def main():
         doc_name = url.split('/')[-1] or "webpage"
         safe_filename = create_safe_filename(doc_name, supplier_name, issue_number)
         
-        # Track this file
         processed_filenames.add(safe_filename)
-
         local_path = Path("_vendor_analysis_source") / safe_filename
         
         if local_path.exists():
             print(f"⏩ Skipping {url} - Exists: {safe_filename}")
-            all_final_docs.append({"name": doc_name, "url": url, "source_type": "fetched", "relevance": "relevant", "categories": ["existing_file"], "filename": safe_filename})
+            # Try to recover category from previous run, else use "Existing"
+            recovered_cats = previous_file_categories.get(safe_filename, ["existing_file"])
+            all_final_docs.append({
+                "name": doc_name, "url": url, "source_type": "fetched", 
+                "relevance": "relevant", "categories": recovered_cats, "filename": safe_filename
+            })
             continue
 
         print(f"Fetching: {url}")
@@ -318,21 +362,31 @@ def main():
         save_and_commit_source_text(inp['text'], repo_name, issue_number, safe_filename)
         all_final_docs.append({"name": inp['name'], "url": inp['url'], "source_type": inp['type'], "relevance": "relevant", "categories": ["uploaded"], "filename": safe_filename})
 
-    # --- NEW STAGE 4.5: RECONCILE WITH DISK ---
+    # STAGE 4.5: RECONCILE WITH DISK & RESTORE TAGS
     print(f"\n--- STAGE 4.5: Reconciling with Local Files ---")
     source_dir = Path("_vendor_analysis_source")
     if source_dir.exists():
-        # Find all files belonging to this issue
         for file_path in source_dir.glob(f"*issue-{issue_number}-*"):
             if file_path.name not in processed_filenames:
-                print(f"  🗄️  Found orphaned file (previously discovered): {file_path.name}")
-                # We add it back to the list so it appears in the checklist
+                print(f"  🗄️  Found orphaned file: {file_path.name}")
+                
+                # --- MEMORY RESTORATION ---
+                # 1. Try to find categories from the previous checklist
+                recovered_cats = previous_file_categories.get(file_path.name)
+                
+                # 2. If not found, try to guess based on filename
+                if not recovered_cats:
+                    print(f"    ⚠️ No memory of this file. Guessing categories...")
+                    recovered_cats = guess_categories_from_name(file_path.name)
+                else:
+                    print(f"    ✅ Restored tags: {recovered_cats}")
+
                 all_final_docs.append({
-                    "name": file_path.name, # Use filename as display name
+                    "name": file_path.name,
                     "url": "Local File",
                     "source_type": "existing",
                     "relevance": "relevant",
-                    "categories": ["existing_file"],
+                    "categories": recovered_cats,
                     "filename": file_path.name
                 })
 
