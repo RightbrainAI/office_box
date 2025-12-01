@@ -1,0 +1,52 @@
+CONDITIONS & LIMITATIONS:
+1. The aforementioned organization has a perpetual responsibility to maintain compliance with ISO/IEC 27001:2022 during the period of certification.
+2. This certificate is subject to the satisfactory completion of annual surveillance audits by Schellman Compliance, LLC
+3. ISO/IEC 27001:2022 compliance audits are not designed to detect or prevent criminal activity or other acts that may result in an information security breach. As such, this certification should not be 
+construed as a guarantee or assurance that an organization is unsusceptible to information security breaches.
+4. The information in this document is provided “AS IS” , without warranties of any kind. Schellman Compliance, LLC expressly disclaims any representations and warranties, including, without limitation, 
+the implied warranties of merchantability and fitness for a particular purpose.
+5. This certificate is the property of Schellman Compliance, LLC and is bound by the conditions of contract. The authenticity of this certificate can be validated by contacting Schellman Compliance, LLC
+Page 1 of 2
+Issue Date Original Registration Date Expiration Date Certificate Version
+November 13, 2025 January 7, 2025 January 6, 2028 Version 2
+CERTIFICATE OF REGISTRATION
+Information Security Management System - ISO/IEC 27001:2022
+The Certification Body of Schellman Compliance, LLC hereby certifies that the following organization operates an Information 
+Security Management System that conforms to the requirements of ISO/IEC 27001:2022
+Anthropic, PBC
+for the following scope of registration
+The scope of the ISO/IEC 27001:2022 certification is limited to the information security management system (ISMS) 
+supporting the design, development, deployment, and operation of Anthropic’s AI services and products and in accordance 
+with the statement of applicability, version 1.4, dated July 31, 2025.  The in-scope products and services include the following: 
+In Scope Products and Services:
+• Claude Development Platform
+• Claude for Work (Team and Enterprise)
+• Claude Code
+• AI Research & Development activities supporting the above services
+which includes the following in-scope location(s) on page 2 of 2
+Certificate Number:  1279091-2
+Danny Manimbo
+Principal, Schellman Compliance, LLC
+4010 W Boy Scout Blvd., Suite 600
+Tampa, Florida 33607, United States
+www.schellman.com
+Authorized by:
+
+Page 2 of 2
+Certificate Number:  1279091-2
+CONDITIONS & LIMITATIONS:
+1. The aforementioned organization has a perpetual responsibility to maintain compliance with ISO/IEC 27001:2022 during the period of certification.
+2. This certificate is subject to the satisfactory completion of annual surveillance audits by Schellman Compliance, LLC
+3. ISO/IEC 27001:2022 compliance audits are not designed to detect or prevent criminal activity or other acts that may result in an information security breach. As such, this certification should not be 
+construed as a guarantee or assurance that an organization is unsusceptible to information security breaches.
+4. The information in this document is provided “AS IS” , without warranties of any kind. Schellman Compliance, LLC expressly disclaims any representations and warranties, including, without limitation, 
+the implied warranties of merchantability and fitness for a particular purpose.
+5. This certificate is the property of Schellman Compliance, LLC and is bound by the conditions of contract. The authenticity of this certificate can be validated by contacting Schellman Compliance, LLC
+In-Scope Location(s)
+Location Function / Role
+500 Howard Street
+San Francisco, California 94105
+United States
+Corporate Office and Main Location of the ISMS: 
+Executive, Engineering, Research, Legal, Human 
+Resources (HR), Policy, Product, Safeguards, Security
