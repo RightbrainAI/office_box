@@ -40,6 +40,7 @@ def create_safe_filename(doc_name: str, supplier_name: str, issue_number: str, e
     safe_supplier = re.sub(r'[<>:"/\\|?*\s]+', '_', supplier_name).strip('._ ') or "Vendor"
     safe_doc = re.sub(r'[<>:"/\\|?*\s]+', '_', doc_name).strip('._ ') or "doc"
     
+    # Truncate components to avoid filesystem limits
     safe_supplier = safe_supplier[:30]
     safe_doc = safe_doc[:50]
     
@@ -186,7 +187,8 @@ def format_documents_as_checklist(all_docs: List[Dict[str, Any]], repo_name: str
         line = f"- [{checked}] **{tag}**: [`{name}`]({gh_url})"
         
         if doc.get("source_type") == "fetched":
-            note = f"(Source: `{original_url}`)"
+            # --- FIX: Remove backticks around original_url to make it clickable ---
+            note = f"(Source: {original_url})"
             if "fetch_failed" in cats: note = "⚠️ **FETCH FAILED** (Attach manually)"
             online.append(f"{line} {note}")
         elif doc.get("source_type") == "existing":
@@ -328,27 +330,20 @@ def main():
         processed_filenames.add(safe_filename)
         local_path = Path("_vendor_analysis_source") / safe_filename
         
-        # If exists locally, skip classification (save money) and just recover tag
         if local_path.exists():
              print(f"⏩ Skipping Classification for Manual Upload - Exists: {safe_filename}")
              recovered_cats = previous_file_categories.get(safe_filename, ["uploaded"])
              all_final_docs.append({"name": inp['name'], "url": inp['url'], "source_type": inp['type'], "relevance": "relevant", "categories": recovered_cats, "filename": safe_filename})
              continue
         
-        # If NEW, we must Classify
         print(f"🧠 Classifying Manual Upload: {inp['name']}")
-        
-        # We pass the extracted text directly to the classifier
-        # Note: We pass 'document_url' as a dummy because RB tasks usually expect it, 
-        # but 'document_text' usually overrides it in well-written tasks.
         classifier_input = {
             "document_text": inp['text'], 
             "document_url": inp['url'] if "http" in inp['url'] else "manual_upload"
         }
-        
         run = run_rb_task(rb_token, classifier_task_id, classifier_input, f"Classify: {inp['name']}")
         
-        categories = ["uploaded"] # Default
+        categories = ["uploaded"]
         if run and not run.get("is_error"):
             relevance_data = run.get("response", {}).get("relevance_categories", [{"category": "uploaded"}])
             categories = [d.get("category", "uploaded") for d in relevance_data if isinstance(d, dict)]
