@@ -1,0 +1,131 @@
+## Select your cookie preferences
+We use essential cookies and similar tools that are necessary to provide our site and services. We use performance cookies to collect anonymous statistics, so we can understand how customers use our site and make improvements. Essential cookies cannot be deactivated, but you can choose “Customize” or “Decline” to decline performance cookies. If you agree, AWS and approved third parties will also use cookies to provide useful site features, remember your preferences, and display relevant content, including relevant advertising. To accept or decline all non-essential cookies, choose “Accept” or “Decline.” To make more detailed choices, choose “Customize.”
+AcceptDeclineCustomize
+## Customize cookie preferences
+We use cookies and similar tools (collectively, "cookies") for the following purposes.
+### Essential
+Essential cookies are necessary to provide our site and services and cannot be deactivated. They are usually set in response to your actions on the site, such as setting your privacy preferences, signing in, or filling in forms. 
+### Performance
+Performance cookies provide anonymous statistics about how customers navigate our site so we can improve site experience and performance. Approved third parties may perform analytics on our behalf, but they cannot use the data for their own purposes.
+Allowed
+### Functional
+Functional cookies help us provide useful site features, remember your preferences, and display relevant content. Approved third parties may set these cookies to provide certain site features. If you do not allow these cookies, then some or all of these services may not function properly.
+Allowed
+### Advertising
+Advertising cookies may be set through our site by us or our advertising partners and help us deliver relevant marketing content. If you do not allow these cookies, you will experience less relevant advertising.
+Allowed
+Blocking some types of cookies may impact your experience of our sites. You may review and change your choices at any time by selecting Cookie preferences in the footer of this site. We and selected third-parties use cookies or similar technologies as specified in the [AWS Cookie Notice](https://aws.amazon.com/legal/cookies/).
+CancelSave preferences
+## Unable to save cookie preferences
+We will only store essential cookies at this time, because we were unable to save your cookie preferences.If you want to change your cookie preferences, try again later using the link in the AWS console footer, or contact support if the problem persists.
+Dismiss
+[Skip to main content](https://aws.amazon.com/marketplace/features/standardized-contracts#aws-page-content-main)
+  * [AWS Marketplace](https://aws.amazon.com/marketplace/marketplace/)›
+
+
+# Standardized contracts
+Accelerate transaction speed with pre-negotiated contract templates
+## Standardized contracting: Simplify, accelerate & customize
+### Lead with common ground
+Leverage pre-negotiated contract templates developed in collaboration with the buyer and seller communities that address the fundamental needs of each side. Leading with common ground reduces friction in the procurement process, accelerating transactions. 
+### Speed up time to contract
+Alleviate lengthy negotiations, streamline procurement, and speed up innovation. Standardized contracts support thousands of product listings, enabling builders to get the solutions they need fast, under the terms their business requires. 
+### Expand coverage where necessary
+Customize templates to meet unique organizational, or transactional needs with pre-drafted addendums that support enhanced privacy, data, and industry requirements. 
+## Reduce friction and simplify the decision-making process with standardized contracts
+Quickly find, subscribe, and deploy purpose-built solutions available in AWS Marketplace and AWS Data Exchange. Leverage standardized terms that define buyer and seller obligations with the Standard Contract for AWS Marketplace (SCMP) and the Data Subscription Agreement (DSA).
+Introduction to standardized contracts
+Play
+## Discover enhanced terms and browse enabled products
+The **Standard Contract for AWS Marketplace (SCMP)** covers thousands of digital solutions like server software, SaaS (software as a service), open source, and AI/ML algorithms. Pre-drafted and custom addendums can be applied to the SCMP template to meet specific transaction requirements. 
+## Standard Contract for AWS Marketplace
+### [Standard Contract for AWS Marketplace The Standard Contract for AWS Marketplace (SCMP) covers thousands of digital solutions like server software, SaaS (software as a service), open source, and AI/ML algorithms. Pre-drafted and custom addendums can be applied to the SCMP template to meet specific transaction requirements. View template ](https://aws-mp-standard-contracts.s3.amazonaws.com/Amendment-Form-for-Standard-Contact-for-AWS-Marketplace-2022-07-14.docx?target=_blank)
+### [Enhanced Security Addendum The Enhanced Security Addendum is available for elevated privacy and data security requirements.  View addendum ](https://aws-mp-standard-contracts.s3.amazonaws.com/Enhanced-Security-Addendum-for-Standard-Contract-for-AWS-Marketplace-SCMP-2022-06-17.pdf?target=_blank)
+### [Business Associate Addendum The Business Associate Addendum is available for elevated HIPAA (Health Insurance Portability and Accountability) privacy requirements.  View addendum ](https://aws-mp-standard-contracts.s3.amazonaws.com/Business-Associate-Addendum-for-Standardized-Contracts-for-AWS-Marketplace-2022-06-17.pdf?target=_blank)
+### [Federal addendum The Federal Addendum is available for software sales to​ the U.S. Government. View addendum ](https://d1.awsstatic.com/awsmp/solutions/mk-sol-files/standardized-contracts/Federal-Addendum-for-Standard-Contract-for-AWS-Marketplace.pdf?target=_blank)
+## SCMP resources
+These optional addendums, once agreed upon between the parties, can be applied by the seller via Private Offer.
+  *   * [Enhanced Security Addendum](https://aws-mp-standard-contracts.s3.amazonaws.com/Enhanced-Security-Addendum-for-Standard-Contract-for-AWS-Marketplace-SCMP-2022-06-17.pdf)
+  * [Business Associate Addendum](https://aws-mp-standard-contracts.s3.amazonaws.com/Business-Associate-Addendum-for-Standardized-Contracts-for-AWS-Marketplace-2022-06-17.pdf)
+  * [SCMP Amendment Template](https://aws-mp-standard-contracts.s3.amazonaws.com/Amendment-Form-for-Standard-Contact-for-AWS-Marketplace-2022-07-14.docx)
+  * [Browse SCMP enabled products](https://aws.amazon.com/marketplace/search?CONTRACT_TYPE=STANDARD_CONTRACT&filters=CONTRACT_TYPE)
+  * [Enable your product on SCMP](https://docs.aws.amazon.com/marketplace/latest/userguide/standardized-license-terms.html)
+
+
+## Data Subscription Agreement
+The Data Subscription Agreement (DSA) helps customers simplify procurement and quickly access data solutions available in AWS Data Exchange.
+### Data Subscription Agreement
+The **Data Subscription Agreement (DSA)** helps customers simplify procurement and quickly access data solutions available in AWS Data Exchange. This optional addendum, once agreed upon between parties, can be applied by the seller via Private Offer. 
+[View amendment](https://d1.awsstatic.com/awsmp/solutions/mk-sol-files/standardized-contracts/Amendment-Form-for-DSA-2022.c95840c653add45e57921f1921f224dbc14fefc5.docx?target=_blank)
+### DSA resources
+  *   * [_DSA Amendment Template_](https://d1.awsstatic.com/awsmp/solutions/mk-sol-files/standardized-contracts/Amendment-Form-for-DSA-2022.c95840c653add45e57921f1921f224dbc14fefc5.docx)
+  * [_Browse DSA enabled products_](https://aws.amazon.com/marketplace/search?CONTRACT_TYPE=STANDARD_DATA_AGREEMENT&filters=CONTRACT_TYPE)
+  * [_Enable your product on DSA_](https://docs.aws.amazon.com/data-exchange/latest/userguide/subscription-verification-pro.html)
+
+
+## Page topics
+  * [Buyer FAQs ](https://aws.amazon.com/marketplace/features/standardized-contracts#topic-0)
+  * [Seller FAQs ](https://aws.amazon.com/marketplace/features/standardized-contracts#topic-1)
+
+
+## Buyer FAQs
+[Open all](https://aws.amazon.com/marketplace/features/standardized-contracts)
+### How were the standardized contract terms created?
+The terms were developed in collaboration with the buyer and seller community. They are designed to be well-balanced and scalable, addressing the fundamental needs of buyers and sellers to speed up the time to contract. 
+### When should I use the terms and why?
+By leading with pre-vetted terms when contracting with new sellers, or for new products, organizations can avoid lengthy negotiations and accelerate transactions. 
+### Which contractual clauses do the terms cover?
+The terms define obligations and address the fundamental requirements of the buyer and seller across key contractual clauses like usage rights, warranty, and indemnification. They are designed to cover a broad array of solutions, product types, deployment models, and applicable data and privacy requirements. 
+### Are the terms ever updated?
+We engage the buyer and seller community periodically to ensure the terms remain current, relevant, and valuable. Notifications are sent to the AWS primary account holder when standardized contract templates are updated. 
+### Where can I find a list of sellers that will use these terms?
+Buyers can find digital solutions enabled with the standardized contract terms available in AWS Marketplace by applying the Standard Contract filter under Contract Type in the [product catalog](https://aws.amazon.com/marketplace/search/results?CONTRACT_TYPE=STANDARD_CONTRACT&filters=CONTRACT_TYPE). Buyers can also request the terms from sellers they are contracting with via [Private Offer](https://aws.amazon.com/marketplace/features/custom-terms-pricing/). 
+### How do I know if a seller offers terms in AWS Marketplace?
+Many sellers extend the terms programmatically to support self-service product listings, and opportunistically to support Private Offers. Buyers can find self-service products enabled with SCMP using the AWS Marketplace site filter. Buyers can request the terms from any AWS Marketplace seller they are working with on a [Private Offer](https://aws.amazon.com/marketplace/features/custom-terms-pricing/).
+### How do I transact self-service or Private Offers using the terms?
+Buyers can filter on solutions enabled with the terms and subscribe via self-service workflow in AWS Marketplace. Buyers can also request the terms be extended by the seller they are contracting with via [Private Offer](https://aws.amazon.com/marketplace/features/custom-terms-pricing/). 
+### Can the terms be extended through an authorized reseller?
+Yes, the terms can be extended to a buyer that is transacting through an authorized reseller. Sellers can extend the terms for a Channel Partner Private Offer (CPPO) by making the appropriate selection, and uploading additional documents (i.e., order form, addendums). 
+### Can addendums be applied to augment the terms?
+Yes, addendums can be applied to support specific transactional, industry or organizational requirements. There are two pre-drafted addendums available, the [Enhanced Security Addendum (ESA)](https://s3.amazonaws.com/EULA/ESA+for+ECMP_SCMP+\(Final+6-10-19\).pdf) and the [Business Associate Addendum (BAA)](https://s3.amazonaws.com/EULA/HIPAA+BAA+for+SCMP_ECMP+\(Final+6-10-19\).pdf). The SCMP and DSA Amendment Templates capture custom requirements for a specific transaction. Once a seller selects the standardized contract, they can apply the appropriate addendum by uploading additional documents when creating a [Private Offer](https://aws.amazon.com/marketplace/features/custom-terms-pricing/) via the seller portal. 
+### Will the terms that are applied to a subscription ever change?
+The terms applied to an active subscription will not change unless the subscription expires or is terminated. 
+### Will the terms carry over to renewal subscriptions?
+Yes, terms carry over if the subscription is extended while active. Once a subscription expires or is terminated, the terms will need to be applied to the renewal subscription. 
+### Can the terms be used for transactions outside of AWS Marketplace?
+No, the terms are not intended for use outside of AWS Marketplace. 
+## Seller FAQs
+[Open all](https://aws.amazon.com/marketplace/features/standardized-contracts)
+### How were the standardized contract terms created?
+The terms were developed in collaboration with the buyer and seller community. They are designed to be well-balanced and scalable, addressing the fundamental needs of buyers and sellers to speed up the time to contract. 
+### When should I use the terms and why?
+By leading with pre-vetted terms when contracting with new sellers, or for new products, organizations can avoid lengthy negotiations and accelerate transactions. 
+### Which contractual clauses do the terms cover?
+The terms define common obligations and address fundamental requirements across key contractual clauses like usage rights, warranty, and indemnification. They are designed to cover a broad array of solutions, product types, deployment models, and applicable data and privacy concerns. 
+### How do I address product specific terms like configuration details, support, and service-level agreements (SLAs)?
+The terms cover contractual clauses that are common across a wide variety of digital solutions. Product specific terms are identified by individual sellers on the product listing page and become part of the subscription documentation. 
+### Are the terms ever updated?
+We engage the buyer and seller community periodically to ensure the terms remain current, relevant, and valuable. Notifications are sent to the AWS primary account holder when standardized contract templates are updated. 
+### Where can I find a list of buyers that have adopted the terms?
+The terms can be extended to any buyer you are contracting with to help alleviate friction and accelerate the sales cycles. For privacy reasons, we are unable to share the names of buyers that are currently using standardized contracts. 
+### How do I extend the terms to support self-service and Private Offer transactions?
+Sellers can apply the terms to support self-service product listings by following the steps outlined in the Seller Guide. Once the terms are applied, buyers can find enabled digital solutions by applying the Standard Contract filter under Contract Type in the AWS Marketplace [product catalog](https://aws.amazon.com/marketplace/search/results?CONTRACT_TYPE=STANDARD_CONTRACT&filters=CONTRACT_TYPE). The terms can also be extended when contracting via [Private Offer](https://aws.amazon.com/marketplace/features/custom-terms-pricing/). Sellers can select the standardized contract terms in the Private Offer portal, upload additional documents required (i.e., order form, addendums) and extend the offer to the buyer. 
+### Can the terms be extended through an authorized reseller?
+Yes, the terms can be extended to a buyer that is transacting through an authorized reseller. Sellers can extend the terms for a Channel Partner Private Offer (CPPO) by making the appropriate selection, and uploading additional documents (i.e., order form, addendums). 
+### Can addendums be applied to customize the terms?
+Yes, addendums can be applied to support specific transactional, industry or organizational requirements. There are two pre-drafted addendums available, the [Enhanced Security Addendum (ESA)](https://aws-mp-standard-contracts.s3.amazonaws.com/Enhanced-Security-Addendum-for-Standard-Contract-for-AWS-Marketplace-SCMP-2022-06-17.pdf) and the [Business Associate Addendum (BAA)](https://aws-mp-standard-contracts.s3.amazonaws.com/Business-Associate-Addendum-for-Standardized-Contracts-for-AWS-Marketplace-2022-06-17.pdf). The SCMP and DSA Amendment Templates capture custom requirements for a specific transaction. Once sellers select the standardized contract, they can apply an addendum when creating a [Private Offer](https://aws.amazon.com/marketplace/features/custom-terms-pricing/) via the seller portal. 
+### Will the terms that are applied to a subscription ever change?
+The terms applied to an active subscription will not change unless the subscription expires or is terminated. 
+### Will the terms carry over to renewal subscriptions?
+Yes, terms carry over if the subscription is extended while active. Once a subscription expires or is terminated, the terms will need to be applied to the renewal subscription. 
+### Can the terms be used for transactions outside of AWS Marketplace?
+No, the terms are not intended for use outside of AWS Marketplace. 
+## Learning and training resources
+[ VideoTackle evangelizes standardization and helps remove friction from the sales process Discover how Tackle helps the seller community align to best practices in pricing, deployment, and contract models. Watch the video ](https://youtu.be/ELPBQtupkPA)
+[ Case studyTackle delivers industry expertise to help B2B sellers establish, operate and scale sales through AWS Marketplace Learn how leading with common ground can reduce time to contract by 80%. Download case study ](https://d1.awsstatic.com/awsmp/solutions/mk-sol-files/standardized-contracts/Standardized%20Contracts%20Tackle%20Case%20Study.pdf?ref_=awsmp_feat_std_ct_rs_tkpdf&trk=awsmp_feat_std_ct_rs_tkpdf)
+## Explore AWS Marketplace
+[ WEBPAGEDiscover benefits Review the features and advantages of using AWS Marketplace Discover benefits ](https://aws.amazon.com/mp/marketplace-service?ref_=awsmp_sol_prft_why&trk=awsmp_sol_prft_why)
+[ WEBPAGEFind software & solutions Browse by industry or solution category Find software & solutions ](https://aws.amazon.com/marketplace/solutions)
+[ WEBPAGEBrowse all products Filter through all products available in AWS Marketplace Browse all products ](https://aws.amazon.com/marketplace/search?ref_=awsmp_sol_prft_bws&trk=awsmp_sol_prft_bws)
+[ WEBPAGEExplore resources Find webinars, whitepapers, implementation guides, and analyst reports Explore resources ](https://aws.amazon.com/mp/resources-hub?ref_=awsmp_sol_prft_rs&trk=awsmp_sol_prft_rs)
+[ WEBPAGESpeak to an expert Speak with an AWS Marketplace expert to help choose and integrate software Speak to an expert ](https://pages.awscloud.com/awsmp-contact-us.html?trk=09c8f2e2-829d-4dd1-bcf1-ed1b06061629)
