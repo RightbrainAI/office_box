@@ -23,6 +23,7 @@ if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
 try:
+    # We now import update_issue_body directly from utils
     from utils.github_api import update_issue_body, post_failure_and_exit, fetch_issue_comments, parse_form_field
     from utils.rightbrain_api import get_rb_token, run_rb_task, log, get_task_id_by_name, get_api_root, get_rb_config
 except ImportError as e:
@@ -38,6 +39,7 @@ def create_safe_filename(doc_name: str, supplier_name: str, issue_number: str, e
     safe_supplier = re.sub(r'[<>:"/\\|?*\s]+', '_', supplier_name).strip('._ ') or "Vendor"
     safe_doc = re.sub(r'[<>:"/\\|?*\s]+', '_', doc_name).strip('._ ') or "doc"
     
+    # Truncate to avoid filesystem limits
     safe_supplier = safe_supplier[:30]
     safe_doc = safe_doc[:50]
     
@@ -70,7 +72,6 @@ def extract_text_from_pdf_bytes(file_content: bytes) -> str:
             if extracted: text.append(extracted)
         return "\n".join(text)
     except Exception as e:
-        # Log to stderr so it shows up in Actions logs
         print(f"❌ PDF Extraction Error: {e}", file=sys.stderr)
         return f"[Error extracting PDF: {e}]"
 
@@ -80,13 +81,11 @@ def scan_comments_for_inputs(repo_name: str, issue_number: str, gh_token: str) -
     headers = {"Authorization": f"token {gh_token}"}
     print(f"🔎 Scanning {len(comments)} comments...")
 
-    # Regex for ANY GitHub file attachment URL
     url_pattern = re.compile(r'(https://github\.com/.*?/files/\d+/[^\s)]+)')
     paste_pattern = re.compile(r'### Manual Document:\s*(.*?)\n(.*?)(?=\n###|\Z)', re.DOTALL | re.IGNORECASE)
 
     for comment in comments:
         body = comment.get("body", "")
-        
         # Attachments
         for url in url_pattern.findall(body):
             url = url.rstrip(').')
@@ -162,7 +161,6 @@ def format_documents_as_checklist(all_docs: List[Dict[str, Any]], repo_name: str
         if doc.get("source_type") == "fetched":
             if "none" in cats or "fetch_failed" in cats:
                 checked = " "
-        
         if doc.get("source_type") in ["attachment", "paste"]:
             checked = "x"
 
@@ -178,17 +176,6 @@ def format_documents_as_checklist(all_docs: List[Dict[str, Any]], repo_name: str
     if online: output += "### 🌐 Scraped Documents\n" + "\n".join(online) + "\n\n"
     if manual: output += "### 📎 Manual Uploads\n" + "\n".join(manual) + "\n\n"
     return output
-
-def replace_checklist_in_body(original_body: str, new_checklist: str) -> str:
-    """
-    Finds the CHECKLIST_MARKER and replaces everything after it with the new checklist.
-    """
-    marker = ""
-    if marker in original_body:
-        pre_checklist = original_body.split(marker)[0]
-        return f"{pre_checklist.strip()}\n\n{new_checklist}"
-    else:
-        return f"{original_body.strip()}\n\n{new_checklist}"
 
 # ==========================================
 # 2. MAIN EXECUTION
@@ -304,7 +291,7 @@ def main():
     print("\n--- STAGE 5: Updating Checklist ---")
     checklist_md = format_documents_as_checklist(all_final_docs, repo_name, issue_number, supplier_name)
     
-    CHECKLIST_MARKER = "<!--CHECKLIST_MARKER-->"
+    CHECKLIST_MARKER = ""
     new_section = (
         f"{CHECKLIST_MARKER}\n"
         "## Documents for Analysis\n\n"
@@ -318,10 +305,10 @@ def main():
         f"{checklist_md}"
     ).strip()
 
-    final_body = replace_checklist_in_body(issue_body, new_section)
-
     try:
-        update_issue_body(repo_name, issue_number, final_body, "")
+        # Use centralized utility. 
+        # utils.github_api.update_issue_body handles the finding/slicing of the MARKER internally.
+        update_issue_body(repo_name, issue_number, issue_body, new_section)
     except Exception as e:
         post_failure_and_exit(repo_name, issue_number, issue_body, f"Failed to post checklist: {e}")
 
