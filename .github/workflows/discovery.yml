@@ -21,8 +21,10 @@ jobs:
         with:
           fetch-depth: 0
 
+      # FIX: Use pipe (|) to prevent # being treated as a YAML comment
       - name: 2. Debug Info
-        run: echo "Processing Issue #${{ github.event.issue.number }}"
+        run: |
+          echo "Processing Issue #${{ github.event.issue.number }}"
 
       - name: 3. Set up Python
         uses: actions/setup-python@v5
