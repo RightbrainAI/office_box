@@ -7,9 +7,6 @@ on:
 jobs:
   discover-documents:
     runs-on: ubuntu-latest
-    # Run if:
-    # 1. The issue has the 'vendor-onboarding' label (Initial run)
-    # 2. OR the issue has the 'refresh-documents' label (Manual retry)
     if: |
       contains(github.event.issue.labels.*.name, 'vendor-onboarding') || 
       contains(github.event.issue.labels.*.name, 'refresh-documents')
@@ -22,35 +19,31 @@ jobs:
       - name: 1. Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Critical: Must fetch history to detect existing files
+          fetch-depth: 0
 
-      - name: 2. Debug - Print Issue Context
-        run: |
-          echo "Issue Number: ${{ github.event.issue.number }}"
-          echo "Triggered by: ${{ github.event_name }}"
+      - name: 2. Debug Info
+        run: echo "Processing Issue #${{ github.event.issue.number }}"
 
       - name: 3. Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: 4. Install Python dependencies
+      - name: 4. Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          # Ensure pypdf is in requirements.txt or installed here
           pip install -r requirements.txt
-          pip install pypdf 
+          # explicitly install PDF handling dependencies
+          pip install pypdf cryptography
 
       - name: 5. Run Discovery Script
         run: python scripts/discover_documents.py
         env:
-          # GitHub context variables
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ISSUE_BODY: ${{ github.event.issue.body }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           REPO_NAME: ${{ github.repository }}
-
-          # Rightbrain API secrets
+          # Rightbrain Secrets
           RB_ORG_ID: ${{ secrets.RB_ORG_ID }}
           RB_PROJECT_ID: ${{ secrets.RB_PROJECT_ID }}
           RB_CLIENT_ID: ${{ secrets.RB_CLIENT_ID }}
@@ -58,11 +51,11 @@ jobs:
           API_ROOT: ${{ secrets.API_ROOT }}
           TOKEN_URI: ${{ secrets.TOKEN_URI }}
 
-      - name: 6. Cleanup Refresh Label
-        # If this was a manual refresh, remove the label to reset the "button"
-        if: contains(github.event.issue.labels.*.name, 'refresh-documents')
+      - name: 6. Update Labels on Success
+        if: success()
         run: |
-          gh issue edit ${{ github.event.issue.number }} \
-            --remove-label "refresh-documents"
+          gh issue edit ${{ github.event.issue.number }} --add-label "human-review"
+          gh issue edit ${{ github.event.issue.number }} --remove-label "vendor-onboarding" || true
+          gh issue edit ${{ github.event.issue.number }} --remove-label "refresh-documents" || true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

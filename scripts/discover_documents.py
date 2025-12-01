@@ -23,7 +23,6 @@ if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
 try:
-    # Added parse_form_field to imports
     from utils.github_api import update_issue_body, post_failure_and_exit, fetch_issue_comments, parse_form_field
     from utils.rightbrain_api import get_rb_token, run_rb_task, log, get_task_id_by_name, get_api_root, get_rb_config
 except ImportError as e:
@@ -35,29 +34,17 @@ except ImportError as e:
 # ==========================================
 
 def create_safe_filename(doc_name: str, supplier_name: str, issue_number: str, extension: str = ".txt") -> str:
-    """
-    Creates a standardized filename: {Supplier}-{IssueID}-{DocName}.txt
-    """
-    # Sanitize Supplier Name
-    safe_supplier = re.sub(r'[<>:"/\\|?*\s]+', '_', supplier_name).strip('._ ')
-    if not safe_supplier: safe_supplier = "Vendor"
+    """Creates a standardized filename: {Supplier}-{IssueID}-{DocName}.txt"""
+    safe_supplier = re.sub(r'[<>:"/\\|?*\s]+', '_', supplier_name).strip('._ ') or "Vendor"
+    safe_doc = re.sub(r'[<>:"/\\|?*\s]+', '_', doc_name).strip('._ ') or "doc"
     
-    # Sanitize Doc Name
-    safe_doc = re.sub(r'[<>:"/\\|?*\s]+', '_', doc_name).strip('._ ')
-    if not safe_doc: safe_doc = "doc"
-    
-    # Truncate components to avoid filesystem limits
     safe_supplier = safe_supplier[:30]
     safe_doc = safe_doc[:50]
     
-    # Ensure extension
-    if not safe_doc.endswith(extension):
-        safe_doc += extension
-        
+    if not safe_doc.endswith(extension): safe_doc += extension
     return f"{safe_supplier}-issue-{issue_number}-{safe_doc}"
 
 def parse_multiline_urls(issue_body: str, label: str) -> List[str]:
-    """Parses multiple URLs from a GitHub issue form block."""
     pattern = re.compile(f"### {re.escape(label)}\s*(.*?)(?=\\n###|\\Z)", re.DOTALL | re.IGNORECASE)
     match = pattern.search(issue_body)
     if not match: return []
@@ -75,27 +62,31 @@ def parse_multiline_urls(issue_body: str, label: str) -> List[str]:
 def extract_text_from_pdf_bytes(file_content: bytes) -> str:
     if not PdfReader: return "[Error: pypdf not installed]"
     try:
+        if not file_content: return "[Error: Empty file content]"
         reader = PdfReader(io.BytesIO(file_content))
         text = []
         for page in reader.pages:
             extracted = page.extract_text()
             if extracted: text.append(extracted)
         return "\n".join(text)
-    except Exception as e: return f"[Error extracting PDF: {e}]"
+    except Exception as e:
+        # Log to stderr so it shows up in Actions logs
+        print(f"❌ PDF Extraction Error: {e}", file=sys.stderr)
+        return f"[Error extracting PDF: {e}]"
 
 def scan_comments_for_inputs(repo_name: str, issue_number: str, gh_token: str) -> List[Dict[str, Any]]:
-    """Scans comments for attachments and manual pastes."""
     comments = fetch_issue_comments(repo_name, issue_number)
     found_inputs = []
     headers = {"Authorization": f"token {gh_token}"}
     print(f"🔎 Scanning {len(comments)} comments...")
 
-    # Regex for 'user-attachments' or 'org/repo' file URLs
+    # Regex for ANY GitHub file attachment URL
     url_pattern = re.compile(r'(https://github\.com/.*?/files/\d+/[^\s)]+)')
     paste_pattern = re.compile(r'### Manual Document:\s*(.*?)\n(.*?)(?=\n###|\Z)', re.DOTALL | re.IGNORECASE)
 
     for comment in comments:
         body = comment.get("body", "")
+        
         # Attachments
         for url in url_pattern.findall(body):
             url = url.rstrip(').')
@@ -110,7 +101,7 @@ def scan_comments_for_inputs(repo_name: str, issue_number: str, gh_token: str) -
                 resp.raise_for_status()
                 content = extract_text_from_pdf_bytes(resp.content) if ext == '.pdf' else resp.content.decode('utf-8')
                 found_inputs.append({"type": "attachment", "name": filename, "url": url, "text": content})
-            except Exception as e: print(f"  ❌ Error: {e}")
+            except Exception as e: print(f"  ❌ Download Error: {e}")
 
         # Manual Pastes
         for doc_name, doc_content in paste_pattern.findall(body):
@@ -120,7 +111,6 @@ def scan_comments_for_inputs(repo_name: str, issue_number: str, gh_token: str) -
     return found_inputs
 
 def save_and_commit_source_text(text: str, repo_name: str, issue_number: str, filename: str):
-    """Saves text to file and commits it."""
     source_dir = Path("_vendor_analysis_source")
     source_dir.mkdir(exist_ok=True)
     file_path = source_dir / filename
@@ -140,7 +130,6 @@ def save_and_commit_source_text(text: str, repo_name: str, issue_number: str, fi
         
         status = subprocess.run(["git", "status", "--porcelain", str(file_path)], capture_output=True, text=True)
         if file_path.name in status.stdout:
-            # We assume filename structure is Vendor-issue-ID-DocName
             clean_name = filename.replace(f"issue-{issue_number}-", "")
             msg = f"docs(vendor): Add source '{clean_name}' (#{issue_number})"
             subprocess.run(["git", "commit", "-m", msg], capture_output=True)
@@ -162,16 +151,20 @@ def format_documents_as_checklist(all_docs: List[Dict[str, Any]], repo_name: str
     for doc in all_docs:
         name = doc.get("name", "Unknown")
         original_url = doc.get("url", "")
-        
-        # Use the same filename generator logic
         safe_filename = create_safe_filename(name, supplier_name, issue_number)
-        
         gh_url = base_url + url_quote(f"_vendor_analysis_source/{safe_filename}")
-        
-        checked = "x" if (doc.get("relevance") == "relevant" or doc.get("source_type") != "fetched") else " "
         
         cats = doc.get("categories", [])
         tag = ", ".join([c.title() for c in cats]) if (cats and "none" not in cats) else "Unclassified"
+
+        # Checkbox Logic
+        checked = "x"
+        if doc.get("source_type") == "fetched":
+            if "none" in cats or "fetch_failed" in cats:
+                checked = " "
+        
+        if doc.get("source_type") in ["attachment", "paste"]:
+            checked = "x"
 
         if doc.get("source_type") == "fetched":
             note = f"(Source: `{original_url}`)"
@@ -185,6 +178,17 @@ def format_documents_as_checklist(all_docs: List[Dict[str, Any]], repo_name: str
     if online: output += "### 🌐 Scraped Documents\n" + "\n".join(online) + "\n\n"
     if manual: output += "### 📎 Manual Uploads\n" + "\n".join(manual) + "\n\n"
     return output
+
+def replace_checklist_in_body(original_body: str, new_checklist: str) -> str:
+    """
+    Finds the CHECKLIST_MARKER and replaces everything after it with the new checklist.
+    """
+    marker = ""
+    if marker in original_body:
+        pre_checklist = original_body.split(marker)[0]
+        return f"{pre_checklist.strip()}\n\n{new_checklist}"
+    else:
+        return f"{original_body.strip()}\n\n{new_checklist}"
 
 # ==========================================
 # 2. MAIN EXECUTION
@@ -202,7 +206,6 @@ def main():
     get_rb_config()
     rb_api_root = get_api_root()
     
-    # Setup Tasks
     orig_root = os.environ.get("API_ROOT")
     os.environ["API_ROOT"] = rb_api_root
     
@@ -217,81 +220,60 @@ def main():
 
     rb_token = get_rb_token()
     
-    # ---------------------------------------------------------
     # STAGE 0: CONTEXT
-    # ---------------------------------------------------------
     supplier_name = parse_form_field(issue_body, "Supplier Name")
     if not supplier_name: supplier_name = "UnknownVendor"
-    
     print(f"🚀 Starting Discovery for: {supplier_name} (Issue #{issue_number})")
 
-    # ---------------------------------------------------------
-    # STAGE 1: HARVEST SEEDS
-    # ---------------------------------------------------------
+    # STAGE 1: HARVEST
     legal_seeds = parse_multiline_urls(issue_body, "Legal URLs") or parse_multiline_urls(issue_body, "T&Cs")
     security_seeds = parse_multiline_urls(issue_body, "Security URLs")
     manual_inputs = scan_comments_for_inputs(repo_name, issue_number, gh_token)
-
     urls_to_process = [] 
 
-    # ---------------------------------------------------------
-    # STAGE 2: SPIDER / DISCOVERY
-    # ---------------------------------------------------------
+    # STAGE 2: SPIDER
     discovery_prompts = [
         {"seeds": legal_seeds, "prompt": "Find legally binding documents (Terms, DPA, Privacy Policy)."},
         {"seeds": security_seeds, "prompt": "Find security evidence (SOC2, ISO27001, Whitepapers)."}
     ]
-
     print(f"\n--- STAGE 2: Running Discovery (Spidering) ---")
-    
     for u in legal_seeds: urls_to_process.append({"url": u, "origin": "seed"})
     for u in security_seeds: urls_to_process.append({"url": u, "origin": "seed"})
 
     for group in discovery_prompts:
         for seed_url in group["seeds"]:
             print(f"🕷️ Spidering: {seed_url}")
-            
             discovery_input = {
                 "document_text": seed_url,
                 "original_url": seed_url,
                 "usage_context": f"Vendor Review for {supplier_name}",
                 "search_context": group["prompt"]
             }
-            
             run = run_rb_task(rb_token, discovery_task_id, discovery_input, f"Discover: {seed_url}")
-            
             if run and not run.get("is_error"):
                 found_docs = run.get("response", {}).get("discovered_documents", [])
                 print(f"   -> Found {len(found_docs)} links.")
                 for doc_item in found_docs:
                     doc_data = doc_item.get("document", {})
-                    found_url = doc_data.get("absolute_url")
-                    if found_url:
-                        urls_to_process.append({"url": found_url, "origin": "spider"})
+                    if doc_data.get("absolute_url"):
+                        urls_to_process.append({"url": doc_data["absolute_url"], "origin": "spider"})
             else:
                 log("warning", f"Discovery failed for {seed_url}. Proceeding with seed only.")
 
-    # ---------------------------------------------------------
     # STAGE 3: FETCH & CLASSIFY
-    # ---------------------------------------------------------
     unique_urls = {item['url']: item for item in urls_to_process}.values()
     all_final_docs = []
-
     print(f"\n--- STAGE 3: Fetching {len(unique_urls)} Unique URLs ---")
 
     for item in unique_urls:
         url = item['url']
         doc_name = url.split('/')[-1] or "webpage"
-        
         safe_filename = create_safe_filename(doc_name, supplier_name, issue_number)
-        
         local_path = Path("_vendor_analysis_source") / safe_filename
+        
         if local_path.exists():
             print(f"⏩ Skipping {url} - Exists: {safe_filename}")
-            all_final_docs.append({
-                "name": doc_name, "url": url, "source_type": "fetched",
-                "relevance": "relevant", "categories": ["existing_file"]
-            })
+            all_final_docs.append({"name": doc_name, "url": url, "source_type": "fetched", "relevance": "relevant", "categories": ["existing_file"]})
             continue
 
         print(f"Fetching: {url}")
@@ -303,42 +285,27 @@ def main():
             categories = [d.get("category", "none") for d in relevance_data if isinstance(d, dict)]
             
             if not text:
-                log("warning", f"Empty text for {url}.")
-                all_final_docs.append({
-                    "name": "Failed Fetch: " + doc_name, "url": url, "source_type": "fetched",
-                    "relevance": "irrelevant", "categories": ["fetch_failed"]
-                })
+                all_final_docs.append({"name": "Failed Fetch: " + doc_name, "url": url, "source_type": "fetched", "relevance": "irrelevant", "categories": ["fetch_failed"]})
                 continue
 
             save_and_commit_source_text(text, repo_name, issue_number, safe_filename)
-            all_final_docs.append({
-                "name": doc_name, "url": url, "source_type": "fetched",
-                "relevance": "relevant", "categories": categories
-            })
+            all_final_docs.append({"name": doc_name, "url": url, "source_type": "fetched", "relevance": "relevant", "categories": categories})
         else:
             log("warning", f"Fetch failed for {url}")
 
-    # ---------------------------------------------------------
     # STAGE 4: MANUAL INPUTS
-    # ---------------------------------------------------------
     print(f"\n--- STAGE 4: Processing Manual Inputs ---")
     for inp in manual_inputs:
         safe_filename = create_safe_filename(inp['name'], supplier_name, issue_number)
         save_and_commit_source_text(inp['text'], repo_name, issue_number, safe_filename)
-        all_final_docs.append({
-            "name": inp['name'], "url": inp['url'], "source_type": inp['type'],
-            "relevance": "relevant", "categories": ["uploaded"]
-        })
+        all_final_docs.append({"name": inp['name'], "url": inp['url'], "source_type": inp['type'], "relevance": "relevant", "categories": ["uploaded"]})
 
-    # ---------------------------------------------------------
     # STAGE 5: UPDATE ISSUE
-    # ---------------------------------------------------------
     print("\n--- STAGE 5: Updating Checklist ---")
-    
     checklist_md = format_documents_as_checklist(all_final_docs, repo_name, issue_number, supplier_name)
     
     CHECKLIST_MARKER = ""
-    comment_body = (
+    new_section = (
         f"{CHECKLIST_MARKER}\n"
         "## Documents for Analysis\n\n"
         "🤖 **Status:**\n"
@@ -351,8 +318,10 @@ def main():
         f"{checklist_md}"
     ).strip()
 
+    final_body = replace_checklist_in_body(issue_body, new_section)
+
     try:
-        update_issue_body(repo_name, issue_number, issue_body, comment_body)
+        update_issue_body(repo_name, issue_number, final_body, "")
     except Exception as e:
         post_failure_and_exit(repo_name, issue_number, issue_body, f"Failed to post checklist: {e}")
 
