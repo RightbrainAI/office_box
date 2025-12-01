@@ -223,8 +223,8 @@ def detect_environment(api_url: Optional[str] = None) -> str:
         if not api_root.endswith('/api/v1'):
             api_root = f"{api_root}/api/v1"
     
-    # Check if it's staging (common patterns: staging, dev, test)
-    if any(keyword in api_root.lower() for keyword in ['staging', 'dev', 'test', 'sandbox']):
+    # Check if it's staging (common patterns: staging, dev, test, stag)
+    if any(keyword in api_root.lower() for keyword in ['staging', 'dev', 'test', 'sandbox', 'stag']):
         return 'staging'
     return 'production'
 
