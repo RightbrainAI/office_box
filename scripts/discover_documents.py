@@ -277,9 +277,9 @@ def main():
     rb_client_secret = os.environ["RB_CLIENT_SECRET"]
     
     # Get API URL and construct API root for environment detection
-    rb_api_url = os.environ.get("RB_API_URL")
+    rb_api_url = os.environ.get("API_ROOT")
     if not rb_api_url:
-        sys.exit("❌ Error: Missing RB_API_URL environment variable.")
+        sys.exit("❌ Error: Missing API_ROOT environment variable.")
     
     # Construct API root (ensure it includes /api/v1)
     rb_api_root = rb_api_url.rstrip('/')

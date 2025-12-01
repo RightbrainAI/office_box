@@ -191,10 +191,10 @@ def main():
     rb_project_id = os.environ.get("RB_PROJECT_ID")
     rb_client_id = os.environ.get("RB_CLIENT_ID")
     rb_client_secret = os.environ.get("RB_CLIENT_SECRET")
-    rb_api_url = os.environ.get("RB_API_URL")
+    rb_api_url = os.environ.get("API_ROOT")
     
     if not rb_api_url:
-        sys.exit("❌ Error: Missing RB_API_URL environment variable.")
+        sys.exit("❌ Error: Missing API_ROOT environment variable.")
 
     if not all([gh_token, issue_body, issue_number, repo_name, rb_org_id, rb_project_id, 
                 rb_client_id, rb_client_secret, rb_api_url]):
