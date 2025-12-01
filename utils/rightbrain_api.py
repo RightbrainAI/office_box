@@ -168,7 +168,10 @@ def get_api_root() -> str:
     api_root = os.environ.get("API_ROOT")
     if api_root:
         log("debug", f"Using API_ROOT from environment variable: {api_root}")
-        return api_root.rstrip('/')
+        api_root = api_root.rstrip('/')
+        if not api_root.endswith('/api/v1'):
+            api_root = f"{api_root}/api/v1"
+        return api_root
     
     # Fallback: construct from config file
     log("warning", "API_ROOT environment variable not found, falling back to config file")
@@ -205,7 +208,7 @@ def get_rb_config() -> Dict[str, str]:
 
 def get_project_path() -> str:
     config = get_rb_config()
-    return f"/api/v1/org/{config['org_id']}/project/{config['project_id']}"
+    return f"/org/{config['org_id']}/project/{config['project_id']}"
 
 def detect_environment(api_url: Optional[str] = None) -> str:
     """
