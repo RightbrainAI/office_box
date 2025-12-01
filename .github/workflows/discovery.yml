@@ -2,12 +2,17 @@ name: "1. Vendor Document Discovery"
 
 on:
   issues:
-    types: [opened, edited]
+    types: [opened, edited, labeled]
 
 jobs:
   discover-documents:
     runs-on: ubuntu-latest
-    if: contains(github.event.issue.labels.*.name, 'vendor-onboarding')
+    # Run if:
+    # 1. The issue has the 'vendor-onboarding' label (Initial run)
+    # 2. OR the issue has the 'refresh-documents' label (Manual retry)
+    if: |
+      contains(github.event.issue.labels.*.name, 'vendor-onboarding') || 
+      contains(github.event.issue.labels.*.name, 'refresh-documents')
 
     permissions:
       issues: write 
@@ -17,12 +22,12 @@ jobs:
       - name: 1. Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0 # Critical: Must fetch history to detect existing files
 
-      - name: 2. Debug - Print Issue Body
+      - name: 2. Debug - Print Issue Context
         run: |
-          echo "Received Issue Body:"
-          echo "${{ github.event.issue.body }}"
+          echo "Issue Number: ${{ github.event.issue.number }}"
+          echo "Triggered by: ${{ github.event_name }}"
 
       - name: 3. Set up Python
         uses: actions/setup-python@v5
@@ -32,7 +37,9 @@ jobs:
       - name: 4. Install Python dependencies
         run: |
           python -m pip install --upgrade pip
+          # Ensure pypdf is in requirements.txt or installed here
           pip install -r requirements.txt
+          pip install pypdf 
 
       - name: 5. Run Discovery Script
         run: python scripts/discover_documents.py
@@ -51,10 +58,11 @@ jobs:
           API_ROOT: ${{ secrets.API_ROOT }}
           TOKEN_URI: ${{ secrets.TOKEN_URI }}
 
-      - name: 6. Update Labels on Success
+      - name: 6. Cleanup Refresh Label
+        # If this was a manual refresh, remove the label to reset the "button"
+        if: contains(github.event.issue.labels.*.name, 'refresh-documents')
         run: |
           gh issue edit ${{ github.event.issue.number }} \
-            --remove-label "vendor-onboarding" \
-            --add-label "human-review"
+            --remove-label "refresh-documents"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
