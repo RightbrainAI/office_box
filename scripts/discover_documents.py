@@ -304,7 +304,7 @@ def main():
     print("\n--- STAGE 5: Updating Checklist ---")
     checklist_md = format_documents_as_checklist(all_final_docs, repo_name, issue_number, supplier_name)
     
-    CHECKLIST_MARKER = ""
+    CHECKLIST_MARKER = "<!--CHECKLIST_MARKER-->"
     new_section = (
         f"{CHECKLIST_MARKER}\n"
         "## Documents for Analysis\n\n"
