@@ -139,45 +139,75 @@ def scan_comments_for_inputs(repo_name: str, issue_number: str, gh_token: str) -
 
 # --- Helper: Text Compilation & Git ---
 
-def save_and_commit_source_text(text: str, repo_name: str, issue_number: str, filename: str):
-    """Saves a single document's text to a file and commits it."""
-    source_dir = Path("_vendor_analysis_source")
-    source_dir.mkdir(exist_ok=True)
-    file_path = source_dir / filename
+def scan_comments_for_inputs(repo_name: str, issue_number: str, gh_token: str) -> List[Dict[str, Any]]:
+    """
+    Scans comments for:
+    1. Attachments (PDF/TXT) - Scans for raw GitHub file URLs to avoid bracket/regex issues.
+    2. Manual Pastes (Headers like '### Manual Document: Name').
+    """
+    comments = fetch_issue_comments(repo_name, issue_number)
+    found_inputs = []
+    headers = {"Authorization": f"token {gh_token}"}
 
-    if not text or not text.strip():
-        return
+    print(f"🔎 Scanning {len(comments)} comments for attachments or manual pastes...")
 
-    try:
-        with open(file_path, "w", encoding="utf-8") as f:
-            f.write(text)
-    except IOError as e:
-        log("error", f"Failed to write file {file_path}", details=str(e))
-        return
+    # IMPROVED REGEX: Ignore the [Name] and just grab the URL.
+    # Matches: https://github.com/{user}/{repo}/files/{id}/{filename}
+    # It grabs everything until it hits a space, a newline, or a closing parenthesis.
+    url_pattern = re.compile(r'(https://github\.com/[^/]+/[^/]+/files/\d+/[^\s)]+)')
+    
+    # Regex for Manual Pastes remains the same
+    paste_pattern = re.compile(r'### Manual Document:\s*(.*?)\n(.*?)(?=\n###|\Z)', re.DOTALL | re.IGNORECASE)
 
-    try:
-        # Configure git (idempotent)
-        subprocess.run(["git", "config", "--global", "user.name", "github-actions[bot]"], capture_output=True)
-        subprocess.run(["git", "config", "--global", "user.email", "github-actions[bot]@users.noreply.github.com"], capture_output=True)
-
-        subprocess.run(["git", "add", str(file_path)], check=True, capture_output=True)
+    for comment in comments:
+        body = comment.get("body", "")
         
-        # Check status
-        status_result = subprocess.run(["git", "status", "--porcelain", str(file_path)], capture_output=True, text=True)
-
-        if file_path.name in status_result.stdout:
-            doc_name_part = filename.replace(f"issue-{issue_number}-", "").replace(".txt", "").replace("_", " ")
-            commit_message = f"docs(vendor): Add source text for '{doc_name_part}' (issue #{issue_number})"
+        # 1. Process Attachments (via URL scan)
+        for url in url_pattern.findall(body):
+            # Clean any trailing closing parens/dots if the regex got greedy
+            url = url.rstrip(').')
             
-            subprocess.run(["git", "commit", "-m", commit_message], capture_output=True)
-            subprocess.run(["git", "pull", "--rebase"], capture_output=True) # Rebase to avoid conflicts
-            subprocess.run(["git", "push"], check=True, capture_output=True)
-            print(f"  🚀 Committed and pushed: {filename}")
-        else:
-            print(f"  ℹ️  No changes for {filename}")
+            # Extract filename from URL (GitHub URLs usually end with the filename)
+            # We unquote it to turn %20 back into spaces so the saved file looks nice
+            from urllib.parse import unquote
+            filename = unquote(url.split('/')[-1])
+            
+            ext = os.path.splitext(filename)[1].lower()
+            if ext not in ['.pdf', '.txt', '.md']:
+                print(f"  Skipping non-doc attachment: {filename}")
+                continue
+            
+            print(f"  📎 Found attachment URL: {filename}...")
+            try:
+                resp = requests.get(url, headers=headers)
+                resp.raise_for_status()
+                
+                content_text = ""
+                if ext == '.pdf':
+                    content_text = extract_text_from_pdf_bytes(resp.content)
+                else:
+                    content_text = resp.content.decode('utf-8')
+                
+                found_inputs.append({
+                    "type": "attachment",
+                    "name": filename,
+                    "url": url, 
+                    "text": content_text
+                })
+            except Exception as e:
+                print(f"  ❌ Failed to download/read {filename}: {e}")
 
-    except Exception as e:
-        log("warning", f"Git operation failed for '{filename}'", details=str(e))
+        # 2. Process Manual Pastes
+        for doc_name, doc_content in paste_pattern.findall(body):
+            print(f"  📋 Found manual text paste: {doc_name.strip()}")
+            found_inputs.append({
+                "type": "paste",
+                "name": doc_name.strip(),
+                "url": "N/A (Manual Paste)",
+                "text": doc_content.strip()
+            })
+
+    return found_inputs
 
 def extract_text_from_run_data(full_task_run: Dict[str, Any]) -> str:
     """Extracts fetched text from RB task run data."""
