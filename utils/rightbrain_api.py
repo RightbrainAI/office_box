@@ -212,10 +212,19 @@ def get_project_path() -> str:
 
 def detect_environment(api_url: Optional[str] = None) -> str:
     """
-    Detects the environment (staging or production) based on API URL.
-    If api_url is not provided, uses _get_base_url().
-    Returns 'staging' or 'production'.
+    Detects the environment (staging or production).
+    Priority 1: Explicit 'RIGHTBRAIN_ENVIRONMENT' or 'RB_ENVIRONMENT' env var.
+    Priority 2: Heuristic check of the API URL.
     """
+    # 1. Explicit Overwrite (check both env var names)
+    explicit_env = os.environ.get("RIGHTBRAIN_ENVIRONMENT") or os.environ.get("RB_ENVIRONMENT")
+    if explicit_env:
+        detected = explicit_env.lower().strip()
+        env_var_name = "RIGHTBRAIN_ENVIRONMENT" if os.environ.get("RIGHTBRAIN_ENVIRONMENT") else "RB_ENVIRONMENT"
+        log("debug", f"Environment detected from {env_var_name}: {detected}")
+        return detected
+
+    # 2. Heuristic Fallback
     if api_url is None:
         api_root = get_api_root()
     else:
@@ -225,7 +234,11 @@ def detect_environment(api_url: Optional[str] = None) -> str:
     
     # Check if it's staging (common patterns: staging, dev, test, stag)
     if any(keyword in api_root.lower() for keyword in ['staging', 'dev', 'test', 'sandbox', 'stag']):
+        log("debug", f"Environment detected via heuristic (API URL contains staging keyword): staging")
         return 'staging'
+    
+    log("warning", f"Environment detection defaulting to 'production'. Set RIGHTBRAIN_ENVIRONMENT=staging to override.")
+    log("debug", f"API URL used for detection: {api_root}")
     return 'production'
 
 def get_task_id_by_name(task_name: str, environment: Optional[str] = None) -> Optional[str]:
@@ -236,6 +249,8 @@ def get_task_id_by_name(task_name: str, environment: Optional[str] = None) -> Op
     """
     if environment is None:
         environment = detect_environment()
+    
+    log("debug", f"Looking up task '{task_name}' in environment '{environment}'")
     
     project_root = Path(__file__).resolve().parent.parent
     manifest_path = project_root / "tasks" / "task_manifest.json"
@@ -258,6 +273,7 @@ def get_task_id_by_name(task_name: str, environment: Optional[str] = None) -> Op
                     if task_data.get('name') == task_name:
                         task_id = task_data.get('id')
                         if task_id:
+                            log("debug", f"Found task ID for '{task_name}': {task_id} (from {filename})")
                             return task_id
                 elif isinstance(task_data, str):
                     # Direct ID mapping, need to check task file for name
@@ -285,6 +301,9 @@ def get_task_id_by_name(task_name: str, environment: Optional[str] = None) -> Op
                             pass
         
         log("warning", f"Task '{task_name}' not found in manifest for environment '{environment}'")
+        log("debug", f"Available environments in manifest: {list(manifest.keys()) if isinstance(manifest, dict) else 'N/A'}")
+        if isinstance(manifest, dict) and environment in manifest:
+            log("debug", f"Available tasks in '{environment}': {list(manifest[environment].keys())}")
         return None
     except Exception as e:
         log("error", f"Error reading task manifest: {e}")
