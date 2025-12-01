@@ -23,7 +23,6 @@ if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
 try:
-    # We now import update_issue_body directly from utils
     from utils.github_api import update_issue_body, post_failure_and_exit, fetch_issue_comments, parse_form_field
     from utils.rightbrain_api import get_rb_token, run_rb_task, log, get_task_id_by_name, get_api_root, get_rb_config
 except ImportError as e:
@@ -177,6 +176,14 @@ def format_documents_as_checklist(all_docs: List[Dict[str, Any]], repo_name: str
     if manual: output += "### 📎 Manual Uploads\n" + "\n".join(manual) + "\n\n"
     return output
 
+def replace_checklist_in_body(original_body: str, new_checklist: str) -> str:
+    marker = ""
+    if marker in original_body:
+        pre_checklist = original_body.split(marker)[0]
+        return f"{pre_checklist.strip()}\n\n{new_checklist}"
+    else:
+        return f"{original_body.strip()}\n\n{new_checklist}"
+
 # ==========================================
 # 2. MAIN EXECUTION
 # ==========================================
@@ -218,17 +225,29 @@ def main():
     manual_inputs = scan_comments_for_inputs(repo_name, issue_number, gh_token)
     urls_to_process = [] 
 
-    # STAGE 2: SPIDER
+    # STAGE 2: SPIDER (With Idempotency!)
     discovery_prompts = [
         {"seeds": legal_seeds, "prompt": "Find legally binding documents (Terms, DPA, Privacy Policy)."},
         {"seeds": security_seeds, "prompt": "Find security evidence (SOC2, ISO27001, Whitepapers)."}
     ]
     print(f"\n--- STAGE 2: Running Discovery (Spidering) ---")
+    
+    # Always add seeds to the processing list (in case they were manually deleted but still in issue body)
     for u in legal_seeds: urls_to_process.append({"url": u, "origin": "seed"})
     for u in security_seeds: urls_to_process.append({"url": u, "origin": "seed"})
 
     for group in discovery_prompts:
         for seed_url in group["seeds"]:
+            # --- NEW IDEMPOTENCY CHECK FOR SPIDERING ---
+            doc_name = seed_url.split('/')[-1] or "webpage"
+            safe_filename = create_safe_filename(doc_name, supplier_name, issue_number)
+            local_path = Path("_vendor_analysis_source") / safe_filename
+
+            if local_path.exists():
+                print(f"⏩ Skipping Spider for {seed_url} - Seed file already exists.")
+                continue
+            # -------------------------------------------
+
             print(f"🕷️ Spidering: {seed_url}")
             discovery_input = {
                 "document_text": seed_url,
@@ -305,9 +324,9 @@ def main():
         f"{checklist_md}"
     ).strip()
 
+    final_body = replace_checklist_in_body(issue_body, new_section)
+
     try:
-        # Use centralized utility. 
-        # utils.github_api.update_issue_body handles the finding/slicing of the MARKER internally.
         update_issue_body(repo_name, issue_number, issue_body, new_section)
     except Exception as e:
         post_failure_and_exit(repo_name, issue_number, issue_body, f"Failed to post checklist: {e}")
