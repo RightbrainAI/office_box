@@ -176,14 +176,6 @@ def format_documents_as_checklist(all_docs: List[Dict[str, Any]], repo_name: str
     if manual: output += "### 📎 Manual Uploads\n" + "\n".join(manual) + "\n\n"
     return output
 
-def replace_checklist_in_body(original_body: str, new_checklist: str) -> str:
-    marker = ""
-    if marker in original_body:
-        pre_checklist = original_body.split(marker)[0]
-        return f"{pre_checklist.strip()}\n\n{new_checklist}"
-    else:
-        return f"{original_body.strip()}\n\n{new_checklist}"
-
 # ==========================================
 # 2. MAIN EXECUTION
 # ==========================================
@@ -232,13 +224,12 @@ def main():
     ]
     print(f"\n--- STAGE 2: Running Discovery (Spidering) ---")
     
-    # Always add seeds to the processing list (in case they were manually deleted but still in issue body)
     for u in legal_seeds: urls_to_process.append({"url": u, "origin": "seed"})
     for u in security_seeds: urls_to_process.append({"url": u, "origin": "seed"})
 
     for group in discovery_prompts:
         for seed_url in group["seeds"]:
-            # --- NEW IDEMPOTENCY CHECK FOR SPIDERING ---
+            # IDEMPOTENCY CHECK
             doc_name = seed_url.split('/')[-1] or "webpage"
             safe_filename = create_safe_filename(doc_name, supplier_name, issue_number)
             local_path = Path("_vendor_analysis_source") / safe_filename
@@ -246,7 +237,6 @@ def main():
             if local_path.exists():
                 print(f"⏩ Skipping Spider for {seed_url} - Seed file already exists.")
                 continue
-            # -------------------------------------------
 
             print(f"🕷️ Spidering: {seed_url}")
             discovery_input = {
@@ -310,7 +300,7 @@ def main():
     print("\n--- STAGE 5: Updating Checklist ---")
     checklist_md = format_documents_as_checklist(all_final_docs, repo_name, issue_number, supplier_name)
     
-    CHECKLIST_MARKER = "<!--CHECKLIST_MARKER-->"
+    CHECKLIST_MARKER = ""
     new_section = (
         f"{CHECKLIST_MARKER}\n"
         "## Documents for Analysis\n\n"
@@ -324,8 +314,9 @@ def main():
         f"{checklist_md}"
     ).strip()
 
-    final_body = replace_checklist_in_body(issue_body, new_section)
-
+    # REMOVED: replace_checklist_in_body function usage
+    # We now call update_issue_body directly with the full new section.
+    # The utility function (in utils/github_api.py) handles the splicing.
     try:
         update_issue_body(repo_name, issue_number, issue_body, new_section)
     except Exception as e:
