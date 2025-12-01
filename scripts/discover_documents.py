@@ -23,7 +23,6 @@ if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
 try:
-    # We strictly use the centralized utils now
     from utils.github_api import update_issue_body, post_failure_and_exit, fetch_issue_comments, parse_form_field
     from utils.rightbrain_api import get_rb_token, run_rb_task, log, get_task_id_by_name, get_api_root, get_rb_config
 except ImportError as e:
@@ -41,7 +40,6 @@ def create_safe_filename(doc_name: str, supplier_name: str, issue_number: str, e
     safe_supplier = re.sub(r'[<>:"/\\|?*\s]+', '_', supplier_name).strip('._ ') or "Vendor"
     safe_doc = re.sub(r'[<>:"/\\|?*\s]+', '_', doc_name).strip('._ ') or "doc"
     
-    # Truncate components to avoid filesystem limits
     safe_supplier = safe_supplier[:30]
     safe_doc = safe_doc[:50]
     
@@ -133,8 +131,6 @@ def save_and_commit_source_text(text: str, repo_name: str, issue_number: str, fi
         
         status = subprocess.run(["git", "status", "--porcelain", str(file_path)], capture_output=True, text=True)
         if file_path.name in status.stdout:
-            # We assume filename structure is issue-{id}-{Supplier}-{DocName}
-            # Clean up message for readability
             clean_name = filename.replace(f"issue-{issue_number}-", "")
             msg = f"docs(vendor): Add source '{clean_name}' (#{issue_number})"
             subprocess.run(["git", "commit", "-m", msg], capture_output=True)
@@ -149,10 +145,6 @@ def extract_text_from_run_data(full_task_run: Dict[str, Any]) -> str:
     except Exception: return ""
 
 def extract_previous_categories(issue_body: str) -> Dict[str, List[str]]:
-    """
-    Parses the EXISTING checklist in the issue body to remember which files 
-    were categorized as Legal or Security.
-    """
     regex = r"-\s*\[(?:x| )\]\s*\*\*(.*?)\*\*:.*?(?:_vendor_analysis_source/)(.*?)\)"
     mapping = {}
     matches = re.findall(regex, issue_body, re.IGNORECASE)
@@ -161,7 +153,6 @@ def extract_previous_categories(issue_body: str) -> Dict[str, List[str]]:
         cats = [c.strip().lower() for c in cats_str.split(',')]
         filename = filename.split(')')[0].strip()
         mapping[filename] = cats
-        
     return mapping
 
 def guess_categories_from_name(filename: str) -> List[str]:
@@ -174,21 +165,14 @@ def guess_categories_from_name(filename: str) -> List[str]:
     return cats if cats else ["unclassified"]
 
 def format_documents_as_checklist(all_docs: List[Dict[str, Any]], repo_name: str, issue_number: str, supplier_name: str) -> str:
-    """Builds Markdown checklist."""
     online, manual, existing = [], [], []
     base_url = f"https://github.com/{repo_name}/blob/main/"
-
     all_docs.sort(key=lambda x: x.get("name", "").lower())
 
     for doc in all_docs:
         name = doc.get("name", "Unknown")
         original_url = doc.get("url", "")
-        
-        # Use existing filename if present (reconciliation), else generate
-        safe_filename = doc.get("filename")
-        if not safe_filename:
-            safe_filename = create_safe_filename(name, supplier_name, issue_number)
-            
+        safe_filename = doc.get("filename") or create_safe_filename(name, supplier_name, issue_number)
         gh_url = base_url + url_quote(f"_vendor_analysis_source/{safe_filename}")
         
         cats = doc.get("categories", [])
@@ -196,22 +180,20 @@ def format_documents_as_checklist(all_docs: List[Dict[str, Any]], repo_name: str
 
         # Checkbox Logic
         checked = "x"
-        if doc.get("source_type") == "fetched":
-            if "none" in cats or "fetch_failed" in cats:
-                checked = " "
-        if doc.get("source_type") in ["attachment", "paste", "existing"]:
-            checked = "x"
+        if "none" in cats or "fetch_failed" in cats: checked = " "
+        if doc.get("source_type") in ["attachment", "paste", "existing"]: checked = "x"
 
-        # Formatting
+        line = f"- [{checked}] **{tag}**: [`{name}`]({gh_url})"
+        
         if doc.get("source_type") == "fetched":
             note = f"(Source: `{original_url}`)"
             if "fetch_failed" in cats: note = "⚠️ **FETCH FAILED** (Attach manually)"
-            online.append(f"- [{checked}] **{tag}**: [`{name}`]({gh_url}) {note}")
+            online.append(f"{line} {note}")
         elif doc.get("source_type") == "existing":
-            existing.append(f"- [{checked}] **{tag}**: [`{name}`]({gh_url}) (Restored)")
+            existing.append(f"{line} (Restored)")
         else:
             type_note = "Attachment" if doc.get("source_type") == "attachment" else "Paste"
-            manual.append(f"- [{checked}] **{tag}** ({type_note}): [`{name}`]({gh_url})")
+            manual.append(f"{line} ({type_note})")
 
     output = ""
     if online: output += "### 🌐 Scraped Documents\n" + "\n".join(online) + "\n\n"
@@ -254,7 +236,7 @@ def main():
     if not supplier_name: supplier_name = "UnknownVendor"
     print(f"🚀 Starting Discovery for: {supplier_name} (Issue #{issue_number})")
     
-    # --- MEMORY RECOVERY ---
+    # MEMORY RECOVERY
     previous_file_categories = extract_previous_categories(issue_body)
     print(f"🧠 Recovered categories for {len(previous_file_categories)} existing files.")
 
@@ -302,7 +284,7 @@ def main():
             else:
                 log("warning", f"Discovery failed for {seed_url}. Proceeding with seed only.")
 
-    # STAGE 3: FETCH & CLASSIFY
+    # STAGE 3: FETCH & CLASSIFY (URLs)
     unique_urls = {item['url']: item for item in urls_to_process}.values()
     all_final_docs = []
     processed_filenames = set()
@@ -313,17 +295,13 @@ def main():
         url = item['url']
         doc_name = url.split('/')[-1] or "webpage"
         safe_filename = create_safe_filename(doc_name, supplier_name, issue_number)
-        
         processed_filenames.add(safe_filename)
         local_path = Path("_vendor_analysis_source") / safe_filename
         
         if local_path.exists():
             print(f"⏩ Skipping {url} - Exists: {safe_filename}")
             recovered_cats = previous_file_categories.get(safe_filename, ["existing_file"])
-            all_final_docs.append({
-                "name": doc_name, "url": url, "source_type": "fetched", 
-                "relevance": "relevant", "categories": recovered_cats, "filename": safe_filename
-            })
+            all_final_docs.append({"name": doc_name, "url": url, "source_type": "fetched", "relevance": "relevant", "categories": recovered_cats, "filename": safe_filename})
             continue
 
         print(f"Fetching: {url}")
@@ -343,44 +321,60 @@ def main():
         else:
             log("warning", f"Fetch failed for {url}")
 
-    # STAGE 4: MANUAL INPUTS
-    print(f"\n--- STAGE 4: Processing Manual Inputs ---")
+    # STAGE 4: CLASSIFY & SAVE MANUAL INPUTS
+    print(f"\n--- STAGE 4: Processing & Classifying Manual Inputs ---")
     for inp in manual_inputs:
         safe_filename = create_safe_filename(inp['name'], supplier_name, issue_number)
         processed_filenames.add(safe_filename)
+        local_path = Path("_vendor_analysis_source") / safe_filename
         
-        save_and_commit_source_text(inp['text'], repo_name, issue_number, safe_filename)
-        all_final_docs.append({"name": inp['name'], "url": inp['url'], "source_type": inp['type'], "relevance": "relevant", "categories": ["uploaded"], "filename": safe_filename})
+        # If exists locally, skip classification (save money) and just recover tag
+        if local_path.exists():
+             print(f"⏩ Skipping Classification for Manual Upload - Exists: {safe_filename}")
+             recovered_cats = previous_file_categories.get(safe_filename, ["uploaded"])
+             all_final_docs.append({"name": inp['name'], "url": inp['url'], "source_type": inp['type'], "relevance": "relevant", "categories": recovered_cats, "filename": safe_filename})
+             continue
+        
+        # If NEW, we must Classify
+        print(f"🧠 Classifying Manual Upload: {inp['name']}")
+        
+        # We pass the extracted text directly to the classifier
+        # Note: We pass 'document_url' as a dummy because RB tasks usually expect it, 
+        # but 'document_text' usually overrides it in well-written tasks.
+        classifier_input = {
+            "document_text": inp['text'], 
+            "document_url": inp['url'] if "http" in inp['url'] else "manual_upload"
+        }
+        
+        run = run_rb_task(rb_token, classifier_task_id, classifier_input, f"Classify: {inp['name']}")
+        
+        categories = ["uploaded"] # Default
+        if run and not run.get("is_error"):
+            relevance_data = run.get("response", {}).get("relevance_categories", [{"category": "uploaded"}])
+            categories = [d.get("category", "uploaded") for d in relevance_data if isinstance(d, dict)]
+            print(f"   -> Classified as: {categories}")
+        else:
+            log("warning", f"Classification failed for {inp['name']}, saving as 'uploaded'")
 
-    # STAGE 4.5: RECONCILE WITH DISK & RESTORE TAGS
+        save_and_commit_source_text(inp['text'], repo_name, issue_number, safe_filename)
+        all_final_docs.append({"name": inp['name'], "url": inp['url'], "source_type": inp['type'], "relevance": "relevant", "categories": categories, "filename": safe_filename})
+
+    # STAGE 4.5: RECONCILE WITH DISK
     print(f"\n--- STAGE 4.5: Reconciling with Local Files ---")
     source_dir = Path("_vendor_analysis_source")
     if source_dir.exists():
-        for file_path in source_dir.glob(f"issue-{issue_number}-*"): # Match new filename pattern
+        for file_path in source_dir.glob(f"issue-{issue_number}-*"):
             if file_path.name not in processed_filenames:
                 print(f"  🗄️  Found orphaned file: {file_path.name}")
-                
-                recovered_cats = previous_file_categories.get(file_path.name)
-                if not recovered_cats:
-                    print(f"    ⚠️ No memory of this file. Guessing categories...")
-                    recovered_cats = guess_categories_from_name(file_path.name)
-                else:
-                    print(f"    ✅ Restored tags: {recovered_cats}")
-
-                all_final_docs.append({
-                    "name": file_path.name,
-                    "url": "Local File",
-                    "source_type": "existing",
-                    "relevance": "relevant",
-                    "categories": recovered_cats,
-                    "filename": file_path.name
-                })
+                recovered_cats = previous_file_categories.get(file_path.name) or guess_categories_from_name(file_path.name)
+                print(f"    ✅ Restored tags: {recovered_cats}")
+                all_final_docs.append({"name": file_path.name, "url": "Local File", "source_type": "existing", "relevance": "relevant", "categories": recovered_cats, "filename": file_path.name})
 
     # STAGE 5: UPDATE ISSUE
     print("\n--- STAGE 5: Updating Checklist ---")
     checklist_md = format_documents_as_checklist(all_final_docs, repo_name, issue_number, supplier_name)
     
-    CHECKLIST_MARKER = "<!--CHECKLIST_MARKER-->"
+    CHECKLIST_MARKER = ""
     new_section = (
         f"{CHECKLIST_MARKER}\n"
         "## Documents for Analysis\n\n"
@@ -395,7 +389,6 @@ def main():
     ).strip()
 
     try:
-        # We now rely exclusively on the utils library function
         update_issue_body(repo_name, issue_number, issue_body, new_section)
     except Exception as e:
         post_failure_and_exit(repo_name, issue_number, issue_body, f"Failed to post checklist: {e}")
