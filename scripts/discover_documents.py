@@ -142,7 +142,7 @@ def scan_comments_for_inputs(repo_name: str, issue_number: str, gh_token: str) -
 def scan_comments_for_inputs(repo_name: str, issue_number: str, gh_token: str) -> List[Dict[str, Any]]:
     """
     Scans comments for:
-    1. Attachments (PDF/TXT) - Scans for raw GitHub file URLs to avoid bracket/regex issues.
+    1. Attachments (PDF/TXT) - Scans for GitHub file URLs (supports user-attachments).
     2. Manual Pastes (Headers like '### Manual Document: Name').
     """
     comments = fetch_issue_comments(repo_name, issue_number)
@@ -151,30 +151,26 @@ def scan_comments_for_inputs(repo_name: str, issue_number: str, gh_token: str) -
 
     print(f"🔎 Scanning {len(comments)} comments for attachments or manual pastes...")
 
-    # IMPROVED REGEX: Ignore the [Name] and just grab the URL.
-    # Matches: https://github.com/{user}/{repo}/files/{id}/{filename}
-    # It grabs everything until it hits a space, a newline, or a closing parenthesis.
-    url_pattern = re.compile(r'(https://github\.com/[^/]+/[^/]+/files/\d+/[^\s)]+)')
+    # FIX: Loosened regex to match 'user-attachments' or 'org/repo'
+    # It matches https://github.com/ + (anything non-greedy) + /files/ + (digits) + / + (filename)
+    url_pattern = re.compile(r'(https://github\.com/.*?/files/\d+/[^\s)]+)')
     
-    # Regex for Manual Pastes remains the same
     paste_pattern = re.compile(r'### Manual Document:\s*(.*?)\n(.*?)(?=\n###|\Z)', re.DOTALL | re.IGNORECASE)
 
     for comment in comments:
         body = comment.get("body", "")
         
-        # 1. Process Attachments (via URL scan)
+        # 1. Process Attachments
         for url in url_pattern.findall(body):
-            # Clean any trailing closing parens/dots if the regex got greedy
-            url = url.rstrip(').')
+            url = url.rstrip(').') # Clean trailing punctuation
             
-            # Extract filename from URL (GitHub URLs usually end with the filename)
-            # We unquote it to turn %20 back into spaces so the saved file looks nice
+            # Extract filename from URL
             from urllib.parse import unquote
             filename = unquote(url.split('/')[-1])
             
             ext = os.path.splitext(filename)[1].lower()
+            # Only allow specific extensions
             if ext not in ['.pdf', '.txt', '.md']:
-                print(f"  Skipping non-doc attachment: {filename}")
                 continue
             
             print(f"  📎 Found attachment URL: {filename}...")
