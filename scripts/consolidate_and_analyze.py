@@ -192,24 +192,35 @@ def main():
     rb_client_id = os.environ.get("RB_CLIENT_ID")
     rb_client_secret = os.environ.get("RB_CLIENT_SECRET")
     rb_api_url = os.environ.get("RB_API_URL")
-    rb_oauth2_url = os.environ.get("RB_OAUTH2_URL")
     
-    if not rb_api_url or not rb_oauth2_url:
-        sys.exit("❌ Error: Missing RB_API_URL or RB_OAUTH2_URL environment variable.")
-    
-    # Use the OAuth2 URL directly (should be the full endpoint URL)
-    rb_token_url = rb_oauth2_url
+    if not rb_api_url:
+        sys.exit("❌ Error: Missing RB_API_URL environment variable.")
 
     if not all([gh_token, issue_body, issue_number, repo_name, rb_org_id, rb_project_id, 
-                rb_client_id, rb_client_secret, rb_api_url, rb_token_url]):
+                rb_client_id, rb_client_secret, rb_api_url]):
         sys.exit("❌ Error: Missing one or more required environment variables.")
+
+    # Construct API root (ensure it includes /api/v1)
+    rb_api_root = rb_api_url.rstrip('/')
+    if not rb_api_root.endswith('/api/v1'):
+        rb_api_root = f"{rb_api_root}/api/v1"
+    
+    # Temporarily set API_ROOT for detect_environment to work
+    original_api_root = os.environ.get("API_ROOT")
+    os.environ["API_ROOT"] = rb_api_root
 
     print(f"🚀 Starting analysis for issue #{issue_number} in repo {repo_name}...")
 
-    # Look up task IDs by name
+    # Look up task IDs by name (will use detected environment)
     security_task_id = get_task_id_by_name("Vendor Security Posture Analyzer")
     legal_task_id = get_task_id_by_name("Sub-Processor Terms Analyzer")
     reporter_task_id = get_task_id_by_name("Vendor Risk Reporter")
+    
+    # Restore original API_ROOT if it existed
+    if original_api_root:
+        os.environ["API_ROOT"] = original_api_root
+    elif "API_ROOT" in os.environ:
+        del os.environ["API_ROOT"]
 
     if not all([security_task_id, legal_task_id, reporter_task_id]):
         sys.exit("❌ Error: Could not find all required task IDs in manifest (security, legal, reporter).")

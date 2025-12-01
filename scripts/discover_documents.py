@@ -275,18 +275,30 @@ def main():
     rb_project_id = os.environ["RB_PROJECT_ID"]
     rb_client_id = os.environ["RB_CLIENT_ID"]
     rb_client_secret = os.environ["RB_CLIENT_SECRET"]
-    rb_api_url = os.environ.get("RB_API_URL") # Should include /api/v1
-    rb_oauth2_url = os.environ.get("RB_OAUTH2_URL")
     
-    if not rb_api_url or not rb_oauth2_url:
-        sys.exit("❌ Error: Missing RB_API_URL or RB_OAUTH2_URL environment variable.")
+    # Get API URL and construct API root for environment detection
+    rb_api_url = os.environ.get("RB_API_URL")
+    if not rb_api_url:
+        sys.exit("❌ Error: Missing RB_API_URL environment variable.")
     
-    # Use the OAuth2 URL directly (should be the full endpoint URL)
-    rb_token_url = rb_oauth2_url
-
-    # Look up task IDs by name
+    # Construct API root (ensure it includes /api/v1)
+    rb_api_root = rb_api_url.rstrip('/')
+    if not rb_api_root.endswith('/api/v1'):
+        rb_api_root = f"{rb_api_root}/api/v1"
+    
+    # Temporarily set API_ROOT for detect_environment to work
+    original_api_root = os.environ.get("API_ROOT")
+    os.environ["API_ROOT"] = rb_api_root
+    
+    # Look up task IDs by name (will use detected environment)
     discovery_task_id = get_task_id_by_name("Document Discovery Task")
     classifier_task_id = get_task_id_by_name("Document Classifier Task")
+    
+    # Restore original API_ROOT if it existed
+    if original_api_root:
+        os.environ["API_ROOT"] = original_api_root
+    elif "API_ROOT" in os.environ:
+        del os.environ["API_ROOT"]
 
     if not discovery_task_id or not classifier_task_id:
         sys.exit("❌ Could not find 'Document Discovery Task' or 'Document Classifier Task' in task_manifest.json")
