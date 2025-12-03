@@ -103,7 +103,7 @@ This is where you (or your external counsel) define the "Hard Checks". Configure
 ```
 _Pro Tip: Because this is code, you can create a PR to update your risk policy. If you hire a fractional GC or get advice from a law firm, have them review this file. Merging their advice here scales their expertise across every future vendor review automatically._
 
-# 📖 🛠️ Usage
+# 🛠️ Usage
 
 ### 1. Engineer Workflow
 
@@ -134,8 +134,6 @@ The logic for how the AI analyzes documents is defined in tasks/*.json. You can 
 - Want to check for specific ISO certifications? Edit `tasks/security_posture_analyzer.json`.
 
 If you work with external counsel, ask them for their "red lines" and bake them directly into these system prompts. After editing a task definition, re-run scripts/setup_rightbrain.py to update the active task in Rightbrain.
-
-### 🧠 Extending the Intelligence
 
 ```
 .
