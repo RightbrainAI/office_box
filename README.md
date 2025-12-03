@@ -1,146 +1,157 @@
 # AI-Powered Vendor Onboarding Tool
 
-This project provides a complete, automated workflow for conducting vendor risk assessments using GitHub Issues and Rightbrain AI Tasks.
+For most startups, vendor compliance is a distraction. You either waste hours chasing PDFs and trying to manage it yourself, or you ignore it altogether until investors ask for your data room.
 
-It listens for new vendor onboarding requests, automatically discovers and analyzes all associated legal and security documents, and produces a high-level risk report to accelerate your compliance workflow.
+This repository offers a better way: turning compliance into a git-backed CI/CD pipeline. Instead of scrambling to find documents later, you open a GitHub Issue today. The system spiders the vendor's documentation, runs parallel legal and security analysis using specialized LLM tasks, and commits the results directly to your repo as a version-controlled audit trail.
 
-# 🏁 Quick Start: Zero-Code Setup Guide
+# ⚡ Architecture
 
-*Target Audience*: Legal Ops, Security Managers, & Counsel.
+This tool treats compliance as an event-driven workflow:
 
-No coding or terminal required. Follow these 5 steps to get your own private risk analyst.
+1. Trigger: A new Issue (New Supplier) triggers the on_issue_opened workflow.
+1. Discovery (Spidering): scripts/discover_documents.py executes a Rightbrain Discovery Task to crawl the provided URL, identifying deep-linked assets (DPAs, SOC2 reports, Sub-processor lists) and distinguishing them from defined terms.
+1. Analysis (Parallel Execution):
+	- Legal: scripts/consolidate_and_analyze.py pipes compiled text to a Legal Analyst Task (extracting indemnities, liability caps, jurisdiction).
+	- Security: Parallel execution of a Security Posture Task (extracting ISO/SOC2 validity, encryption standards, breach notification SLAs).
+1. Synthesis (The "Risk Call"): A Risk Reporter Task aggregates raw findings and evaluates them against your specific company_profile.json (Risk Tolerance) to generate a Pass/Fail recommendation.
+1. Persistence: Upon approval, scripts/commit_approved_vendor.py commits the finalized data to suppliers/data-processors.json and generates a permanent Markdown audit log.
 
-### Step 1: Get your own copy
+# 🏁 Quick Start
 
-1. Look at the top-right corner of this page and click the "Fork" button.
-2. Click "Create Fork".
-3. You now have your own copy of this tool! You will do all the following steps on your version.
 
-### Step 2: Get your Rightbrain API Keys
 
-1. Log in to your Rightbrain account.
-1. Go to Settings > API Clients.
-1. Click "Create OAuth Client".
-1. Keep this tab open. You will need the Client ID, Client Secret, Organization ID, and Project ID for the next step.
+### 1. Fork & Clone
 
-### Step 3: Connect GitHub to Rightbrain
+Fork this repository to your private organization. This repo will become your central vendor registry.
 
-1. In your GitHub repository, click the Settings tab (top menu).
-1. On the left sidebar, scroll down to Secrets and variables and click Actions.
-1. Click the green "New repository secret" button.
-1. You need to add the following 6 secrets (copy/paste the values from your Rightbrain tab):
+### 2: Configure secrets
 
-| Name | Value |
-|------|-------|
-|RB_ORG_ID| Your Organization ID|
-|RB_PROJECT_ID|Your Project ID|
-|RB_CLIENT_ID|Your Client ID|
-|RB_CLIENT_SECRET|Your Client Secret|
-|RB_OAUTH2_URL|https://oauth.rightbrain.ai/oauth2/auth|
-|RB_API_URL|https://app.rightbrain.ai/api/v1|
+You need a Rightbrain API key to power the intelligence layer.
 
-_Note: You will also need a *GITHUB__TOKEN*, but GitHub creates this for you automatically! You don't need to add it._
+1. Get your keys from Rightbrain Settings > API Clients.
 
-### Step 4: The "Magic Button" (Install AI Tasks)
+2. Add the following to your Repo Secrets (Settings > Secrets and variables > Actions):
 
-1. Click the Actions tab (top menu).
-_Note: If you see a big green button saying "I understand my workflows...", click it to enable automation._
-1. On the left sidebar, click "Setup Rightbrain Tasks".
-1. On the right side, click the "Run workflow" dropdown, then click the green "Run workflow" button.
-1. Wait about 30 seconds. When you see a green checkmark, the AI is installed!
+| Column 1  | Column 2  |
+|:----------|:----------|
+| `API_ROOT`    | `https://app.rightbrain.ai/api/v1`    |
+| `RB_CLIENT_ID`    | OAuth Client ID    |
+| `RB_CLIENT_SECRET`    | OAuth Client Secret    |
+| `RB_ORG_ID`    | Your Rightbrain Org ID    |
+| `RB_PROJECT_ID`    | Your Rightbrain Project ID    |
+| `RIGHTBRAIN_ENVIRONMENT`    | `production`    |
+| `TOKEN_URI`    | `https://oauth.rightbrain.ai/oauth2/token`    |
 
-### Step 5: Train Your AI (Configure Company Profile)
 
-1. This is the most important step! You need to tell the AI who "we" are so it knows what risks matter to you.
-2. Go to the Code tab (top menu).
-3. Navigate to the config/ folder and click on company_profile.json.
-4. Click the Pencil Icon (Edit file) in the top right.
-5. Change the details to match your company.
-	- Risk Tolerance: Be specific (e.g., "Zero tolerance for Privacy risks," but "Moderate tolerance for Operational uptime").
-	- Hard Requirements: List non-negotiables (e.g., "MUST have SOC 2," "MUST NOT sell data").
-	- Risk Strategy: Tell the AI how to solve problems (e.g., "Legal bandwidth is low" -> Prefer technical controls over contract negotiation).
-6. Click Commit changes (green button) to save.
+### 3: Deploy AI Tasks
 
-# 📖 How to Use (Daily Workflow)
+This repo comes with pre-configured task definitions in tasks/. You need to deploy these to your Rightbrain project so the API can call them.
 
-### 1. Request a New Vendor
+We've provided a bootstrap script to handle this:
 
-- Go to the Issues tab.
-- Click New Issue.
-- Select "New Supplier".
-- Fill in the form (Website, T&Cs link, Service Description).
-- Click Submit.
-- The AI will immediately start searching for documents.
+```
+# Locally, with env vars set, or via the "Setup Rightbrain Tasks" Action in the UI
+python3 scripts/setup_rightbrain.py
+```
+This registers 5 tasks (Discovery, Classification, Legal, Security, Reporting) in your Rightbrain project.
 
-### 2. Review Documents
+# ⚙️ Configuration (The "Risk Lens")
 
-- Wait for the AI to comment with a Checklist of Documents.
-- It will find T&Cs, Privacy Policies, and Security pages automatically.
-- Uncheck any documents that look irrelevant.
-- (Optional) Upload any offline PDFs if you have them.
-- When ready, add the Label: ready-for-analysis (on the right sidebar).
+The AI doesn't guess your risk appetite; it reads it from `config/company_profile.json.`
 
-### 3. Get the Risk Report
+This is where you (or your external counsel) define the "Hard Checks". Configure it once, and the AI enforces your legal standard on every new vendor - no hourly billing required.
 
-- The AI will read everything and post a Detailed Risk Analysis comment.
-- It covers GDPR, Security Controls, and Liability risks.
-- It also drafts a "Reviewer-Approved Data" block.
+```
+{
+  "company_name": "Pied Piper Inc.",
+  "description": "We are a Series B startup building a decentralized internet based on middle-out compression technology.",
+  "jurisdiction": "California, USA (Silicon Valley)",
+  "key_data_processed": [
+    "User Metadata (Decentralized IDs)",
+    "Encrypted Shards of User Files",
+    "Compressed Video Streams (4K/8K)"
+  ],
+  "compliance_frameworks": [
+    "COPPA (The 'PiperChat' Incident)",
+    "GDPR (Global Users)",
+    "CCPA",
+    "App Store Guidelines"
+  ],
+  "risk_tolerance": {
+    "privacy_and_security": "Zero. We pitch a 'new internet' that respects privacy. A leak destroys our core value proposition.",
+    "legal_liability": "High (Strategic). Hooli will sue us regardless of what our contracts say. We treat legal defense as a distraction. We prefer to move fast and break things rather than die waiting for perfect indemnities.",
+    "operational_uptime": "Critical. Our Weissman Score depends on low latency. We cannot tolerate slow vendors.",
+    "reputational": "Very High. Our entire moat is the trust of the Open Source developer community. We cannot be associated with 'surveillance capitalism' vendors or data brokers."
+  },
+  "hard_requirements": [
+    "MUST NOT be a subsidiary of Hooli or Endframe.",
+    "MUST support decentralized storage protocols (IPFS/Filecoin compatible).",
+    "MUST NOT track user data for advertising purposes."
+  ],
+  "risk_strategy_context": {
+    "legal_bandwidth": "None. Jared is doing everything. If a contract requires redlining, we probably just won't sign it.",
+    "engineering_bandwidth": "Infinite (Gilfoyle). We prefer to just hack around vendor limitations or encrypt data before sending it to them.",
+    "financial_budget": "Volatile. We are cash-poor. We prefer Open Source or self-hosted solutions.",
+    "preferred_resolution_hierarchy": [
+      "1. Technical Control (encrypt it ourselves)",
+      "2. Build it internal (Dinesh/Gilfoyle build)",
+      "3. Legal Negotiation (Jared begs)",
+      "4. Insurance (We probably can't afford it)"
+    ]
+  }
+}
+```
+_Pro Tip: Because this is code, you can create a PR to update your risk policy. If you hire a fractional GC or get advice from a law firm, have them review this file. Merging their advice here scales their expertise across every future vendor review automatically._
 
-### 4. Approve & Archive
+# 📖 🛠️ Usage
 
-- Read the report.
-- Edit the JSON block in the comment if you want to change the risk rating or mitigations.
-- Close the Issue as "Completed".
-- The system will automatically save the approved vendor to your database (suppliers/ folder) and archive the audit trail.
+### 1. Engineer Workflow
 
-# ⚙️ For Developers (Under the Hood)
+- Go to Issues > New Issue.
+- Select New Supplier.
+- Paste the Vendor's URL (e.g., https://intercom.com) and a 1-sentence description of usage.
+- Submit.
 
-This system uses Python scripts triggered by GitHub Actions to orchestrate the workflow.
+### 2. Reviewer Workflow
 
-### Core Scripts:
+- Wait for Spidering: The bot will comment with a checklist of found documents (DPA, Privacy Policy, Security Whitepaper).
+- Manual Override: If the bot missed a doc (e.g., a PDF behind a login), drag-and-drop it into a comment.
+- Analysis: The bot posts a Risk Summary.
+- Approval: Edit the JSON block in the final comment (if you want to override the AI's mitigations) and close the issue as Completed.
 
-- `scripts/discover_documents.py`: Crawls URLs and builds the document checklist.
-- `scripts/consolidate_and_analyze.py`: Compiles text and runs the Security/Legal AI analysis tasks.
-- `scripts/commit_approved_vendor.py`: Parses the final human review and commits the data to JSON storage.
+### 3. The Audit Trail
 
-### Customization:
+- Registry: Updates suppliers/data-processors.json.
+- Audit Log: Creates suppliers/subprocessors/<vendor>/<vendor>.md containing the full decision log, links to analyzed docs, and the snapshot of terms agreed to.
 
-Company Profile: Edit `config/company_profile.json` to change the "Lens" the AI uses for risk assessment.
 
-Prompt Engineering: Edit the JSON files in task_templates/ to change how the AI thinks. If you change a template, re-run the "Setup Rightbrain Tasks" workflow to update the live AI.
 
-## 📂 Code Structure
+# 🧠 Extending the Intelligence
 
-This project follows a modular structure designed for automated risk analysis.
+The logic for how the AI analyzes documents is defined in tasks/*.json. You can modify these prompts to suit your specific risks.
 
-- `.github/`:
-	- `workflows/`: The automation engine. Contains YAML files for Discovery, Analysis, and Approval triggers.
-	- `ISSUE_TEMPLATE/`: Defines the "New Supplier" intake form (structured-new-supplier.yml).
+- Want stricter GDPR checks? Edit `tasks/sub_processor_terms_analyzer.json`.
+- Want to check for specific ISO certifications? Edit `tasks/security_posture_analyzer.json`.
 
-- `config/`:
-	- `company_profile.json`: Critical. This is the commercial context for the AI — defining your risk tolerance, hard requirements, and compliance needs.
-	- `rightbrain.config.json & model_manifest.json`: Configuration for the AI client and model versions.
+If you work with external counsel, ask them for their "red lines" and bake them directly into these system prompts. After editing a task definition, re-run scripts/setup_rightbrain.py to update the active task in Rightbrain.
 
-- `scripts/`: The Python logic that powers the tool.
-	- `discover_documents.py`: Finds and downloads PDFs/Webpages.
-	- `consolidate_and_analyze.py`: Sends data to the AI for legal/security review.
-	- `commit_approved_vendor.py`: Saves the final approved data to the suppliers/ database.
-	- `update_existing_vendor.py`: Re-evaluates vendors periodically.
-	- `setup_rightbrain.py`: One-time script to deploy AI tasks to your project.
+### 🧠 Extending the Intelligence
 
-- `suppliers/`: Your database of approved vendors.
-	- *Example*: `subprocessors/anthropic/` contains the full audit trail, approved T&Cs (snapshot in time), and risk report for Anthropic.
-	- `data-processors.json`: A central registry of all approved processors.
-
-- `tasks/`: The AI Task definitions.
-	- `discovery_task.json`: Instructions for the AI to crawl and find documents.
-	- `document_classifier.json`: Instructions for categorizing files (Legal vs. Security).
-	- `security_posture_analyzer.json`: Instructions for the AI to find security controls.
-	- `sub_processor_terms_analyzer.json`: Instructions for the AI to review legal liability and DPA terms.
-	- `vendor_risk_reporter.json`: Instructions for synthesizing the final executive summary.
-
-- `utils/`: Shared Python libraries for API interactions (github_api.py, rightbrain_api.py).
+```
+.
+├── .github/workflows/          # CI/CD Orchestration
+├── config/
+│   └── company_profile.json    # <--- EDIT THIS (Your Risk Appetite)
+├── scripts/                    # Python Logic
+│   ├── discover_documents.py   # Spidering & Classification
+│   ├── consolidate_and_analyze.py # RAG & Synthesis
+│   └── commit_approved_vendor.py # Git Persistence
+├── suppliers/                  # <--- YOUR DATA
+│   ├── data-processors.json    # JSON Registry of all vendors
+│   └── subprocessors/          # Folder per vendor with MD audit logs
+└── tasks/                      # Rightbrain Task Definitions (Prompts)
+```
 
 ## License
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+MIT
