@@ -28,9 +28,9 @@ Fork this repository to your private organization. This repo will become your ce
 
 You need a Rightbrain API key to power the intelligence layer.
 
+1. Create a free account at [app.rightbrain.ai](https://app.rightbrain.ai/).
 1. Get your keys from Rightbrain Settings > API Clients.
-
-2. Add the following to your Repo Secrets (Settings > Secrets and variables > Actions):
+1. Add the following to your Repo Secrets (Settings > Secrets and variables > Actions):
 
 | Column 1  | Column 2  |
 |:----------|:----------|
