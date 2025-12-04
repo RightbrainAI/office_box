@@ -50,7 +50,7 @@ This repo comes with pre-configured task definitions in tasks/. You need to depl
 We've provided a bootstrap script to handle this:
 
 ```
-# Locally, with env vars set, or via the "Setup Rightbrain Tasks" Action in the UI
+# Trigger the workflow at actions/workflows/setup_rightbrain.yml, or locally, with env vars set, use
 python3 scripts/setup_rightbrain.py
 ```
 This registers 5 tasks (Discovery, Classification, Legal, Security, Reporting) in your Rightbrain project.
