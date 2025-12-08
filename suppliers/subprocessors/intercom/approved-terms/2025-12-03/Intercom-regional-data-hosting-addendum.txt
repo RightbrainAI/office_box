@@ -1,0 +1,163 @@
+Original Source: https://github.com/RightbrainAI/office_box/blob/main/_vendor_analysis_source/issue-11-Intercom-service-level-agreement.txt
+Approved: 2025-12-03
+--------------------
+
+blankblankblankblankblank
+[Skip to content](https://www.intercom.com/legal/regional-data-hosting-addendum#main)
+# Terms & Policies
+Intercom Regional Data Hosting Addendum
+Terms of Service Intercom Additional Product Terms Privacy Policy Data Processing Addendum Product Privacy Notice Intercom Regional Data Hosting Addendum Support Policy Professional Services Terms Cookie Policy Security Policy Subprocessors List Data Privacy Framework Notice Intercom Website Terms of Use Academy Terms Service Level Agreement Acceptable Use Policy Code of Conduct Trademark Usage Intercom Global Anti-Corruption Statement Intercom Partner Code of Conduct Intercom DMCA Policy Law Enforcement Guidelines European Digital Services Act Notice Fin Guarantee Referral Program
+  * [Customer Data and Customer Obligations](https://www.intercom.com/legal/regional-data-hosting-addendum#customer-data-and-customer-obligations)
+[Third-Party Platforms and Third Party Messaging Apps](https://www.intercom.com/legal/regional-data-hosting-addendum#third-party-platforms-and-third-party-messaging-apps)
+[Subscription Term, Fees & Payment](https://www.intercom.com/legal/regional-data-hosting-addendum#subscription-term-fees-payment)
+[Term and Termination](https://www.intercom.com/legal/regional-data-hosting-addendum#term-and-termination)
+[Limitation of Remedies and Damages](https://www.intercom.com/legal/regional-data-hosting-addendum#limitation-of-remedies-and-damages)
+[Confidential Information](https://www.intercom.com/legal/regional-data-hosting-addendum#confidential-information)
+  * [Intercom Additional Product Terms](https://www.intercom.com/legal/terms-and-policies/additional-product-terms)
+  * [Personal Data Collected by Intercom](https://www.intercom.com/legal/regional-data-hosting-addendum#personal-data-collected-by-intercom)
+[How and Why We Use Your Personal Data](https://www.intercom.com/legal/regional-data-hosting-addendum#how-and-why-we-use-your-personal-data)
+[Sharing Your Personal Data](https://www.intercom.com/legal/regional-data-hosting-addendum#sharing-your-personal-data)
+[Retention of Your Personal Data](https://www.intercom.com/legal/regional-data-hosting-addendum#retention-of-your-personal-data)
+[Transfers of Your Personal Data](https://www.intercom.com/legal/regional-data-hosting-addendum#transfers-of-your-personal-data)
+[How We Store and Safeguard Personal Data](https://www.intercom.com/legal/regional-data-hosting-addendum#how-we-store-and-safeguard-personal-data)
+[Your Privacy Rights and Choices](https://www.intercom.com/legal/regional-data-hosting-addendum#your-privacy-rights-and-choices)
+[Changes to this Notice and Questions](https://www.intercom.com/legal/regional-data-hosting-addendum#changes-to-this-notice-and-questions)
+[Collection and Use of Personal Data of California Residents](https://www.intercom.com/legal/regional-data-hosting-addendum#collection-and-use-of-personal-data-of-california-residents)
+  * [Data Processing Addendum](https://www.intercom.com/legal/data-processing-agreement)
+  * [Product Privacy Notice](https://www.intercom.com/legal/product-privacy-notice)
+  * [Intercom Regional Data Hosting Addendum](https://www.intercom.com/legal/regional-data-hosting-addendum)
+[Exhibit A to the RDH Addendum: European Data Hosting](https://www.intercom.com/legal/regional-data-hosting-addendum#exhibit-a-to-the-rdh-addendum-european-data-hosting)
+[Exhibit B to the RDH Addendum: Australian Data Hosting](https://www.intercom.com/legal/regional-data-hosting-addendum#exhibit-b-to-the-rdh-addendum-australian-data-hosting)
+  *   * [Professional Services Terms](https://www.intercom.com/legal/professional-services-terms)
+  * [Cookies and similar technologies and the processing of personal data](https://www.intercom.com/legal/regional-data-hosting-addendum#cookies-and-similar-technologies-and-the-processing-of-personal-data)
+[Why do we use cookies?](https://www.intercom.com/legal/regional-data-hosting-addendum#why-do-we-use-cookies)
+[What type of cookies do we use and what are they used for?](https://www.intercom.com/legal/regional-data-hosting-addendum#what-type-of-cookies-do-we-use-and-what-are-they-used-for)
+  * [Permissions and Admin Controls](https://www.intercom.com/legal/regional-data-hosting-addendum#permissions-and-admin-controls)
+[Application Monitoring](https://www.intercom.com/legal/regional-data-hosting-addendum#application-monitoring)
+[Security Audits and Certifications](https://www.intercom.com/legal/regional-data-hosting-addendum#security-audits-and-certifications)
+[Customer Responsibilities](https://www.intercom.com/legal/regional-data-hosting-addendum#customer-responsibilities)
+  * [Subprocessors List](https://www.intercom.com/legal/subprocessors-list)
+  * [Data Privacy Framework Notice](https://www.intercom.com/legal/privacy#transfers-of-your-personal-data)
+  * [Intercom Website Terms of Use](https://www.intercom.com/legal/website-terms-of-use)
+[Permission to Use the Site](https://www.intercom.com/legal/regional-data-hosting-addendum#permission-to-use-the-site)
+[Restrictions on User Content and Your Conduct](https://www.intercom.com/legal/regional-data-hosting-addendum#restrictions-on-user-content-and-your-conduct)
+[Intellectual Property Rights in User Content](https://www.intercom.com/legal/regional-data-hosting-addendum#intellectual-property-rights-in-user-content)
+[User Content You Post Becomes Public](https://www.intercom.com/legal/regional-data-hosting-addendum#user-content-you-post-becomes-public)
+[We Are Not Responsible for User Content](https://www.intercom.com/legal/regional-data-hosting-addendum#we-are-not-responsible-for-user-content)
+[Enforcement of Copyrights](https://www.intercom.com/legal/regional-data-hosting-addendum#enforcement-of-copyrights)
+[Notify Us of Infringers](https://www.intercom.com/legal/regional-data-hosting-addendum#notify-us-of-infringers)
+[How to Communicate with Us](https://www.intercom.com/legal/regional-data-hosting-addendum#how-to-communicate-with-us)
+[Links to Other Sites](https://www.intercom.com/legal/regional-data-hosting-addendum#links-to-other-sites)
+[Limitation of Liability](https://www.intercom.com/legal/regional-data-hosting-addendum#limitation-of-liability)
+[Termination and Suspension](https://www.intercom.com/legal/regional-data-hosting-addendum#termination-and-suspension)
+[Governing Law and Dispute Resolution](https://www.intercom.com/legal/regional-data-hosting-addendum#governing-law-and-dispute-resolution)
+  * [Intercom Academy Terms](https://www.intercom.com/legal/regional-data-hosting-addendum#intercom-academy-terms)
+[Participant Responsibilities](https://www.intercom.com/legal/regional-data-hosting-addendum#participant-responsibilities)
+[Suspension and Termination](https://www.intercom.com/legal/regional-data-hosting-addendum#suspension-and-termination)
+[Independent Contractors](https://www.intercom.com/legal/regional-data-hosting-addendum#independent-contractors)
+  * [Service Level Agreement](https://www.intercom.com/legal/service-level-agreement)
+  * [Acceptable Use Policy](https://www.intercom.com/legal/acceptable-use-policy)
+  * [Potential Consequences Of Code Violations](https://www.intercom.com/legal/regional-data-hosting-addendum#potential-consequences-of-code-violations)
+[Promote Labor, Employment, And Immigration Compliance](https://www.intercom.com/legal/regional-data-hosting-addendum#promote-labor-employment-and-immigration-compliance)
+[Prevent Harassment And Discrimination](https://www.intercom.com/legal/regional-data-hosting-addendum#prevent-harassment-and-discrimination)
+[Conflicts Of Interest](https://www.intercom.com/legal/regional-data-hosting-addendum#conflicts-of-interest)
+[Keep Clear And Accurate Financial Records](https://www.intercom.com/legal/regional-data-hosting-addendum#keep-clear-and-accurate-financial-records)
+[Business Partner Relationships](https://www.intercom.com/legal/regional-data-hosting-addendum#business-partner-relationships)
+[Zero-Tolerance For Corruption](https://www.intercom.com/legal/regional-data-hosting-addendum#zero-tolerance-for-corruption)
+[Avoid Improper Gifts And Entertainment](https://www.intercom.com/legal/regional-data-hosting-addendum#avoid-improper-gifts-and-entertainment)
+[Respect Trade Controls](https://www.intercom.com/legal/regional-data-hosting-addendum#respect-trade-controls)
+[Keep Intercom Secrets Safe](https://www.intercom.com/legal/regional-data-hosting-addendum#keep-intercom-secrets-safe)
+[Protect Intercom Assets And Promote Our Solutions](https://www.intercom.com/legal/regional-data-hosting-addendum#protect-intercom-assets-and-promote-our-solutions)
+[Protect Our Employee And Customer Information](https://www.intercom.com/legal/regional-data-hosting-addendum#protect-our-employee-and-customer-information)
+[Use Social Media Responsibly](https://www.intercom.com/legal/regional-data-hosting-addendum#use-social-media-responsibly)
+[Promote Sustainability](https://www.intercom.com/legal/regional-data-hosting-addendum#promote-sustainability)
+[Protect And Celebrate Our Culture](https://www.intercom.com/legal/regional-data-hosting-addendum#protect-and-celebrate-our-culture)
+  * [Intercom Marks and License](https://www.intercom.com/legal/regional-data-hosting-addendum#intercom-marks-and-license)
+[Permissible Use of the Intercom Marks](https://www.intercom.com/legal/regional-data-hosting-addendum#permissible-use-of-the-intercom-marks)
+[Impermissible Use of the Intercom Marks](https://www.intercom.com/legal/regional-data-hosting-addendum#impermissible-use-of-the-intercom-marks)
+[Your Liability for Third-Party Claims](https://www.intercom.com/legal/regional-data-hosting-addendum#your-liability-for-third-party-claims)
+  * [Intercom Global Anti-Corruption Statement](https://www.intercom.com/legal/global-anti-corruption-statement)
+[Bribery and Kickbacks](https://www.intercom.com/legal/regional-data-hosting-addendum#bribery-and-kickbacks)
+[Records and Reporting](https://www.intercom.com/legal/regional-data-hosting-addendum#records-and-reporting)
+[Applicability and Enforcement](https://www.intercom.com/legal/regional-data-hosting-addendum#applicability-and-enforcement)
+  * [Intercom Partner Code of Conduct](https://www.intercom.com/legal/partner-code-of-conduct)
+[Labor and Employment Laws](https://www.intercom.com/legal/regional-data-hosting-addendum#labor-and-employment-laws)
+[Anti Corruption Laws](https://www.intercom.com/legal/regional-data-hosting-addendum#anti-corruption-laws)
+[International Trade and Export Controls](https://www.intercom.com/legal/regional-data-hosting-addendum#international-trade-and-export-controls)
+[Recordkeeping, Financial Integrity, and Honest and Accurate Dealings](https://www.intercom.com/legal/regional-data-hosting-addendum#recordkeeping-financial-integrity-and-honest-and-accurate-dealings)
+[Intellectual Property and Confidential Information](https://www.intercom.com/legal/regional-data-hosting-addendum#intellectual-property-and-confidential-information)
+[Raising Issues and Concerns](https://www.intercom.com/legal/regional-data-hosting-addendum#raising-issues-and-concerns)
+[Certification and Application](https://www.intercom.com/legal/regional-data-hosting-addendum#certification-and-application)
+  * [Intercom DMCA Policy](https://www.intercom.com/legal/dmca-policy)
+  * [Law Enforcement Guidelines](https://www.intercom.com/legal/law-enforcement-guidelines)
+  * [European Digital Services Act Notice](https://www.intercom.com/legal/european-digital-services-act)
+  *   * 
+
+## Regional Data Hosting Addendum
+Effective day 8 March 2024
+  1. Scope
+    1. This Intercom Regional Data Hosting Addendum (“**RDH Addendum** ”) is entered into by and between Intercom R&D Unlimited Company, an Irish company with offices at 124 St Stephen's Green, Dublin 2, DC02 C628, Republic of Ireland ("**Intercom** " “**us** ” or “**we** ”) and the entity or person placing an order via an applicable Order Form for or accessing any Regional Data Hosting services ("**Customer** " or "**you** ") either in the EU or Australia. “**RDH Services** ” are defined as the European or Australian Data Hosting features and services set forth in this RDH Addendum. In order to use RDH Services, you must agree to the RDH Addendum. 
+    2. You may use RDH Services only upon approval by Intercom. The Intercom Terms of Service (<https://www.intercom.com/legal/terms-and-policies>) (“**ToS** ”) or, as applicable, Intercom Master Saas Subscription Agreement (“**MSSA** ”) you entered into with Intercom (the “Agreement”) are incorporated by reference and form a part of the Agreement. 
+    3. By agreeing to the RDH Addendum you agree that the Intercom Data Processing Addendum (<https://www.intercom.com/legal/data-processing-agreement>) or any signed version of a data processing agreement between Intercom and You (“DPA”), is amended in accordance with Exhibit A or Exhibit B (as applicable) of the RDH Terms. 
+    4. All capitalized terms not defined in the RDH Addendum have the meanings set forth in the Agreement. 
+    5. Unless stated otherwise, in the event of a conflict between this RDH Addendum, including any attachments herein, and any other applicable terms including the Agreement, the provisions of this RDH Addendum will control but only with respect to the subject matter hereof. 
+  2. RDH Services
+    1. By agreeing to and complying with the RDH Addendum, we grant you access to the RDH Services (as set out herein) in accordance with the terms of the Agreement. 
+    2. Description of the RDH Services: 
+      1. An RDH workspace is a stand-alone instance of Intercom.
+      2. In an RDH workspace, the Customer Data associated with that workspace will be hosted (as applicable) in either: a datacenter located in the EU or Australia (the “Designated Region”). This includes: 
+        1. All visitor and contact data collected by the Messenger for an RDH workspace; 
+        2. All the conversation data that happens via the Messenger for a RDH workspace; 
+        3. All the data attributes or events a Customer collects on their RDH workspace. 
+    3. Notwithstanding Section 2.2 of the RDH Addendum, there are limited circumstances where Customer Data will continue to be transferred and processed outside the Designated Region in accordance with the terms of the DPA and in accordance with Applicable Data Protection Legislation, as follows: 
+      1. **Account Administration** : The Intercom Customer’s name, email, credit card data. We require this for processing in our US-based billing systems. 
+      2. **Customer Support** : As per our Support Policy, Support is provided 24 hours per day, 7 days per week. Intercom has a globally distributed team that provides this level of coverage. 
+        1. For European hosted workspaces: The main customer support team is based in the EU and the majority of support issues arising during normal EU business hours (Monday-Friday 9am to 6pm Irish Standard Time) are responded to and resolved by EU-based employees. 
+        2. For Australia hosted workspaces: The main customer support team is based in Australia and the majority of support issues arising during normal Australian business hours (Monday-Friday 8am to 5pm AEST or AEDT as applicable) are responded to and resolved by Australia-based employees. 
+        3. A support issue may initially be responded to by a member of the customer support team outside of the Designated Region’s business hours. If the customer support team member based outside of the Designated Region cannot resolve the issue without accessing the Customer’s workspace, it will be escalated to the appropriate regionally based team member for resolution during normal EU or Australia business hours. 
+        4. If the support issue is urgent and requires resolution outside of the business hours specified in 2.3.2 (a) or (b) as applicable, then a Permitted User of the Customer can grant impersonation access to an Intercom customer support team member based outside the Designated Region. Once granted, access is limited to the specific issue only and access to any Customer Data as part of the impersonation support is limited to the amount and type of Customer Data required to achieve resolution of the issue. Intercom uses state-of-the-art encryption to protect Customer Data at rest and in transit. Intercom uses just-in-time (JIT) access approvals which are granted only for as long as is necessary to resolve the customer support incident. Intercom also relies on role-based access control (RBAC), where individual access is subject to strict requirements, such as the need-to-know principle. 
+      3. **Customer initiated transfers as part of Services functionality** : Customer authorizes Intercom to transfer Customer Data outside the Designated Region in order to provide certain Intercom Services’ features selected for use by the Customer. Details of features requiring subprocessing outside of the designated region are specified in the Regional Data Subprocessing List for the Designated Region (<https://www.intercom.com/legal/subprocessors-list>). 
+    4. The following Services’ features will not be supported for RDH: <https://www.intercom.com/help/en/articles/5778275-additional-details-on-intercom-regional-data-hosting>. Please note that over time, this list may change. 
+
+
+## Exhibit A to the RDH Addendum: European Data Hosting
+The Data Processing Addendum located at <https://www.intercom.com/legal/data-processing-agreement> is hereby incorporated by reference but with the following modifications:
+  1. Section 7. i. “Authorization for Sub-processing” is replaced as follows: 
+    1. “Customer agrees that Intercom engages Amazon Web Services, Inc. (“AWS”) for hosting and storage and this occurs in Dublin, Ireland. Intercom’s use of Sub-processors, including Intercom’s Affiliates, may be updated from time to time; and such Affiliates and Sub-processors respectively may engage third party processors to process Customer Data on Intercom's behalf. Customer provides a general authorization for Intercom to engage onward sub-processors that is conditioned on the following requirements: (a) Intercom will restrict the onward sub-processor’s access to Customer Data only to what is strictly necessary to provide the Services, and Intercom will prohibit the Sub-processor from processing the Personal Data for any other purpose; (b) Intercom agrees to impose contractual data protection obligations, including appropriate technical and organizational measures to protect personal data, on any Sub-processor it appoints that require such Sub-processor to protect Customer Data to the standard required by Applicable Data Protection Legislation; and (c) Intercom will remain liable and accountable for any breach of this DPA that is caused by an act or omission of its Sub-processors.” 
+  2. Section 7. ii. “Current Sub-processors and Notification of Sub-processor Additions” is replaced as follows: 
+    1. “Customer understands that effective operation of the Services may require the transfer of Customer Data to Intercom Affiliates, such as Intercom, Inc., or to Intercom's Sub-processors, see Schedule 3. Customer hereby authorizes the transfer of Customer Data to locations outside Europe (in accordance with in Section 2 of the RDH Addendum), including to Intercom Affiliates and Sub-processors, subject to continued compliance with this DPA throughout the duration of the Agreement. Customer hereby provides general authorization to Intercom engaging additional third-party Sub-processors to process Customer Data within the Services for the Permitted Purposes. 
+    2. Intercom may, by giving reasonable notice to the Customer, add or replace Sub-processors at least 10 days prior to any such changes. If Customer objects to the appointment of an additional Sub-processor within thirty (30) calendar days of such notice on reasonable grounds relating to the protection of the Personal Data, then Intercom will work in good faith with Customer to find an alternative solution. In the event that the parties are unable to find such a solution, Customer may terminate the Agreement at no additional cost.” 
+  3. Section 12. i. “Location of Processing” is replaced as follows: Location of Processing is governed by Section 2 of the RDH Addendum. 
+  4. Schedule 2 TECHNICAL AND ORGANIZATIONAL SECURITY MEASURES Annex II - Measures for ensuring physical security of locations at which personal data are processed” is replaced as follows: 
+    1. Physical Access Control. Intercom’s services and data are hosted in AWS’ facilities in Ireland and protected by AWS in accordance with their security protocols. Access only to approved personnel. All personnel who need data center access must first apply for access and provide a valid business justification. These requests are granted based on the principle of least privilege and are time-bound. Requests are reviewed and approved by authorized personnel, and access is revoked after the requested time expires. 
+  5. “Schedule 2 TECHNICAL AND ORGANIZATIONAL SECURITY MEASURES Annex II - Measures for ensuring ongoing confidentiality, integrity, availability and resilience of processing systems and services: All Customer Data is permanently stored in the USA and is backed up for disaster recovery.” is replaced as follows: 
+    1. All Customer Data is hosted in the EU (and/or, if applicable, the specific country identified in the Subprocessor List) and is backed up in the EU for disaster recovery. 
+  6. “Schedule 2 TECHNICAL AND ORGANIZATIONAL SECURITY MEASURES Annex II - Measures for ensuring ongoing confidentiality, integrity, availability and resilience of processing systems and services: Intercom’s data security, high availability, and built-in redundancy are designed to ensure application availability and protect information from accidental loss or destruction. Intercom’s Disaster Recovery plan incorporates geographic failover between its 3 U.S. data centers. Subscription Service restoration is within commercially reasonable efforts and is performed in conjunction with AWS’ ability to provide adequate infrastructure at the prevailing failover location. All of Intercom recovery and resilience mechanisms are tested regularly and processes are updated as required. ” is replaced as follows: 
+    1. Intercom’s data security, high availability, and built-in redundancy are designed to ensure application availability and protect information from accidental loss or destruction. Intercom’s Disaster Recovery plan incorporates geographic failover across multiple isolated availability zones in the EU region. Subscription Service restoration is within commercially reasonable efforts and is performed in conjunction with AWS’ ability to provide adequate infrastructure at the prevailing failover location. All of Intercom recovery and resilience mechanisms are tested regularly and processes are updated as required. 
+  7. “Schedule 3 LIST OF SUB-PROCESSORS Annex III” is replaced as follows: 
+    1. Security, Privacy and Compliance Information for Intercom - Intercom is a data processor and engages certain onward Sub-processors that may process personal data submitted to Intercom’s services by the controller. These Sub-processors are listed below, with a description of the service and the location where data is hosted. This list may be updated by Intercom from time to time. Please visit https://www.intercom.com/legal/subprocessors-list and scroll down to “EU Data Hosting”. 
+
+
+## Exhibit B to the RDH Addendum: Australian Data Hosting
+The Data Processing Addendum (“DPA”) located at <https://www.intercom.com/legal/data-processing-agreement> is hereby incorporated by reference but with the following modifications:
+  1. Section 7. i. “Authorization for Sub-processing” is replaced as follows: 
+    1. Customer agrees that Intercom engages Amazon Web Services, Inc. (“AWS”) for hosting and storage and this occurs in Sydney, Australia. Intercom’s use of Sub-processors including Intercom Affiliates may be updated from time to time; and (b) such Affiliates and Sub-processors respectively may engage third party processors to process Customer Data on Intercom's behalf. Customer provides a general authorization for Intercom to engage onward Sub-processors that is conditioned on the following requirements: (a) Intercom will restrict the onward sub-processor’s access to Customer Data only to what is strictly necessary to provide the Services, and Intercom will prohibit the Sub-processor from processing the Personal Data for any other purpose; (b) Intercom agrees to impose contractual data protection obligations, including appropriate technical and organizational measures to protect personal data, on any Sub-processor it appoints that require such Sub-processor to protect Customer Data to the standard required by Applicable Data Protection Legislation; and (c) Intercom will remain liable and accountable for any breach of this DPA that is caused by an act or omission of its Sub-processors. 
+  2. Section 7. Ii. “Current Sub-processors and Notification of Sub-processor Additions” is replaced as follows: 
+    1. Customer understands that effective operation of the Services may require the transfer of Customer Data to Intercom’s Affiliates, such as Intercom, Inc., or to Intercom's Sub-processors. Customer hereby authorizes the transfer of Customer Data to locations outside Australia (as outlined in Section 2 of the RDH Addendum), including to Intercom Affiliates and Sub-processors, subject to continued compliance with this DPA throughout the duration of the Agreement. Customer hereby provides general authorization to Intercom engaging additional third-party Sub-processors to process Customer Data within the Services for the Permitted Purposes. Intercom may, by giving reasonable notice to the Customer to add or replace Sub-processors at least 10 days prior to any such changes. If Customer objects to the appointment of an additional Sub-processor within thirty (30) calendar days of such notice on reasonable grounds relating to the protection of the Personal Data, then Intercom will work in good faith with Customer to find an alternative solution. In the event that the parties are unable to find such a solution, Customer may terminate the Agreement at no additional cost. 
+  3. Section 12. i. “Location of Processing” is replaced as follows: 
+    1. Location of Processing is governed by Section 2 of the RDH Addendum. 
+  4. “Schedule 2 TECHNICAL AND ORGANIZATIONAL SECURITY MEASURES Annex II - Measures for ensuring physical security of locations at which personal data are processed” is replaced as follows: 
+    1. Physical Access Control. Intercom’s services and data are hosted in AWS’ facilities in Australia and protected by AWS in accordance with their security protocols. Access only to approved personnel. All personnel who need data center access must first apply for access and provide a valid business justification. These requests are granted based on the principle of least privilege and are time-bound. Requests are reviewed and approved by authorized personnel, and access is revoked after the requested time expires. 
+  5. “Schedule 2 TECHNICAL AND ORGANIZATIONAL SECURITY MEASURES Annex II - Measures for ensuring ongoing confidentiality, integrity, availability and resilience of processing systems and services: All Customer Data is permanently stored in the USA and is backed up for disaster recovery. ” is replaced as follows: 
+    1. All Customer Data is permanently stored in Australia and is backed up for disaster recovery. 
+  6. “Schedule 2 TECHNICAL AND ORGANIZATIONAL SECURITY MEASURES Annex II - Measures for ensuring ongoing confidentiality, integrity, availability and resilience of processing systems and services: Intercom’s data security, high availability, and built-in redundancy are designed to ensure application availability and protect information from accidental loss or destruction. Intercom’s Disaster Recovery plan incorporates geographic failover between its 3 U.S. data centers. Subscription Service restoration is within commercially reasonable efforts and is performed in conjunction with AWS’ ability to provide adequate infrastructure at the prevailing failover location. All of Intercom recovery and resilience mechanisms are tested regularly and processes are updated as required. ” is replaced as follows: 
+    1. Intercom’s data security, high availability, and built-in redundancy are designed to ensure application availability and protect information from accidental loss or destruction. Intercom’s Disaster Recovery plan incorporates geographic failover across multiple isolated availability zones in the Australia region. Subscription Service restoration is within commercially reasonable efforts and is performed in conjunction with AWS’ ability to provide adequate infrastructure at the prevailing failover location. All of Intercom recovery and resilience mechanisms are tested regularly and processes are updated as required. 
+  7. “Schedule 3 LIST OF SUB-PROCESSORS Annex III” is replaced as follows: 
+    1. Security, Privacy and Compliance Information for Intercom:
+    2. Intercom is a data processor and engages certain onward Sub-processors that may process personal data submitted to Intercom’s services by the controller. These Sub-processors are listed below, with a description of the service and the location where data is hosted. This list may be updated by Intercom from time to time. 
+    3. Please visit <https://www.intercom.com/legal/subprocessors-list> and scroll down to “Australia Data Hosting”. 
+
+
+This site uses cookies and similar technologies ("cookies") as strictly necessary for site operation. We and our partners also would like to set additional cookies to enable site performance analytics, functionality, advertising and social media features. See our [Cookie Policy](https://www.intercom.com/legal/cookie-policy) for details. You can change your cookie preferences in our Cookie Settings. 
+Manage your cookies
+Reject All Accept All
