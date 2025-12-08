@@ -27,16 +27,10 @@ CONFIG_DIR = Path("config")
 
 # --- Core Logic: Text Compilation & Context ---
 
-# parse_form_field is now imported from utils.rightbrain_api
-
-# extract_vendor_usage_details is now imported from utils.rightbrain_api
-
 def parse_data_processor_field(issue_body: str) -> str:
     """Parses the 'Data Processor' field from the issue body."""
     log("info", "Parsing data processor status from issue body...")
     return parse_form_field(issue_body, 'Data Processor')
-
-# load_company_profile is now imported from utils.rightbrain_api
 
 def parse_approved_documents(issue_body: str) -> Dict[str, Set[str]]:
     """
@@ -47,10 +41,6 @@ def parse_approved_documents(issue_body: str) -> Dict[str, Set[str]]:
     legal_files: Set[str] = set()
     security_files: Set[str] = set()
     
-    # Regex to find:
-    # - [x] **(Categories)**: ... (path) ...
-    # Group 1: The categories (e.g., "Legal", "Security", "Legal, Security")
-    # Group 2: The file path (e.g., "_vendor_analysis_source/issue-123-doc.txt")
     pattern = re.compile(
         r"-\s*\[x\]\s*\*\*(.*?)\*\*:.*?\((?:https://.*?/blob/main/)?(_vendor_analysis_source/.*?)\)",
         re.IGNORECASE
@@ -62,9 +52,7 @@ def parse_approved_documents(issue_body: str) -> Dict[str, Set[str]]:
         log("warning", "No checked documents found in the issue body. Analysis may be empty.")
 
     for categories_str, file_path_raw in matches:
-        # File path might be URL-encoded in the markdown link
         file_path = unquote(file_path_raw.strip(')'))
-        
         categories = [cat.strip().lower() for cat in categories_str.split(',')]
         
         if "legal" in categories:
@@ -93,8 +81,6 @@ def compile_text_from_files(file_list: Set[str]) -> str:
             
         try:
             content = file_path.read_text(encoding="utf-8")
-            
-            # Add the separator required by the AI tasks
             separator = f"\n\n--- DOCUMENT SEPARATOR ---\nSource URL: {file_path_str}\n\n"
             compiled_parts.append(separator + content)
             
@@ -107,38 +93,48 @@ def compile_text_from_files(file_list: Set[str]) -> str:
 
 def format_report_as_markdown(report_data: Dict[str, Any], 
                             raw_security_json: Dict[str, Any], 
-                            raw_legal_json: Dict[str, Any]) -> str:
+                            raw_legal_json: Dict[str, Any],
+                            raw_media_json: Dict[str, Any]) -> str:
     """Formats the synthesis task's JSON into a human-readable Markdown comment."""
     
     try:
         report = report_data.get("report", {})
         draft_data = report_data.get("draft_approval_data", {})
+        
+        # Determine Status Icon based on overall assessment
+        assessment = report.get('overall_assessment', 'Unknown')
+        status_icon = "🟢" if "Low" in assessment else "aaa" if "Medium" in assessment else "🔴"
 
         # Build positive findings
         pos_findings_md_list = []
         for f in report.get("positive_findings", []):
             pos_findings_md_list.append(f"* **{f.get('finding', 'N/A')}:** {f.get('summary', 'N/A')}")
-        pos_findings_md = "\n".join(pos_findings_md_list)
-        if not pos_findings_md: pos_findings_md = "None identified."
+        pos_findings_md = "\n".join(pos_findings_md_list) or "None identified."
 
         # Build legal risks
         legal_risks_md_list = []
         for r in report.get("key_legal_risks", []):
             legal_risks_md_list.append(f"* **Risk:** {r.get('risk', 'N/A')}\n  * **Summary:** {r.get('summary', 'N/A')}\n  * **Recommendation:** {r.get('recommendation', 'N/A')}")
-        legal_risks_md = "\n".join(legal_risks_md_list)
-        if not legal_risks_md: legal_risks_md = "No critical legal risks identified."
+        legal_risks_md = "\n".join(legal_risks_md_list) or "No critical legal risks identified."
 
         # Build security gaps
         sec_gaps_md_list = []
         for g in report.get("key_security_gaps", []):
             sec_gaps_md_list.append(f"* **Gap:** {g.get('gap', 'N/A')}\n  * **Summary:** {g.get('summary', 'N/A')}\n  * **Recommendation:** {g.get('recommendation', 'N/A')}")
-        sec_gaps_md = "\n".join(sec_gaps_md_list)
-        if not sec_gaps_md: sec_gaps_md = "No critical security gaps identified."
+        sec_gaps_md = "\n".join(sec_gaps_md_list) or "No critical security gaps identified."
+
+        # Build Adverse Media Summary
+        media_summary = report.get("adverse_media_summary", {})
+        media_risk = media_summary.get("risk_level", "Unknown")
+        media_text = media_summary.get("key_findings_summary", "No adverse media analysis available.")
+        
+        media_icon = "🟢" if media_risk == "LOW" else "aaa" if media_risk == "MEDIUM" else "🔴"
+        media_section = f"### {media_icon} Reputation & Adverse Media: {media_risk}\n{media_text}"
 
         # Build the final comment
         comment_parts = [
-            "## 🚀 AI-Generated Risk Summary",
-            f"### **Overall Assessment: {report.get('overall_assessment', 'N/A')}**",
+            f"## {status_icon} AI-Generated Risk Summary",
+            f"### **Overall Assessment: {assessment}**",
             f"**Executive Summary:** {report.get('executive_summary', 'N/A')}",
             "\n### ✅ Positive Findings",
             pos_findings_md,
@@ -146,6 +142,7 @@ def format_report_as_markdown(report_data: Dict[str, Any],
             legal_risks_md,
             "\n### 🛡️ Key Security Gaps",
             sec_gaps_md,
+            f"\n{media_section}",
             "\n---",
             "\n## 📝 Reviewer-Approved Data (Draft)",
             "Please review, edit, and confirm the details below. This JSON block will be committed to the central vendor registry upon issue closure.",
@@ -153,31 +150,31 @@ def format_report_as_markdown(report_data: Dict[str, Any],
             f"```json\n{json.dumps(draft_data, indent=2)}\n```",
             "\n---",
             "\n## 🤖 Raw Analysis Data (for review)",
-            "\n### 🛡️ Security Posture Analysis (Raw)",
+            "<details><summary>🛡️ Security Posture Analysis (Raw)</summary>",
             f"```json\n{json.dumps(raw_security_json, indent=2)}\n```",
-            "\n### ⚖️ Legal & DPA Analysis (Raw)",
-            f"```json\n{json.dumps(raw_legal_json, indent=2)}\n```"
+            "</details>",
+            "<details><summary>⚖️ Legal & DPA Analysis (Raw)</summary>",
+            f"```json\n{json.dumps(raw_legal_json, indent=2)}\n```",
+            "</details>",
+            "<details><summary>📰 Adverse Media Analysis (Raw)</summary>",
+            f"```json\n{json.dumps(raw_media_json, indent=2)}\n```",
+            "</details>"
         ]
         return "\n".join(comment_parts)
         
     except Exception as e:
         log("error", "Failed to format report", details=str(e))
-        # Fallback to just dumping all the data
         return (
             "## 🤖 Vendor Analysis Results (Fallback)\n\n"
             "Error formatting the AI-generated report. Please review the raw JSON outputs.\n\n"
             "### 📊 Synthesis Report\n"
-            f"```json\n{json.dumps(report_data, indent=2)}\n```\n\n"
-            "### 🛡️ Security Posture Analysis\n"
-            f"```json\n{json.dumps(raw_security_json, indent=2)}\n```\n\n"
-            "### ⚖️ Legal & DPA Analysis\n"
-            f"```json\n{json.dumps(raw_legal_json, indent=2)}\n```"
+            f"```json\n{json.dumps(report_data, indent=2)}\n```"
         )
 
 # --- Main Execution ---
 
 def main():
-    # Load .env file from project root if it exists (for local development)
+    # Load .env file from project root if it exists
     env_path = project_root / ".env"
     if env_path.exists():
         load_dotenv(env_path)
@@ -188,165 +185,132 @@ def main():
     issue_number = os.environ.get("ISSUE_NUMBER")
     repo_name = os.environ.get("REPO_NAME")
     
-    # Validate Rightbrain config via centralized util
     get_rb_config()
-    
-    # Get API root via centralized util
     rb_api_root = get_api_root()
 
     if not all([gh_token, issue_body, issue_number, repo_name]):
         sys.exit("❌ Error: Missing one or more required environment variables.")
     
-    # Temporarily set API_ROOT for detect_environment to work
+    # Temporarily set API_ROOT
     original_api_root = os.environ.get("API_ROOT")
     os.environ["API_ROOT"] = rb_api_root
 
     print(f"🚀 Starting analysis for issue #{issue_number} in repo {repo_name}...")
 
-    # Look up task IDs by name (will use detected environment)
+    # Look up task IDs by name
     security_task_id = get_task_id_by_name("Vendor Security Posture Analyzer")
     legal_task_id = get_task_id_by_name("Sub-Processor Terms Analyzer")
     reporter_task_id = get_task_id_by_name("Vendor Risk Reporter")
+    media_task_id = get_task_id_by_name("Adverse Media Screener") # New Task
     
-    # Restore original API_ROOT if it existed
     if original_api_root:
         os.environ["API_ROOT"] = original_api_root
     elif "API_ROOT" in os.environ:
         del os.environ["API_ROOT"]
 
-    if not all([security_task_id, legal_task_id, reporter_task_id]):
-        sys.exit("❌ Error: Could not find all required task IDs in manifest (security, legal, reporter).")
+    if not all([security_task_id, legal_task_id, reporter_task_id, media_task_id]):
+        sys.exit("❌ Error: Could not find all required task IDs in manifest.")
 
-    # --- 2. Build Context Blocks (Refactored for Stage 2) ---
+    # --- 2. Build Context Blocks ---
     company_profile = load_company_profile()
     vendor_usage_details = extract_vendor_usage_details(issue_body)
-    # Phase 1.1 Update: Parse Relationship Owner separately for direct injection
     relationship_owner = parse_form_field(issue_body, 'Internal Contact')
     
-    # --- 3. Determine Vendor Type Signal (Refactored for Stage 2) ---
+    # NEW: Extract Vendor Name early for Adverse Media check
+    vendor_name = parse_form_field(issue_body, 'Supplier Name')
+    if not vendor_name:
+        vendor_name = "Unknown Vendor"
+
+    # --- 3. Determine Vendor Type Signal ---
     data_processor_status = parse_data_processor_field(issue_body)
     vendor_type_signal = "Processor" if data_processor_status.lower() == 'yes' else "General Supplier"
-    log("info", f"Vendor type signal determined: {vendor_type_signal}")
 
     # --- 4. Parse Checklist and Compile Text ---
     approved_files = parse_approved_documents(issue_body)
-    
     legal_docs_text = compile_text_from_files(approved_files["legal_files"])
     security_docs_text = compile_text_from_files(approved_files["security_files"])
 
     if not legal_docs_text and not security_docs_text:
-        log("error", "No text compiled from any approved documents. Aborting analysis.")
-        post_github_comment(repo_name, issue_number, 
-                            "**Analysis Failed:** No approved documents were found or read. Please check the files in `_vendor_analysis_source` and ensure the correct items are checked in the issue checklist.")
-        sys.exit()
+        log("warning", "No documents compiled. Analysis will rely primarily on Adverse Media checks.")
 
-    # --- 5. Run Analysis Tasks (Refactored for Stage 2) ---
+    # --- 5. Run Analysis Tasks ---
     print("\n--- STAGE 5: Running Analysis Tasks ---")
-    # Refactored to use new util function
     rb_token = get_rb_token()
+    
+    # Initialize defaults
     legal_analysis_json = {"status": "skipped", "reason": "No approved legal documents found."}
     security_analysis_json = {"status": "skipped", "reason": "No approved security documents found."}
+    media_analysis_json = {"status": "skipped", "reason": "Task execution failed"}
 
+    # A. Legal Analysis
     if legal_docs_text:
         legal_input = {
             "company_profile": company_profile,
             "vendor_usage_details": vendor_usage_details,
             "consolidated_text": legal_docs_text
         }
-        # Refactored to use new util function
-        legal_analysis_run = run_rb_task(
-            rb_token, legal_task_id, legal_input, "Sub-Processor Terms Analyzer"
-        )
-        legal_analysis_json = legal_analysis_run.get("response", {})
-        if not legal_analysis_json or legal_analysis_run.get("is_error"):
-             legal_analysis_json = {"error": "Task failed", "details": legal_analysis_run.get("response", "No response")}
-    else:
-        log("info", "No approved legal documents found. Skipping legal analysis.")
+        legal_run = run_rb_task(rb_token, legal_task_id, legal_input, "Sub-Processor Terms Analyzer")
+        legal_analysis_json = legal_run.get("response", {}) or legal_analysis_json
 
+    # B. Security Analysis
     if security_docs_text:
         security_input = {
             "company_profile": company_profile,
             "vendor_usage_details": vendor_usage_details,
             "consolidated_text": security_docs_text
         }
-        # Refactored to use new util function
-        security_analysis_run = run_rb_task(
-            rb_token, security_task_id, security_input, "Security Posture Analyzer"
-        )
-        security_analysis_json = security_analysis_run.get("response", {})
-        if not security_analysis_json or security_analysis_run.get("is_error"):
-            security_analysis_json = {"error": "Task failed", "details": security_analysis_run.get("response", "No response")}
-    else:
-        log("info", "No approved security documents found. Skipping security analysis.")
+        sec_run = run_rb_task(rb_token, security_task_id, security_input, "Security Posture Analyzer")
+        security_analysis_json = sec_run.get("response", {}) or security_analysis_json
 
-    # --- 6. Run Synthesis Task (Refactored for Stage 2) ---
+    # C. Adverse Media Analysis (New)
+    print(f"🕵️‍♂️ Running Adverse Media Check for: {vendor_name}")
+    media_input = {"vendor": vendor_name}
+    media_run = run_rb_task(rb_token, media_task_id, media_input, "Adverse Media Screener")
+    media_analysis_json = media_run.get("response", {}) or media_analysis_json
+
+    # --- 6. Run Synthesis Task ---
     print("\n--- STAGE 6: Synthesizing Reports ---")
-    security_json_string = json.dumps(security_analysis_json)
-    legal_json_string = json.dumps(legal_analysis_json)
     
     reporter_input = {
         "company_profile": company_profile,
         "vendor_usage_details": vendor_usage_details,
-        "vendor_type_signal": vendor_type_signal, # New signal
-        # "relationship_owner": relationship_owner, # REMOVED PII: Handled locally
-        "security_json_string": security_json_string,
-        "legal_json_string": legal_json_string
+        "vendor_type_signal": vendor_type_signal,
+        "security_json_string": json.dumps(security_analysis_json),
+        "legal_json_string": json.dumps(legal_analysis_json),
+        "adverse_media_json_string": json.dumps(media_analysis_json) # Passed to reporter
     }
 
-    # Refactored to use new util function
-    report_run = run_rb_task(
-        rb_token, reporter_task_id, reporter_input, "Vendor Risk Reporter"
-    )
+    report_run = run_rb_task(rb_token, reporter_task_id, reporter_input, "Vendor Risk Reporter")
     report_json = report_run.get("response", {})
 
     # --- 7. Format and Post Results ---
     print("\n--- STAGE 7: Formatting and Posting Results ---")
     if not report_json or report_run.get("is_error"):
         log("error", "Synthesis task failed. Posting raw JSON as fallback.")
-        # Fallback to old behavior
-        final_comment_body = (
-            "## 🤖 Vendor Analysis Results (Synthesis Failed)\n\n"
-            "The final risk synthesis report failed to generate. Please review the raw JSON outputs.\n\n"
-            "### 🛡️ Security Posture Analysis\n"
-            f"```json\n{json.dumps(security_analysis_json, indent=2)}\n```\n\n"
-            "### ⚖️ Legal & DPA Analysis\n"
-            f"```json\n{json.dumps(legal_analysis_json, indent=2)}\n```"
-        )
+        final_comment_body = format_report_as_markdown({}, security_analysis_json, legal_analysis_json, media_analysis_json)
     else:
         log("success", "Synthesis complete. Injecting local data.")
         
-        # --- DETERMINISTIC INJECTION BLOCK ---
         if "draft_approval_data" not in report_json:
             report_json["draft_approval_data"] = {}
         
         draft = report_json["draft_approval_data"]
-
-        # 1. PII Injection
         draft["relationship_owner"] = relationship_owner
-        
-        # 2. Known Data Injection (Cheaper/Safer than AI)
-        draft["processor_name"] = parse_form_field(issue_body, 'Supplier Name')
+        draft["processor_name"] = vendor_name
         draft["service_description"] = parse_form_field(issue_body, 'Service Description')
         draft["data_processing_status"] = vendor_type_signal
-        
-        # 3. Output Linking (AI Generated, but linked deterministically)
         draft["risk_rating"] = report_json.get("report", {}).get("overall_assessment", "Unknown")
         
-        # 4. Safe Extraction from Legal JSON (Deterministically)
-        # We try to grab the timeline from the legal analysis structure
+        # Attempt to grab termination notice from legal findings if available
         term_notice = "Check Legal Report"
-        if legal_analysis_json:
-            term_notice = legal_analysis_json.get("termination_rights", {}).get("for_convenience_timeline", "N/A")
+        if isinstance(legal_analysis_json, dict):
+             term_notice = legal_analysis_json.get("termination_rights", {}).get("for_convenience_timeline", "N/A")
         draft["termination_notice"] = term_notice
 
-        print(f"Manually injected deterministic fields into draft_approval_data.")
-        # -----------------------------------------------------------
-
         final_comment_body = format_report_as_markdown(
-            report_json, security_analysis_json, legal_analysis_json
+            report_json, security_analysis_json, legal_analysis_json, media_analysis_json
         )
     
-    # Refactored to use new util function
     try:
         post_github_comment(repo_name, issue_number, final_comment_body)
     except Exception as e:

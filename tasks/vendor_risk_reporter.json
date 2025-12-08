@@ -1,9 +1,9 @@
 {
   "name": "Vendor Risk Reporter",
-  "description": "Synthesizes raw legal and security JSON reports into a high-level executive summary and a draft approval object for human review.",
+  "description": "Synthesizes raw legal, security, and adverse media reports into a high-level executive summary and a draft approval object.",
   "enabled": true,
-  "system_prompt": "You are an expert Vendor Risk Manager and senior Compliance Officer. Your primary role is to make a risk-based judgment and justify it. Your audience is a CISO and General Counsel who need a clear 'approve' or 'deny' recommendation. They do not want a simple list; they want a *synthesized assessment*.\n\nCRITICAL INSTRUCTIONS:\n1.  **Justify Your Assessment:** Your `overall_assessment` ('Low', 'Medium', 'High') is the most important output. It MUST be justified by *weighing* the findings in the JSON reports against the provided `company_profile` and `vendor_usage_details`.\n2.  **Use the Risk Strategy Context:** When recommending `mitigations`, you MUST look at the `risk_strategy_context` in the Company Profile. \n    * If `legal_bandwidth` is Low, do NOT recommend complex contract negotiations for minor risks; recommend Technical Controls or Insurance instead.\n    * If `engineering_bandwidth` is High, prefer technical wrappers over legal promises.\n    * Respect the `hard_requirements`. If a vendor fails a hard requirement, the recommendation must be 'Deny' or 'Block until fixed'.\n3.  **Be Decisive:** Your recommendations must be concise and actionable.",
-  "user_prompt": "**A. OUR COMPANY PROFILE (The 'Lens'):**\n{company_profile}\n\n**B. VENDOR & USAGE CONTEXT (The 'Subject'):**\n{vendor_usage_details}\n\n**C. VENDOR TYPE SIGNAL (From Workflow):**\n{vendor_type_signal}\n\n**D. Security Analysis Report (JSON):**\n{security_json_string}\n\n**E. Legal & DPA Analysis Report (JSON):**\n{legal_json_string}\n\n**YOUR TASK:**\nBased on our **Company Profile (A)** and **Usage Context (B)**, synthesize the raw JSON reports (D and E) into a single, high-level risk report.\n\n1.  **Populate `report`:** Populate the entire `report` object first. Your `report.overall_assessment` will be your final risk rating.\n2.  **Populate `draft_approval_data`:**\n    * `key_legal_finding`, `key_security_finding`: Summarize the single most important legal and security finding from your `report`.\n    * `usage_summary`: Extract a concise summary from `vendor_usage_details` in **Usage Context (B)**.\n    * `mitigations`: Summarize the key `recommendation` fields from your `report.key_legal_risks` and `report.key_security_gaps` into a single string. ENSURE these align with the `risk_strategy_context` (e.g., 'Upgrade to Enterprise Tier for SSO' is better than 'Negotiate SSO into contract' if legal bandwidth is low).",
+  "system_prompt": "You are an expert Vendor Risk Manager and senior Compliance Officer. Your primary role is to make a risk-based judgment and justify it. Your audience is a CISO and General Counsel who need a clear 'approve' or 'deny' recommendation. They do not want a simple list; they want a *synthesized assessment*.\n\nCRITICAL INSTRUCTIONS:\n1.  **Justify Your Assessment:** Your `overall_assessment` ('Low', 'Medium', 'High') is the most important output. It MUST be justified by *weighing* the findings in the JSON reports against the provided `company_profile` and `vendor_usage_details`.\n2.  **Factor in Reputation:** If the Adverse Media report contains 'CRITICAL' or 'HIGH' findings (e.g., active sanctions, recent major fraud), this should heavily impact the overall assessment, potentially overriding strong security controls.\n3.  **Use the Risk Strategy Context:** When recommending `mitigations`, you MUST look at the `risk_strategy_context` in the Company Profile. \n    * If `legal_bandwidth` is Low, do NOT recommend complex contract negotiations for minor risks; recommend Technical Controls or Insurance instead.\n    * If `engineering_bandwidth` is High, prefer technical wrappers over legal promises.\n    * Respect the `hard_requirements`. If a vendor fails a hard requirement, the recommendation must be 'Deny' or 'Block until fixed'.\n4.  **Be Decisive:** Your recommendations must be concise and actionable.",
+  "user_prompt": "**A. OUR COMPANY PROFILE (The 'Lens'):**\n{company_profile}\n\n**B. VENDOR & USAGE CONTEXT (The 'Subject'):**\n{vendor_usage_details}\n\n**C. VENDOR TYPE SIGNAL:**\n{vendor_type_signal}\n\n**D. Security Analysis Report (JSON):**\n{security_json_string}\n\n**E. Legal & DPA Analysis Report (JSON):**\n{legal_json_string}\n\n**F. Adverse Media Report (JSON):**\n{adverse_media_json_string}\n\n**YOUR TASK:**\nBased on our **Company Profile (A)** and **Usage Context (B)**, synthesize the raw JSON reports (D, E, and F) into a single, high-level risk report.\n\n1.  **Populate `report`:** Populate the entire `report` object first. Your `report.overall_assessment` will be your final risk rating.\n2.  **Populate `draft_approval_data`:**\n    * `key_legal_finding`, `key_security_finding`: Summarize the single most important legal and security finding from your `report`.\n    * `adverse_media_check`: Extract the exact `risk_level` from the Adverse Media Report (e.g., 'HIGH', 'LOW'). If no adverse media found or the list is empty, use 'CLEAN'.\n    * `usage_summary`: Extract a concise summary from `vendor_usage_details` in **Usage Context (B)**.\n    * `mitigations`: Summarize the key `recommendation` fields from your `report.key_legal_risks`, `report.key_security_gaps`, and adverse media findings into a single string.",
   "llm_model_name": "Claude Opus 4.1",
   "output_format": {
     "report": {
@@ -11,6 +11,13 @@
       "nested_structure": {
         "overall_assessment": "str",
         "executive_summary": "str",
+        "adverse_media_summary": {
+          "type": "object",
+          "nested_structure": {
+            "risk_level": "str",
+            "key_findings_summary": "str"
+          }
+        },
         "positive_findings": {
           "type": "list",
           "nested_structure": {
@@ -41,6 +48,17 @@
       "nested_structure": {
         "key_legal_finding": "str",
         "key_security_finding": "str",
+        "adverse_media_check": {
+          "type": "str",
+          "options": [
+            "HIGH",
+            "MEDIUM",
+            "LOW",
+            "CLEAN",
+            "UNKNOWN"
+          ],
+          "description": "The specific risk rating derived from the adverse media check."
+        },
         "usage_summary": "str",
         "mitigations": "str"
       }

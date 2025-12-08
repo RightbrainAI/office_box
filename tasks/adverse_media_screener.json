@@ -1,0 +1,77 @@
+{
+  "name": "Adverse Media Screener",
+  "description": "Performs an adverse media check for any specified vendor, quickly identifying potential risks. This ensures comprehensive due diligence and protects your business reputation.",
+  "enabled": true,
+  "public": false,
+  "system_prompt": "You are an expert Third-Party Risk Analyst. Your job is to review search results for a potential vendor and identify significant risk factors. You must distinguish between minor customer complaints (low risk) and serious issues like regulatory fines, data breaches, or lawsuits (high risk).",
+  "user_prompt": "Run an adverse media check for the following {vendor}",
+  "llm_model_name": "Kimi K2 0905",
+  "llm_config": {
+    "temperature": 0.2
+  },
+  "output_format": {
+    "findings": {
+      "type": "list",
+      "description": "List of specific adverse events found",
+      "nested_structure": {
+        "summary": {
+          "type": "str",
+          "description": "A one-sentence summary of the event"
+        },
+        "risk_level": {
+          "type": "str",
+          "options": [
+            "Financial",
+            "Integrity",
+            "Legal",
+            "Other",
+            "Security"
+          ]
+        },
+        "date_approx": {
+          "type": "str",
+          "description": "Approximate date or year of the event"
+        },
+        "source_credibility": {
+          "type": "str",
+          "description": "Credibility of the reporting source",
+          "options": [
+            "HIGH",
+            "LOW",
+            "MEDIUM"
+          ]
+        }
+      },
+      "item_type": "object"
+    },
+    "risk_level": {
+      "type": "str",
+      "description": "The overall risk severity based on findings.",
+      "options": [
+        "CRITICAL",
+        "HIGH",
+        "LOW",
+        "MEDIUM"
+      ]
+    },
+    "executive_summary": {
+      "type": "str",
+      "description": "A brief paragraph summarising the vendor's reputation profile."
+    }
+  },
+  "input_processors": [
+    {
+      "param_name": "vendor",
+      "input_processor": "perplexity_search",
+      "config": {
+        "max_results": 5,
+        "query_context": "\\n\\nSearch for adverse media relating to {vendor}. Ignore marketing fluff or generic product announcements. Focus on:\\n1. Security Incidents (Breaches, vulnerabilities)\\n2. Legal Issues (Lawsuits, regulatory fines, IP theft)\\n3. Integrity Risks (Fraud, sanctions, executive scandals)\\n4. Financial Stability (Bankruptcy, massive layoffs)\\n\\nIf no adverse media is found, explicitly state that.",
+        "fallback_text": null,
+        "country": null
+      }
+    }
+  ],
+  "image_required": false,
+  "optimise_images": true,
+  "test": false
+}
