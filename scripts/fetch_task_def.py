@@ -1,14 +1,18 @@
-import os
 import sys
 import json
 import re
 import requests
 from pathlib import Path
-from dotenv import load_dotenv
 
 # Add parent directory to path to import shared utilities
 sys.path.append(str(Path(__file__).parent.parent))
-from utils.rightbrain_api import get_rb_token, get_api_root, get_rb_config, log
+from utils.rightbrain_api import (
+    get_rb_token, 
+    get_api_root, 
+    get_project_path,
+    _get_api_headers,
+    log
+)
 
 # --- Helper Functions ---
 
@@ -25,7 +29,7 @@ def format_task_for_creation(full_task_def: dict) -> dict:
     suitable for creating a new task (for a POST request). It extracts the
     latest active revision and merges it with the parent task's metadata.
     """
-    print("... Reformatting task into a creation-ready payload.")
+    log("info", "Reformatting task into a creation-ready payload.")
     
     # 1. Find the active revision ID
     active_revisions = full_task_def.get("active_revisions")
@@ -77,13 +81,19 @@ def format_task_for_creation(full_task_def: dict) -> dict:
 
 # --- Rightbrain API Helper Functions ---
 
-def fetch_task_definition(rb_token, api_url, org_id, project_id, task_id):
-    """Fetches a specific task definition by its ID."""
-    # API URL should already include /api/v1
+def fetch_task_definition(rb_token: str, task_id: str) -> dict:
+    """
+    Fetches a specific task definition by its ID.
+    Uses centralized utilities to be environment-agnostic.
+    """
     log("info", f"Fetching task definition for ID: {task_id}...")
     try:
-        fetch_url = f"{api_url.rstrip('/')}/org/{org_id}/project/{project_id}/task/{task_id}"
-        headers = {"Authorization": f"Bearer {rb_token}"}
+        api_root = get_api_root()
+        project_path = get_project_path()
+        fetch_url = f"{api_root}{project_path}/task/{task_id}"
+        headers = _get_api_headers(rb_token)
+        
+        log("debug", f"Fetch URL: {fetch_url}")
         response = requests.get(fetch_url, headers=headers)
         response.raise_for_status()
         log("success", "Full task definition fetched successfully.")
@@ -98,24 +108,13 @@ def main():
     """
     Main script to prompt for a Task ID, fetch its definition, reformat it
     for creation, and save it to a dynamically named JSON file.
+    Environment-agnostic: automatically detects staging vs production.
     """
-    try:
-        import requests
-        from dotenv import load_dotenv
-    except ImportError:
-        log("warning", "Required packages not found.")
-        log("error", "Please run: pip install requests python-dotenv")
-        sys.exit(1)
-
     project_root = Path(__file__).resolve().parent.parent
-    load_dotenv(dotenv_path=project_root / ".env")
-
-    # --- Configuration ---
-    # Validate Rightbrain config via centralized util
-    rb_config = get_rb_config()
     
-    # Get API root via centralized util
-    rb_api_root = get_api_root()
+    # --- Configuration ---
+    # All config loading is handled by centralized utilities in rightbrain_api.py
+    # which automatically handle .env loading and environment detection
     
     # --- Script Logic ---
     task_id = input("➡️ Please enter the Rightbrain Task ID to fetch: ")
@@ -123,15 +122,9 @@ def main():
         log("error", "No Task ID provided. Exiting.")
         sys.exit(1)
 
+    # Get token and fetch task definition using centralized utilities
     rb_token = get_rb_token()
-
-    full_task_definition = fetch_task_definition(
-        rb_token,
-        rb_api_root,
-        rb_config["org_id"],
-        rb_config["project_id"],
-        task_id.strip()
-    )
+    full_task_definition = fetch_task_definition(rb_token, task_id.strip())
 
     # --- NEW STEP: Reformat the fetched data ---
     creation_ready_definition = format_task_for_creation(full_task_definition)

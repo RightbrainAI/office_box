@@ -78,7 +78,25 @@ def get_rb_token() -> str:
     log("debug", f"Client ID: {client_id[:8]}...{client_id[-4:] if len(client_id) > 12 else ''} (length: {len(client_id)})")
     log("debug", f"Client Secret: {'*' * min(20, len(client_secret))} (length: {len(client_secret)})")
 
+    # Priority 1: Explicit TOKEN_URI (full URL to token endpoint)
     token_url = os.environ.get("TOKEN_URI")
+    
+    # Priority 2: AUTH_URI (convert /oauth2/auth to /oauth2/token if needed)
+    if not token_url:
+        auth_uri = os.environ.get("AUTH_URI")
+        if auth_uri:
+            # Convert /oauth2/auth to /oauth2/token if present
+            auth_uri = auth_uri.rstrip('/')
+            if auth_uri.endswith('/oauth2/auth'):
+                token_url = auth_uri.replace('/oauth2/auth', '/oauth2/token')
+            elif '/oauth2/token' in auth_uri:
+                token_url = auth_uri
+            else:
+                # If path not specified, append /oauth2/token
+                token_url = f"{auth_uri}/oauth2/token"
+            log("debug", f"Using AUTH_URI from environment: {token_url}")
+    
+    # Priority 3: RB_OAUTH2_URL (base URL, construct full path)
     if not token_url:
         oauth2_url = os.environ.get("RB_OAUTH2_URL")
         oauth2_token_path = os.environ.get("RB_OAUTH2_TOKEN_PATH") or os.environ.get("RB_OAUTH2_AUTH_PATH")
@@ -87,10 +105,23 @@ def get_rb_token() -> str:
             base = oauth2_url.rstrip('/')
             path = (oauth2_token_path or "/oauth2/token").lstrip('/')
             token_url = f"{base}/{path}"
+            log("debug", f"Using RB_OAUTH2_URL from environment: {token_url}")
+    
+    # Priority 4: Auto-detect from environment (only if no explicit env vars set)
+    if not token_url:
+        # Use known OAuth URLs based on detected environment
+        environment = detect_environment()
+        
+        if environment == 'staging':
+            # Known staging OAuth URL
+            base = "https://oauth.leftbrain.me"
         else:
+            # Production - use config or default
             base = config.get("oauth_url") or "https://oauth.rightbrain.ai"
-            path = config.get("auth_path") or "/oauth2/token"
-            token_url = f"{base.rstrip('/')}/{path.lstrip('/')}"
+        
+        path = config.get("auth_path") or "/oauth2/token"
+        token_url = f"{base.rstrip('/')}/{path.lstrip('/')}"
+        log("debug", f"Environment detected: {environment}, using OAuth URL: {base}")
 
     log("debug", f"Token URL: {token_url}")
 
@@ -128,11 +159,19 @@ def _get_api_headers(rb_token: str) -> Dict[str, str]:
     return {"Authorization": f"Bearer {rb_token}", "Content-Type": "application/json"}
 
 def get_api_root() -> str:
+    # Priority 1: API_ROOT env var
     api_root = os.environ.get("API_ROOT")
     if api_root:
         api_root = api_root.rstrip('/')
         return api_root if api_root.endswith('/api/v1') else f"{api_root}/api/v1"
     
+    # Priority 2: RB_API_URL env var
+    rb_api_url = os.environ.get("RB_API_URL")
+    if rb_api_url:
+        rb_api_url = rb_api_url.rstrip('/')
+        return rb_api_url if rb_api_url.endswith('/api/v1') else f"{rb_api_url}/api/v1"
+    
+    # Priority 3: Config file or default
     config = load_rb_config()
     api_url = config.get("api_url") or "https://app.rightbrain.ai"
     api_url = api_url.rstrip('/')
