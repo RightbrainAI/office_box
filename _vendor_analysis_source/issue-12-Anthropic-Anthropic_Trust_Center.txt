@@ -1,0 +1,285 @@
+Scope | SOC 2 Type 2 | ISO 27001 | ISO 42001 | CSA Star | HIPAA | FedRAMP High | DoD IL4 | DoD IL5
+-- | -- | -- | -- | -- | -- | -- | -- | --
+Claude via Anthropic's API | ✅ | ✅ | ✅ | ✅ | ✅ | N/A | N/A | N/A
+Claude for Enterprise | ✅ | ✅ | ✅ | ✅ | N/A | N/A | N/A | N/A
+Claude in Amazon Bedrock * | ✅ | ✅ | ✅ | ✅ | N/A | N/A | N/A | N/A
+Claude on Google Cloud's Vertex AI * | ✅ | ✅ | ✅ | ✅ | N/A | N/A | N/A | N/A
+Claude for Government | N/A | N/A | N/A | N/A | N/A | ✅ | N/A | N/A
+Claude on Amazon Bedrock in AWS GovCloud ** | N/A | N/A | N/A | N/A | N/A | ✅ | ✅ | ✅
+Claude on Google Vertex AI in Google Assured Workloads ** | N/A | N/A | N/A | N/A | N/A | ✅ | N/A | N/A
+
+[Overview](https://trust.anthropic.com/)
+[Resources](https://trust.anthropic.com/resources)
+[Subprocessors](https://trust.anthropic.com/subprocessors)
+[FAQ](https://trust.anthropic.com/faq)
+[Updates](https://trust.anthropic.com/updates)
+Here you can find our compliance artifacts, request documentation, and view high-level details on controls we adhere to. To access sensitive documents, please click the "request access" button at the top of the page and complete the request form. This access will also enable the Trust Center AI feature, allowing you to query our documentation.
+
+Scope	SOC 2 Type 2	ISO 27001	ISO 42001	CSA Star	HIPAA	FedRAMP High	DoD IL4	DoD IL5
+[Claude via Anthropic's API](https://www.anthropic.com/api)	✅	✅	✅	✅	✅	N/A	N/A	N/A
+[Claude for Enterprise](https://www.anthropic.com/enterprise)	✅	✅	✅	✅	N/A	N/A	N/A	N/A
+[Claude in Amazon Bedrock](https://www.anthropic.com/amazon-bedrock) *	✅	✅	✅	✅	N/A	N/A	N/A	N/A
+[Claude on Google Cloud's Vertex AI](https://www.anthropic.com/news/google-vertex-general-availability) *	✅	✅	✅	✅	N/A	N/A	N/A	N/A
+[Claude for Government](https://marketplace.fedramp.gov/products/FR2315464863#:~:text=last%2090%20days-,Claude%20for%20Government%20(C4G),-Descope)	N/A	N/A	N/A	N/A	N/A	✅	N/A	N/A
+[Claude on Amazon Bedrock in AWS GovCloud](https://www.anthropic.com/news/claude-in-amazon-bedrock-fedramp-high) **	N/A	N/A	N/A	N/A	N/A	✅	✅	✅
+[Claude on Google Vertex AI in Google Assured Workloads](https://www.anthropic.com/news/claude-on-google-cloud-fedramp-high) **	N/A	N/A	N/A	N/A	N/A	✅	N/A	N/A
+*(Only applicable to the model itself and containers supplied to partners by Anthropic)
+
+**(Only applicable to the partner hosting environment where Claude models are running; Claude models themselves are not standalone cloud service offerings that require separate certification)
+
+Compliance
+HIPAA
+SOC 2
+SOC 2 Type II
+ISO 27001:2022
+ISO/IEC 42001:2023
+FedRAMP High
+
+UK Cyber Essentials
+Resources
+[View all 28 resources](https://trust.anthropic.com/resources)
+System / Model Cards
+
+[Anthropic] - Claude 4.5 Sonnet System Card
+
+[Anthropic] - Claude 4 System Card
+
+[Anthropic] - Claude 3.7 Sonnet System Card
+
+[Anthropic] - Claude 3.5 Sonnet Model Card Addendum
+SOC 2
+
+[Anthropic] 2025 Type 2 SOC 2 and CSA STAR L2 Report.pdf
+
+[Anthropic] 2025 Type 2 SOC 3 Report.pdf
+ISO
+
+[Anthropic] ISO 27001 Certificate (2025).pdf
+
+[Anthropic] ISO 42001 Certificate (2025).pdf
+
+[Anthropic] - ISO Statement of Applicability
+HIPAA
+
+[Anthropic] 2025 Type 1 HIPAA Report (1P API).pdf
+
+Claude for Enterprise - HIPAA-Ready Offering Implementation Guide
+FedRAMP
+[Claude for Government (C4G) PFCS-SS FedRAMP High Authorization Package](https://marketplace.fedramp.gov/products/FR2315464863)
+International Compliance
+
+[Anthropic Ireland Limited] Cyber Essentials Certificate (2025)
+Questionnaires
+
+[Anthropic] - SIG Lite (March 2025)
+
+[Anthropic] - CAIQ Lite (March 2025)
+
+[Anthropic] - VSA Core (March 2025)
+
+[Anthropic] - HECVAT v4.04 (July 2025 v2)
+Diagrams
+
+[Anthropic] - Infrastructure Diagram - April 2025
+Compliance API
+
+Anthropic Compliance API
+Code of Conduct
+
+Global Code of Conduct
+
+Global Vendor Code of Conduct
+Other Documents
+[[Anthropic] Data Processing Addendum](https://www.anthropic.com/legal/data-processing-addendum)
+
+[Anthropic] 2025 Annual Penetration Testing Reports
+
+[Anthropic] Evidence of Insurance (COI)
+
+[Anthropic] VPAT - Accessibility Conformance Report (ACR) - Claude.ai Enterprise (web) - July 30, 2025
+Subprocessors
+[View all 14 subprocessors](https://trust.anthropic.com/subprocessors)
+Logo for Google Cloud Platform
+Google Cloud Platform
+•
+Cloud infrastructure
+Worldwide
+Products: All Products
+
+Amazon Web Services
+•
+Cloud Infrastructure
+Worldwide
+Products: All Products
+
+Cloudflare
+•
+Traffic Routing (CDN)
+Worldwide (Local to Customer)
+Products: All Products
+
+Logo for Stripe
+Stripe
+•
+Billing
+United States
+Products: Claude Pro/Max, Anthropic API, Claude for Work
+
+FAQ
+[View all 24 FAQs](https://trust.anthropic.com/faq)
+Will you be using our Claude for Work conversations to train your generative models?
+Is Anthropic willing to sign a BAA?
+I found a security bug. How can I let you know?
+Updates
+[View all 5 updates](https://trust.anthropic.com/updates)
+Updated Compliance Artifacts Now Available!
+Compliance
+
+Published November 18, 2025
+
+Our updated compliance artifacts are now available in the Trust Center. This includes a refreshed SOC 2 Type II report, HIPAA attestation (1P API), ISO 27001 and ISO 42001 certificates, and our new Cyber Essentials Certificate.
+
+Anthropic Subprocessor Updates
+General
+
+Published September 19, 2025
+
+
+
+Read more
+Anthropic Subprocessor Changes
+General
+
+Published September 18, 2025
+
+
+
+Read more
+Anthropic Trust Center Updates - September 2025
+General
+
+Published September 16, 2025
+
+
+
+
+Google Cloud Platform•Cloud infrastructureWorldwideProducts: All Products
+--
+Amazon Web Services•Cloud InfrastructureWorldwideProducts: All Products
+Cloudflare•Traffic Routing (CDN)Worldwide (Local to Customer)Products: All Products
+Stripe•BillingUnited StatesProducts: Claude Pro/Max, Anthropic API, Claude for Work
+WorkOS•Security, Single Sign-OnUnited StatesProducts: Claude for WorkMore Information
+Intercom•User supportUnited StatesProducts: All Products
+Twilio•Analytics, email/SMS communicationsUnited StatesProducts: All Products
+Iterable•Email communicationsUnited StatesProducts: All Products
+Functional Software, dba Sentry•Error Handling, User SupportUnited StatesProducts: All products except Claude for Government
+Sift•Fraud and abuse detectionUnited StatesProducts: All products except Claude for Government
+Arkose Labs•Fraud and abuse detectionUnited StatesProducts: All products except Claude for Government
+Brave Search•Web SearchUnited StatesProducts: All products except Claude for GovernmentMore Information
+ElevenLabs•Text to speechUnited StatesProduct: Claude for WorkMore Information
+Palantir Federal Cloud Service (PFCS)•FedRAMP CloudUnited StatesProduct: Claude for Government (C4G)
+
+Google Cloud Platform
+•
+Cloud infrastructure
+Worldwide
+Products: All Products
+
+Amazon Web Services
+•
+Cloud Infrastructure
+Worldwide
+Products: All Products
+
+Cloudflare
+•
+Traffic Routing (CDN)
+Worldwide (Local to Customer)
+Products: All Products
+
+Logo for Stripe
+Stripe
+•
+Billing
+United States
+Products: Claude Pro/Max, Anthropic API, Claude for Work
+
+Logo for WorkOS
+WorkOS
+•
+Security, Single Sign-On
+United States
+Products: Claude for Work
+
+[More Information](https://support.anthropic.com/en/articles/9797544-setting-up-single-sign-on-on-the-enterprise-plan)
+
+Intercom
+•
+User support
+United States
+Products: All Products
+
+Logo for Twilio
+Twilio
+•
+Analytics, email/SMS communications
+United States
+Products: All Products
+
+Logo for Iterable
+Iterable
+•
+Email communications
+United States
+Products: All Products
+
+Logo for Functional Software, dba Sentry
+Functional Software, dba Sentry
+•
+Error Handling, User Support
+United States
+Products: All products except Claude for Government
+
+Logo for Sift
+Sift
+•
+Fraud and abuse detection
+United States
+Products: All products except Claude for Government
+
+Arkose Labs
+Arkose Labs
+•
+Fraud and abuse detection
+United States
+Products: All products except Claude for Government
+
+Logo for Brave Search
+Brave Search
+•
+Web Search
+United States
+Products: All products except Claude for Government
+
+[More Information](https://support.anthropic.com/en/articles/10684626-enabling-and-using-web-search)
+
+Logo for ElevenLabs
+ElevenLabs
+•
+Text to speech
+United States
+Product: Claude for Work
+
+[More Information](https://support.anthropic.com/en/articles/11101966-using-voice-mode-on-claude-mobile-apps)
+
+Palantir Federal Cloud Service (PFCS)
+Palantir Federal Cloud Service (PFCS)
+•
+FedRAMP Cloud
+United States
+Product: Claude for Government (C4G)
+
+
+
+
+Read more
