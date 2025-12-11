@@ -19,6 +19,10 @@
     "security_posture_analyzer.json": {
       "name": "Vendor Security Posture Analyzer",
       "id": "019aa1f0-a686-3295-ee92-f6b8bcad86cb"
+    },
+    "adverse_media_screener.json": {
+      "name": "Adverse Media Screener",
+      "id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
     }
   },
   "staging": {
@@ -41,6 +45,10 @@
     "security_posture_analyzer.json": {
       "name": "Vendor Security Posture Analyzer",
       "id": "0199ed5a-2f14-675b-de5d-0e019526b673"
+    },
+    "adverse_media_screener.json": {
+      "name": "Adverse Media Screener",
+      "id": "019afd9e-3c7a-cdb6-67d5-ae88053b43f8"
     }
   }
 }
